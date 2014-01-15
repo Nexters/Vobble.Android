@@ -21,7 +21,7 @@ public class StartActivity extends Activity {
 		signUpImageView = (ImageView) findViewById(R.id.signUpBtn);
 		
 		loginImageView.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				intent = new Intent(StartActivity.this, LoginActivity.class);
 				startActivity(intent);
 			}
@@ -31,7 +31,6 @@ public class StartActivity extends Activity {
 			public void onClick(View v) {
 				intent  = new Intent(StartActivity.this, SignUpActivity.class);
 				startActivity(intent);
-				finish();
 			}
 		});
 	}
