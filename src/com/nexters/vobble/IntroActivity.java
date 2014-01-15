@@ -16,12 +16,12 @@ public class IntroActivity extends Activity {
 			public void run() {
 				endIntro();
 			}
-		}, 500);		
+		}, 1000);		
 	}
 
 	private void endIntro() {
 		Intent intent = new Intent(this, StartActivity.class);
 		startActivity(intent);
 		finish();
-	}	
+	}
 }
