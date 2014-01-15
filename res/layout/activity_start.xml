@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/loginBtn"
         android:layout_marginBottom="5dp"
-        android:src="@drawable/start_signup_btn" />
+        android:src="@drawable/start_signup_btn" 
+        android:onClick="signUpActivity"/>
 
     <ImageView
         android:id="@+id/loginBtn"
@@ -17,7 +18,8 @@
         android:layout_height="wrap_content"
  		android:layout_alignParentBottom="true"  
  		android:layout_marginBottom="5dp"  
-        android:src="@drawable/start_login_btn" />
+        android:src="@drawable/start_login_btn" 
+        android:onClick="loginActivity"/>
 
     <ImageView
         android:id="@+id/logo"

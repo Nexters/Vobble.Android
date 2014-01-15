@@ -26,6 +26,30 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.IntroActivity" />
         </activity>
+        <activity
+            android:name="com.nexters.vobble.SignUpActivity"
+            android:label="@string/title_activity_sign_up"
+            android:parentActivityName="com.nexters.vobble.StartActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nexters.vobble.StartActivity" />
+        </activity>
+        <activity
+            android:name="com.nexters.vobble.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:parentActivityName="com.nexters.vobble.StartActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nexters.vobble.StartActivity" />
+        </activity>
+        <activity
+            android:name="com.nexters.vobble.MainActivity"
+            android:label="@string/title_activity_main"
+            android:parentActivityName="com.nexters.vobble.LoginActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nexters.vobble.LoginActivity" />
+        </activity>
     </application>
 
 </manifest>
