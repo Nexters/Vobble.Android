@@ -1,33 +1,91 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg" >
+    android:orientation="vertical"
+    android:background="@drawable/bg">
+	<LinearLayout 
+	    android:orientation="vertical"
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="260">
+	</LinearLayout>
+	<LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="410">
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_weight="155"
+	        android:layout_height="match_parent">
+	    </TextView>
+	    <ImageView
+	        android:id="@+id/logo"
+	        android:layout_width="0dp"
+	        android:layout_weight="410"
+	        android:layout_height="match_parent"
+	        android:src="@drawable/start_logo"/>
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_weight="155"
+	        android:layout_height="match_parent">
+	    </TextView>
+	</LinearLayout>
+	<LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="290">
+	</LinearLayout>
+	<LinearLayout
+		android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="320">
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_weight="60"
+	        android:layout_height="match_parent">
+	    </TextView>
+	    <LinearLayout
+	        android:layout_width="0dp"
+	        android:layout_weight="600"
+	        android:orientation="vertical"
+	        android:layout_height="match_parent">
+			<ImageView
+		        android:id="@+id/signUpBtn"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="120"
+		        android:src="@drawable/start_signup_btn" 
+		        android:layout_marginBottom="5dp"
+		        android:onClick="signUpActivity"/>
+			<TextView
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_weight="20">
+			</TextView>
+			<ImageView
+		        android:id="@+id/loginBtn"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="120"
+		        android:src="@drawable/start_login_btn" 
+		        android:onClick="loginActivity"/>  
+		    <TextView
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="60">
+		    </TextView>
+	    </LinearLayout>
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_weight="60"
+	        android:layout_height="match_parent">
+	    </TextView>
+	</LinearLayout>
+</LinearLayout>
 
-    <ImageView
-        android:id="@+id/signUpBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/loginBtn"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/start_signup_btn" 
-        android:onClick="signUpActivity"/>
+  
 
-    <ImageView
-        android:id="@+id/loginBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
- 		android:layout_alignParentBottom="true"  
- 		android:layout_marginBottom="5dp"  
-        android:src="@drawable/start_login_btn" 
-        android:onClick="loginActivity"/>
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:src="@drawable/start_logo" />
-
-</RelativeLayout>

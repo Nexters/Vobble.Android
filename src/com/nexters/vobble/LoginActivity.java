@@ -7,16 +7,16 @@ import android.view.*;
 import android.widget.*;
 
 public class LoginActivity extends Activity {
-	private ImageView loginImageView = null;
+	private TextView loginTextView = null;
 	private Intent intent = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		
-		loginImageView = (ImageView) findViewById(R.id.login_check);
+		loginTextView = (TextView) findViewById(R.id.login_check);
 		
-		loginImageView.setOnClickListener(new View.OnClickListener() {
+		loginTextView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				intent = new Intent(LoginActivity.this, MainActivity.class);
 				startActivity(intent);

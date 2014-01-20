@@ -8,79 +8,207 @@
 	<LinearLayout
 	    android:orientation="horizontal"
 	    android:layout_width="match_parent"
-	    android:layout_height="29dp"
-	    android:layout_marginTop="13dp"
-	    android:layout_marginBottom="13dp">
-
+	    android:layout_height="0dp"
+	    android:layout_weight="90">
 	    <TextView
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:gravity="center_horizontal"
+	        android:layout_height="match_parent"
+	        android:gravity="center_horizontal|center_vertical"
 	        android:text="Sign Up"
 	        android:textColor="#40ddc2"
-	        android:textSize="18dp" />
-	    
+	        android:textSize="18sp"/>
 	</LinearLayout>
-	
+	<TextView
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="60">
+	</TextView>
 	<LinearLayout
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:gravity="center_horizontal">
-	    <EditText
-	        android:id="@+id/signup_username"
-	        android:layout_width="300dp"
-	        android:layout_height="55dp"
-	        android:hint="User name"
-	        android:textColorHint="#6d6e71"/>
-	    <ImageView
-	        android:id="@+id/signup_line"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:src="@drawable/join_line" 
-	        />
-	   	<EditText
-	        android:id="@+id/signup_email"
-	        android:layout_width="300dp"
-	        android:layout_height="55dp"
-	        android:hint="Email"
-	        android:textColorHint="#6d6e71"/>
-	    <ImageView
-	        android:id="@+id/signup_line"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:src="@drawable/join_line" />
-   	    <EditText
-	        android:id="@+id/signup_password"
-	        android:layout_width="300dp"
-	        android:layout_height="55dp"
-	        android:hint="Password"
-	        android:textColorHint="#6d6e71"/>
-	    <ImageView
-	        android:id="@+id/signup_line"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:src="@drawable/join_line" />
-	   	<EditText
-	        android:id="@+id/signup_password_check"
-	        android:layout_width="300dp"
-	        android:layout_height="55dp"
-	        android:hint="Password Check"
-	        android:textColorHint="#6d6e71"/>
-	    <ImageView
-	        android:id="@+id/signup_line"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:src="@drawable/join_line" />
-	    <ImageView
-	   	    android:id="@+id/imageView2"
-	   	    android:layout_width="wrap_content"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_marginTop="40dp"
-	   	    android:src="@drawable/join_btn" />
+	    android:layout_height="0dp"
+	    android:layout_weight="110"
+	    android:orientation="horizontal">
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="60">
+	    </TextView>
+	    <LinearLayout
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="600"
+	        android:orientation="vertical">
+			<EditText
+			    android:id="@+id/signup_username"
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_weight="108"
+			    android:hint="User name"
+			    android:textSize="15sp"
+			    android:textColorHint="#6d6e71"/>
+			<TextView
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:background="#6d6e71"/>
+	   		<TextView
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"/> 
+	    </LinearLayout>
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="60">
+	    </TextView>
 	</LinearLayout>
-
-
-    
-    
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="110"
+	    android:orientation="horizontal">
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="60">
+	    </TextView>
+	    <LinearLayout
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="600"
+	        android:orientation="vertical">
+			<EditText
+		        android:id="@+id/signup_email"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="108"
+		        android:hint="Email"
+		        android:textSize="15sp"
+		        android:textColorHint="#6d6e71"/>
+	   		<TextView
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:background="#6d6e71"/>
+	   		<TextView
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"/> 
+	    </LinearLayout>
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="60">
+	    </TextView>
+	</LinearLayout>	
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="110"
+	    android:orientation="horizontal">
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="60">
+	    </TextView>
+	    <LinearLayout
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="600"
+	        android:orientation="vertical">
+			<EditText
+	        android:id="@+id/signup_password"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="108"
+	        android:hint="Password"
+	        android:textSize="15sp"
+	        android:textColorHint="#6d6e71"/>
+	    	<TextView
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:background="#6d6e71"/>
+	   		<TextView
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"/> 
+	    </LinearLayout>
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="60">
+	    </TextView>
+	</LinearLayout>	
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="110"
+	    android:orientation="horizontal">
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="60"/>
+	    <LinearLayout
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="600"
+	        android:orientation="vertical">
+			<EditText
+		        android:id="@+id/signup_password_check"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="108"
+		        android:hint="Password Check"
+		        android:textSize="15sp"
+		        android:textColorHint="#6d6e71"
+		        android:textColor="#000000"/>
+	    	<TextView
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"
+		        android:background="#6d6e71"/>
+	   		<TextView
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_weight="1"/> 
+	    </LinearLayout>
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="60"/>
+	</LinearLayout>		
+	<TextView
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="80"/>
+	<LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="120">
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="60"/>
+	    <TextView
+	        android:id="@+id/sign_up_check"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="600"
+	        android:background="#40ddc2"
+	        android:text="Sign Up"
+	        android:gravity="center_horizontal|center_vertical"
+	        android:textSize="20sp"
+	        android:textColor="#ffffff"/>
+	    <TextView
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="60"/>
+	</LinearLayout>
+	<TextView
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="490"/>
+	    
 </LinearLayout>
