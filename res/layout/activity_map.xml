@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
 	android:orientation="vertical"
 	android:background="@drawable/bg"
-    tools:context=".RecordActivity" >
+    tools:context=".MapActivity" >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="640"
-            android:text="Make Vobble"
+            android:text="Confirm Vobble"
             android:gravity="center_horizontal|center_vertical"
             android:textSize="18sp"
             android:textColor="#ffffff"/>
@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="420"
-            android:src="@drawable/record_camera_icon"/>
+            android:src="@drawable/record_camera_icon_o"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -53,39 +53,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="68"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="134"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="177"/>
-        <ImageView 
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="134"
-            android:src="@drawable/record_pause_btn"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="98"/>
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="134"
-            android:src="@drawable/record_re_btn"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="177"/>
-    </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="183"/>
+        android:layout_weight="105"/>
+	<ImageView
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="140"
+	    android:src="@drawable/confirm_shadow_top"/>
+	<ImageView
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="140"
+	    android:src="@drawable/confirm_shadow_bottom"/>
 	<TextView
 	    android:id="@+id/record_confirm_btn"
 	   	android:layout_width="match_parent"
@@ -93,7 +71,7 @@
 	   	android:layout_weight="200"
 	   	android:background="#ffffff"
 	   	android:gravity="center_vertical|center_horizontal"
-	   	android:text="Confirm"
+	   	android:text="Save"
 	   	android:textSize="22sp"
 	   	android:textColor="#40ddc2"/>
 </LinearLayout>

@@ -10,5 +10,6 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_record">RecordActivity</string>
+    <string name="title_activity_map">MapActivity</string>
 
 </resources>

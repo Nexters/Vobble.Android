@@ -58,6 +58,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.MainActivity" />
         </activity>
+        <activity
+            android:name="com.nexters.vobble.MapActivity"
+            android:label="@string/title_activity_map"
+            android:parentActivityName="com.nexters.vobble.RecordActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nexters.vobble.RecordActivity" />
+        </activity>
     </application>
 
 </manifest>
