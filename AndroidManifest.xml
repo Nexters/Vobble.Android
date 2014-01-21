@@ -50,6 +50,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.LoginActivity" />
         </activity>
+        <activity
+            android:name="com.nexters.vobble.RecordActivity"
+            android:label="@string/title_activity_record"
+            android:parentActivityName="com.nexters.vobble.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nexters.vobble.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
