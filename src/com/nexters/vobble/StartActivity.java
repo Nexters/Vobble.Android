@@ -23,7 +23,7 @@ public class StartActivity extends Activity {
 		
 		loginImageView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				intent = new Intent(StartActivity.this, LoginActivity.class);
+				intent = new Intent(StartActivity.this, SignInActivity.class);
 				startActivity(intent);
 			}
 		});

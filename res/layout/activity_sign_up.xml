@@ -39,12 +39,13 @@
 	        android:layout_weight="600"
 	        android:orientation="vertical">
 			<EditText
-			    android:id="@+id/signup_username"
+			    android:id="@+id/et_sign_up_username"
 			    android:layout_width="match_parent"
 			    android:layout_height="0dp"
 			    android:layout_weight="108"
 			    android:hint="User name"
 			    android:textSize="15sp"
+                android:textColor="#000000"
 			    android:textColorHint="#6d6e71"/>
 			<TextView
 		        android:layout_width="match_parent"
@@ -78,12 +79,13 @@
 	        android:layout_weight="600"
 	        android:orientation="vertical">
 			<EditText
-		        android:id="@+id/signup_email"
+		        android:id="@+id/et_sign_up_email"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="108"
 		        android:hint="Email"
 		        android:textSize="15sp"
+                android:textColor="#000000"
 		        android:textColorHint="#6d6e71"/>
 	   		<TextView
 		        android:layout_width="match_parent"
@@ -117,13 +119,14 @@
 	        android:layout_weight="600"
 	        android:orientation="vertical">
 			<EditText
-	        android:id="@+id/signup_password"
-	        android:layout_width="match_parent"
-	        android:layout_height="0dp"
-	        android:layout_weight="108"
-	        android:hint="Password"
-	        android:textSize="15sp"
-	        android:textColorHint="#6d6e71"/>
+                android:id="@+id/et_sign_up_password"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="108"
+                android:hint="Password"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:textColorHint="#6d6e71"/>
 	    	<TextView
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
@@ -155,14 +158,14 @@
 	        android:layout_weight="600"
 	        android:orientation="vertical">
 			<EditText
-		        android:id="@+id/signup_password_check"
+		        android:id="@+id/et_sign_up_password_check"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="108"
 		        android:hint="Password Check"
 		        android:textSize="15sp"
-		        android:textColorHint="#6d6e71"
-		        android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:textColorHint="#6d6e71"/>
 	    	<TextView
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
@@ -191,8 +194,8 @@
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="60"/>
-	    <TextView
-	        android:id="@+id/sign_up_check"
+	    <Button
+	        android:id="@+id/btn_sign_up"
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="600"
