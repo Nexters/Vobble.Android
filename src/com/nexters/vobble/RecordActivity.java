@@ -13,6 +13,8 @@ public class RecordActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
 		setContentView(R.layout.activity_record);
 		
 		confirmImageView = (ImageView) findViewById(R.id.record_confirm_btn);

@@ -20,51 +20,53 @@
         </activity>
         <activity
             android:name="com.nexters.vobble.StartActivity"
-            android:label="@string/title_activity_start"
-            android:parentActivityName="com.nexters.vobble.IntroActivity" >
+            android:label="@string/title_activity_start" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.IntroActivity" />
         </activity>
         <activity
             android:name="com.nexters.vobble.SignUpActivity"
-            android:label="@string/title_activity_sign_up"
-            android:parentActivityName="com.nexters.vobble.StartActivity" >
+            android:label="@string/title_activity_sign_up" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.StartActivity" />
         </activity>
         <activity
             android:name="com.nexters.vobble.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:parentActivityName="com.nexters.vobble.StartActivity" >
+            android:label="@string/title_activity_login" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.StartActivity" />
         </activity>
         <activity
             android:name="com.nexters.vobble.MainActivity"
-            android:label="@string/title_activity_main"
-            android:parentActivityName="com.nexters.vobble.LoginActivity" >
+            android:label="@string/title_activity_main" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.LoginActivity" />
         </activity>
         <activity
             android:name="com.nexters.vobble.RecordActivity"
-            android:label="@string/title_activity_record"
-            android:parentActivityName="com.nexters.vobble.MainActivity" >
+            android:label="@string/title_activity_record" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.MainActivity" />
         </activity>
         <activity
             android:name="com.nexters.vobble.MapActivity"
-            android:label="@string/title_activity_map"
-            android:parentActivityName="com.nexters.vobble.RecordActivity" >
+            android:label="@string/title_activity_map" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.RecordActivity" />
+        </activity>
+        <activity
+            android:name="com.nexters.vobble.fragment.AllVoiceFragment"
+            android:label="@string/title_activity_all_voice_fragment" >
+        </activity>
+        <activity
+            android:name="com.nexters.vobble.fragment.MyVoiceFragment"
+            android:label="@string/title_activity_my_voice_fragment" >
         </activity>
     </application>
 
