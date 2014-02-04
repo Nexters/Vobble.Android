@@ -16,7 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HttpConnectionModule {
-	private String method = "";
+	public static String POST = "post";
+    public static String GET = "get";
+
+    private String method = "";
 	private String url = "";
 
 	private HttpClient client;
@@ -30,7 +33,7 @@ public class HttpConnectionModule {
 
 		client = new DefaultHttpClient();
 
-		if (method.equals("POST")) {
+		if (method.equals(POST)) {
 			post = new HttpPost(url);
 		} else {
 			get = new HttpGet(url);
@@ -47,7 +50,7 @@ public class HttpConnectionModule {
 		try {
 			HttpEntity resEntity;
 			HttpResponse response;
-			if (method == "POST") {
+			if (method.equals(POST)) {
                 UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params, HTTP.UTF_8);
 				post.setEntity(ent);
 				response = client.execute(post);

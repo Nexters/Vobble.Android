@@ -3,7 +3,6 @@ package com.nexters.vobble;
 import android.app.*;
 import android.content.Intent;
 import android.os.*;
-import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,7 +66,7 @@ public class SignUpActivity extends Activity {
     private class SignUpnAsyncTask extends AsyncTask<String, Integer, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
-            boolean result = ServerAPIRequest.signUpUser(params[0], params[1], params[2]);
+            boolean result = ServerAPIRequest.signUp(params[0], params[1], params[2]);
             return result;
         }
 
