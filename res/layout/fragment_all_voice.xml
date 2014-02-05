@@ -1,16 +1,128 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".AllVoiceFragment" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/ll_fragment_all_voice"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+ <FrameLayout 
+        android:id="@+id/frameLayoutViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+ 		<android.support.v4.view.ViewPager
+        	android:id="@+id/viewPager"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"/>   
+	    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+            <TextView
+                android:id="@+id/vobbleCountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffffff"
+                android:textSize="40sp" />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="voice"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
+        </LinearLayout>    
+    	<LinearLayout
+        	android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:orientation="horizontal">
+	        
+	        <TextView
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+	            android:layout_weight="40"/>
+			<RelativeLayout	
+		       android:id="@+id/VobbleSpace"
+		       android:layout_width="0dp"
+		       android:layout_height="match_parent"
+		       android:layout_weight="640">
+		       <ImageView 
+		           android:id="@+id/mapMarker"
+		           android:layout_width="36dp"
+		           android:layout_height="67.5dp"
+		           android:layout_centerHorizontal="true"
+		           android:layout_centerVertical="true"
+		           android:src="@drawable/voice_reload"
+		           />
+		       <ImageView 
+		           android:id="@+id/vobble1"
+		           android:layout_width="100dp"
+		           android:layout_height="100dp"
+		           android:layout_above="@+id/mapMarker"
+		           android:layout_marginBottom="40dp"
+		           android:layout_centerHorizontal="true"
+		           android:src="@drawable/nonpic1_icon"/>
+		       <ImageView
+		           android:id="@+id/vobble2"
+		           android:layout_width="100dp"
+		           android:layout_height="100dp"
+		           android:layout_toRightOf="@+id/mapMarker"
+		           android:layout_above="@+id/mapMarker"
+		           android:layout_marginLeft="30dp"
+		           android:layout_marginBottom="-20dp"
+		           android:src="@drawable/nonpic2_icon"/>
+		       <ImageView
+		           android:id="@+id/vobble3"
+		           android:layout_width="100dp"
+		           android:layout_height="100dp"
+		           android:layout_toRightOf="@+id/mapMarker"
+		           android:layout_below="@+id/mapMarker"
+		           android:layout_marginLeft="30dp"
+		           android:layout_marginTop="-20dp"
+		           android:src="@drawable/nonpic3_icon"/>
+		       <ImageView
+		           android:id="@+id/vobble4"
+		           android:layout_width="100dp"
+		           android:layout_height="100dp"
+		           android:layout_below="@+id/mapMarker"
+		           android:layout_centerHorizontal="true"
+		           android:layout_marginTop="40dp"
+		           android:src="@drawable/nonpic4_icon"/>
+		       <ImageView
+		           android:id="@+id/vobble5"
+		           android:layout_width="100dp"
+		           android:layout_height="100dp"
+		           android:layout_above="@+id/mapMarker"
+		           android:layout_toLeftOf="@+id/mapMarker"
+		           android:layout_marginRight="30dp"
+		           android:layout_marginBottom="-20dp"
+		           android:src="@drawable/nonpic5_icon"/>
+		       <ImageView
+		           android:id="@+id/vobble6"
+		           android:layout_width="100dp"
+		           android:layout_height="100dp"
+		           android:layout_below="@+id/mapMarker"
+		           android:layout_toLeftOf="@+id/mapMarker"
+		           android:layout_marginRight="30dp"
+		           android:layout_marginTop="-20dp"
+		           android:src="@drawable/nonpic6_icon"/>
+				<TextView
+		          android:id="@+id/vobble_count"
+		          android:layout_width="wrap_content"
+		          android:layout_height="wrap_content"/>
+			</RelativeLayout>      
+			<TextView
+	          	android:layout_width="0dp"
+	          	android:layout_height="match_parent"
+	          	android:layout_weight="40"/>
+		
+	    </LinearLayout>
+ 			    
+    </FrameLayout>
+      
+      
+      
+  </LinearLayout>

@@ -1,19 +1,21 @@
 package com.nexters.vobble;
 
 import android.app.*;
-import android.app.FragmentManager;
 import android.content.*;
 import android.graphics.*;
 import android.os.*;
 import android.support.v4.app.*;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.*;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 
+import com.nexters.vobble.adapter.*;
+
 public class MainActivity extends FragmentActivity implements OnClickListener{
 	private ViewPager viewPager = null;
-	//private MyFragmentPagerAdapter adapter = null;
+	private VobbleFragmentPagerAdapter adapter = null;
 
 	private FrameLayout allVoiceButtonLayout = null;
 	private FrameLayout myVoiceButtonLayout = null;
@@ -27,17 +29,15 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_main);
 		
-		recordImageView = (ImageView) findViewById(R.id.voice_record_btn);
+		//recordImageView = (ImageView) findViewById(R.id.voice_record_btn);
 		
-		recordImageView.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				intent = new Intent(MainActivity.this, RecordActivity.class);
-				startActivity(intent);
-			}
-		});
+		//recordImageView.setOnClickListener(new View.OnClickListener() {
+		//	public void onClick(View v) {
+		//		intent = new Intent(MainActivity.this, RecordActivity.class);
+		//		startActivity(intent);
+		//	}
+		//});
 		
 		//VobblePrefsManager manager = new VobblePrefsManager(this);
 		//int userId = manager.getUserId();
@@ -73,17 +73,17 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
-		//viewPager = (ViewPager) findViewById(R.id.viewPager);
+		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		//nextVobbleImageView = (ImageView)findViewById(R.id.nextVobbleImageView);
 		//prevVobbleImageView = (ImageView)findViewById(R.id.prevVobbleImageView);
 		
-		allVoiceButtonLayout = (FrameLayout) findViewById(R.id.allVoiceTabButtonLayout);
-		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.myVoiceTabButtonLayout);
+		allVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
+		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
 		//recordImageView = (ImageView) findViewById(R.id.recordImageView);
-		//FragmentManager fm = getSupportFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
 
-		//adapter = new MyFragmentPagerAdapter(fm);
-		//viewPager.setAdapter(adapter);
+		adapter = new VobbleFragmentPagerAdapter(fm);
+		viewPager.setAdapter(adapter);
 
 		allVoiceButtonLayout.setOnClickListener(this);
 		myVoiceButtonLayout.setOnClickListener(this);
@@ -94,12 +94,12 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	
 	public void onClick(View view) {
 		switch (view.getId()) {
-		case R.id.allVoiceTabButtonLayout:
+		case R.id.fl_all_voice_tab_button:
 			viewPager.setCurrentItem(0, true);
 			allVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
 			myVoiceButtonLayout.setBackgroundResource(R.drawable.tab_mask);
 			break;
-		case R.id.myVoiceTabButtonLayout:
+		case R.id.fl_my_voice_tab_button:
 			viewPager.setCurrentItem(1, true);
 			myVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
 			allVoiceButtonLayout.setBackgroundResource(R.drawable.tab_mask);
