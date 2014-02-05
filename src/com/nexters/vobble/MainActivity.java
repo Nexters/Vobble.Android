@@ -87,7 +87,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 
 		allVoiceButtonLayout.setOnClickListener(this);
 		myVoiceButtonLayout.setOnClickListener(this);
-		recordImageView.setOnClickListener(this);
+		//recordImageView.setOnClickListener(this);
 
 		allVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
 	}
