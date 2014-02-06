@@ -46,7 +46,7 @@ public class MainActivity extends BaseFragmentActivity implements OnClickListene
         getLocation();
 	}
 
-    public void initResources() {
+    private void initResources() {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
 		allVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);

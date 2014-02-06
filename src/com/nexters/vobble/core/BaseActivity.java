@@ -23,7 +23,6 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	
 
 		loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
 		loadingView.setVisibility(View.INVISIBLE);
@@ -75,9 +74,9 @@ public class BaseActivity extends Activity {
 
 	public void alert(String message) {
 		Dialog d = new AlertDialog.Builder(this)
-		.setMessage(message)
-		.setPositiveButton(R.string.ok, null)
-		.create();
+        .setMessage(message)
+        .setPositiveButton(R.string.ok, null)
+        .create();
 		d.show();
 		TextView messageText = (TextView) d.findViewById(android.R.id.message);
 		messageText.setGravity(Gravity.CENTER);

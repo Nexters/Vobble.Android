@@ -14,7 +14,7 @@ import com.nexters.vobble.*;
 import com.nexters.vobble.core.*;
 import com.nexters.vobble.network.*;
 
-public class MyVoiceFragment extends BaseFragment{
+public class MyVobblesFragment extends BaseFragment{
 	private View view;
     private TextView tvMyVobblesCount;
 

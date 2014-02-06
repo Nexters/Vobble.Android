@@ -14,7 +14,7 @@ import com.nexters.vobble.network.HttpUtil;
 import com.nexters.vobble.network.URL;
 import com.nexters.vobble.network.VobbleResponseHandler;
 
-public class AllVoiceFragment extends BaseFragment {
+public class AllVobblesFragment extends BaseFragment {
 	private View view;
     private TextView tvAllVobblesCount;
     
