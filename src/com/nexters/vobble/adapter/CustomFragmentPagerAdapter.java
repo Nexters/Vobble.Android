@@ -5,7 +5,6 @@ import android.support.v4.app.*;
 import com.nexters.vobble.fragment.*;
 
 public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
-	
 	public CustomFragmentPagerAdapter(FragmentManager fm) {
 		super(fm);
 	}

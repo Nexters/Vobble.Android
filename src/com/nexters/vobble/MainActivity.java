@@ -49,15 +49,18 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
             public void onPageSelected(int position) {
                 setSelectedTab(position);
             }
 
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
 
             }
 
-            public void onPageScrollStateChanged(int arg0) {
+            @Override
+            public void onPageScrollStateChanged(int i) {
 
             }
         });

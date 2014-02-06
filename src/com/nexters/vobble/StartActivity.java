@@ -37,9 +37,11 @@ public class StartActivity extends Activity implements View.OnClickListener {
         case R.id.loginBtn:
             intent = new Intent(StartActivity.this, SignInActivity.class);
             startActivity(intent);
+            break;
         case R.id.signUpBtn:
             intent = new Intent(StartActivity.this, SignUpActivity.class);
             startActivity(intent);
+            break;
         }
     }
 }
