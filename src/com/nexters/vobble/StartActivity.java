@@ -6,35 +6,40 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
-public class StartActivity extends Activity {
-	private ImageView loginImageView = null;
-	private ImageView signUpImageView = null;
-	private Intent intent = null;
+public class StartActivity extends Activity implements View.OnClickListener {
+	private ImageView loginImageView;
+	private ImageView signUpImageView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
 		setContentView(R.layout.activity_start);
-		
-		loginImageView = (ImageView) findViewById(R.id.loginBtn);
-		signUpImageView = (ImageView) findViewById(R.id.signUpBtn);
-		
-		loginImageView.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				intent = new Intent(StartActivity.this, SignInActivity.class);
-				startActivity(intent);
-			}
-		});
-		
-		signUpImageView.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				intent  = new Intent(StartActivity.this, SignUpActivity.class);
-				startActivity(intent);
-			}
-		});
+
+        initResources();
+        initEvents();
 	}
-	
-	
+
+    private void initResources() {
+        loginImageView = (ImageView) findViewById(R.id.loginBtn);
+        signUpImageView = (ImageView) findViewById(R.id.signUpBtn);
+    }
+
+    private void initEvents() {
+        loginImageView.setOnClickListener(this);
+        signUpImageView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent;
+        switch(view.getId()) {
+        case R.id.loginBtn:
+            intent = new Intent(StartActivity.this, SignInActivity.class);
+            startActivity(intent);
+        case R.id.signUpBtn:
+            intent = new Intent(StartActivity.this, SignUpActivity.class);
+            startActivity(intent);
+        }
+    }
 }

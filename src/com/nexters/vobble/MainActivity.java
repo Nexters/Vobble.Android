@@ -14,118 +14,84 @@ import android.widget.*;
 import com.nexters.vobble.adapter.*;
 
 public class MainActivity extends FragmentActivity implements OnClickListener{
-	private ViewPager viewPager = null;
-	private VobbleFragmentPagerAdapter adapter = null;
+	private ViewPager viewPager;
+	private CustomFragmentPagerAdapter adapter;
+	private FrameLayout allVoiceButtonLayout;
+	private FrameLayout myVoiceButtonLayout;
 
-	private FrameLayout allVoiceButtonLayout = null;
-	private FrameLayout myVoiceButtonLayout = null;
-	
-	private ImageView nextVobbleImageView = null;
-	private ImageView prevVobbleImageView = null;
-	
-	private ImageView recordImageView = null;
-	private Intent intent = null;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		//recordImageView = (ImageView) findViewById(R.id.voice_record_btn);
-		
-		//recordImageView.setOnClickListener(new View.OnClickListener() {
-		//	public void onClick(View v) {
-		//		intent = new Intent(MainActivity.this, RecordActivity.class);
-		//		startActivity(intent);
-		//	}
-		//});
-		
-		//VobblePrefsManager manager = new VobblePrefsManager(this);
-		//int userId = manager.getUserId();
-		//if (userId == -1) {
-		//	Intent intent = new Intent(MainActivity.this, StartActivity.class);
-		//	startActivity(intent);
-		//	finish();
-		//}
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_main);
 
-		loadResource();
-
-		viewPager.setCurrentItem(0);
-		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-			public void onPageSelected(int position) {
-				setSelectedTab(position);
-			}
-
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-			}
-
-			public void onPageScrollStateChanged(int arg0) {
-
-			}
-		});
-		
-		
+		initResources();
+        initEvents();
+        initViewPager();
 	}
-	
-	
-	
-	public void loadResource() {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_main);
 
-		viewPager = (ViewPager) findViewById(R.id.viewPager);
-		//nextVobbleImageView = (ImageView)findViewById(R.id.nextVobbleImageView);
-		//prevVobbleImageView = (ImageView)findViewById(R.id.prevVobbleImageView);
-		
+    public void initResources() {
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
 		allVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
-		//recordImageView = (ImageView) findViewById(R.id.recordImageView);
-		FragmentManager fm = getSupportFragmentManager();
-
-		adapter = new VobbleFragmentPagerAdapter(fm);
-		viewPager.setAdapter(adapter);
-
-		allVoiceButtonLayout.setOnClickListener(this);
-		myVoiceButtonLayout.setOnClickListener(this);
-		//recordImageView.setOnClickListener(this);
 
 		allVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
 	}
-	
+
+    private void initEvents() {
+        allVoiceButtonLayout.setOnClickListener(this);
+        myVoiceButtonLayout.setOnClickListener(this);
+    }
+
+    private void initViewPager() {
+        FragmentManager fm = getSupportFragmentManager();
+        adapter = new CustomFragmentPagerAdapter(fm);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(0);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageSelected(int position) {
+                setSelectedTab(position);
+            }
+
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+            }
+
+            public void onPageScrollStateChanged(int arg0) {
+
+            }
+        });
+    }
+
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.fl_all_voice_tab_button:
-			viewPager.setCurrentItem(0, true);
-			allVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
-			myVoiceButtonLayout.setBackgroundResource(R.drawable.tab_mask);
+            showAllVoiceFragment();
 			break;
 		case R.id.fl_my_voice_tab_button:
-			viewPager.setCurrentItem(1, true);
-			myVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
-			allVoiceButtonLayout.setBackgroundResource(R.drawable.tab_mask);
+            showMyVoiceFragment();
 			break;
-		//case R.id.recordImageView:
-		//	Intent intent = new Intent(MainActivity.this, RecordActivity.class);
-		//	startActivity(intent);
-		//	break;
-
 		}
 	}
-	
-	public void setSelectedTab(int position) {
-		if (position == 0)
+
+    private void showAllVoiceFragment() {
+        viewPager.setCurrentItem(0, true);
+        allVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
+        myVoiceButtonLayout.setBackgroundResource(R.drawable.tab_mask);
+    }
+
+    private void showMyVoiceFragment() {
+        viewPager.setCurrentItem(1, true);
+        myVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
+        allVoiceButtonLayout.setBackgroundResource(R.drawable.tab_mask);
+    }
+
+    public void setSelectedTab(int position) {
+        if (position == 0)
 			onClick(allVoiceButtonLayout);
 		else if (position == 1)
 			onClick(myVoiceButtonLayout);
 	}
-
-	public ImageView getPrevVobbleImageView() {
-		return prevVobbleImageView;
-	}
-	public ImageView getNextVobbleImageView() {
-		return nextVobbleImageView;
-	}
-	
 
 	public void onBackPressed() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -139,7 +105,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		});
 		builder.show();
 	}
-	
 	
 }
 

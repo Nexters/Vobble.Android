@@ -4,14 +4,13 @@ import android.support.v4.app.*;
 
 import com.nexters.vobble.fragment.*;
 
-public class VobbleFragmentPagerAdapter extends FragmentPagerAdapter {
+public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
 	
-	public VobbleFragmentPagerAdapter(FragmentManager fm) {
+	public CustomFragmentPagerAdapter(FragmentManager fm) {
 		super(fm);
 	}
 
 	public Fragment getItem(int position) {
-		
 		if (position == 0) {
 			AllVoiceFragment voiceFragment = new AllVoiceFragment();
 			return voiceFragment;
