@@ -18,6 +18,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	private CustomFragmentPagerAdapter adapter;
 	private FrameLayout allVoiceButtonLayout;
 	private FrameLayout myVoiceButtonLayout;
+	private ImageView makeVobbleImageView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
         viewPager = (ViewPager) findViewById(R.id.viewPager);
 		allVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
+		makeVobbleImageView = (ImageView)findViewById(R.id.iv_voice_record_btn);
 
 		allVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
 	}
@@ -41,6 +43,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
     private void initEvents() {
         allVoiceButtonLayout.setOnClickListener(this);
         myVoiceButtonLayout.setOnClickListener(this);
+        makeVobbleImageView.setOnClickListener(this);
     }
 
     private void initViewPager() {
@@ -74,6 +77,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		case R.id.fl_my_voice_tab_button:
             showMyVoiceFragment();
 			break;
+		case R.id.iv_voice_record_btn:
+			Intent intent = new Intent(MainActivity.this, RecordActivity.class);
+			startActivity(intent);
 		}
 	}
 

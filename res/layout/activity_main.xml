@@ -83,7 +83,7 @@
             android:textSize="22sp"
             android:textColor="#40ddc2"/>
         <ImageView
-            android:id="@+id/voice_record_btn"
+            android:id="@+id/iv_voice_record_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="134"
