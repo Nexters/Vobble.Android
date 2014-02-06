@@ -8,9 +8,10 @@ import android.widget.*;
 import android.support.v4.app.NavUtils;
 
 public class RecordActivity extends Activity implements View.OnClickListener{
-	private Button confirmBtn;
+	private ImageView cameraImageView;
 	private ImageView pauseImageView;
 	private ImageView resetImageView;
+	private Button confirmBtn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,15 +24,17 @@ public class RecordActivity extends Activity implements View.OnClickListener{
 	}
 	
 	private void initResource(){
-		confirmBtn = (Button) findViewById(R.id.btn_record_confirm);
+		cameraImageView = (ImageView)findViewById(R.id.iv_record_camera_icon);		
 		pauseImageView = (ImageView)findViewById(R.id.iv_record_pause_btn);
 		resetImageView = (ImageView)findViewById(R.id.iv_record_re_btn);
+		confirmBtn = (Button) findViewById(R.id.btn_record_confirm);
 	}
 	
 	private void initEvent(){
-		confirmBtn.setOnClickListener(this);
+		cameraImageView.setOnClickListener(this);
 		pauseImageView.setOnClickListener(this);
 		resetImageView.setOnClickListener(this);
+		confirmBtn.setOnClickListener(this);
 	}
 	
 	@Override
