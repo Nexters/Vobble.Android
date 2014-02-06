@@ -13,14 +13,4 @@ public class AllVoiceFragment extends Fragment {
 		view = inflater.inflate(R.layout.fragment_all_voice, null);
 		return view;
 	}
-
-	
-
-
-
-	
-	
-
-
-
 }

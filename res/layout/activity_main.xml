@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="My voice"
+                android:text="My"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
@@ -73,15 +73,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="40"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="253"
-            android:text="prev"
-            android:gravity="left|center_vertical"
-            android:textSize="22sp"
-            android:textColor="#40ddc2"/>
+            android:layout_weight="293"/>
         <ImageView
             android:id="@+id/voice_record_btn"
             android:layout_width="0dp"
@@ -91,15 +83,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="253"
-            android:text="Next >"
-            android:gravity="right|center_vertical"
-            android:textSize="22sp"
-            android:textColor="#40ddc2"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="40"/>
+            android:layout_weight="293"/>
      </LinearLayout>
      <TextView
          android:layout_width="match_parent"
