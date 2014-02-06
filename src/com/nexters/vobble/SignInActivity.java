@@ -77,7 +77,9 @@ public class SignInActivity extends BaseActivity{
             			@Override
             			public void onSuccess(JSONObject response) {
             				PreferenceManager.getDefaultSharedPreferences(SignInActivity.this)
-            				.edit().putString(Vobble.TOKEN, response.optString("token")).commit();
+            				.edit().putString(Vobble.TOKEN, response.optString(Vobble.TOKEN)).commit();
+            				PreferenceManager.getDefaultSharedPreferences(SignInActivity.this)
+            				.edit().putString(Vobble.USER_ID, response.optString(Vobble.USER_ID)).commit();
             				
             				Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                             startActivity(intent);

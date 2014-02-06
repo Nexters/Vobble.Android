@@ -88,6 +88,11 @@ public class SignUpActivity extends BaseActivity {
 
             			@Override
             			public void onSuccess(JSONObject response) {
+            				PreferenceManager.getDefaultSharedPreferences(SignUpActivity.this)
+            				.edit().putString(Vobble.EMAIL, etEmail.getText().toString()).commit();
+            				PreferenceManager.getDefaultSharedPreferences(SignUpActivity.this)
+            				.edit().putString(Vobble.USERNAME, etUsername.getText().toString()).commit();
+            				
             				Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                             startActivity(intent);
                             finish();

@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nexters.vobble.core.Vobble;
 
 public class HttpUtil {
 	
@@ -22,11 +23,13 @@ public class HttpUtil {
 	
 	public static void get(String url, Map<String, String> headers, RequestParams params, AsyncHttpResponseHandler handler) {
 		setHeaders(headers);
+		Vobble.log("GET : " + url);
 		getClient().get(url, params, handler);
 	}
 
 	public static void post(String url, Map<String, String> headers, RequestParams params, AsyncHttpResponseHandler handler) {
 		setHeaders(headers);
+		Vobble.log("POST : " + url+params);
 		getClient().post(url, params, handler);
 	}
 	

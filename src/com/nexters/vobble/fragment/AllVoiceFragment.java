@@ -1,5 +1,7 @@
 package com.nexters.vobble.fragment;
 
+import org.json.JSONObject;
+
 import android.os.*;
 import android.support.v4.app.Fragment;
 import android.view.*;
@@ -7,16 +9,26 @@ import android.view.*;
 import android.widget.TextView;
 import com.nexters.vobble.*;
 import com.nexters.vobble.core.ServerAPIRequest;
+import com.nexters.vobble.core.Vobble;
+import com.nexters.vobble.network.HttpUtil;
+import com.nexters.vobble.network.URL;
+import com.nexters.vobble.network.VobbleResponseHandler;
 
-public class AllVoiceFragment extends Fragment {
+public class AllVoiceFragment extends BaseFragment {
 	private View view;
     private TextView tvAllVobblesCount;
-
+    
+    @Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+    }
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
 		view = inflater.inflate(R.layout.fragment_all_vobbles, null);
 
         initResources(view);
         initVobblesCount();
+        Vobble.log("USER_VOBBLES_COUNT");
         return view;
 	}
 
@@ -25,8 +37,35 @@ public class AllVoiceFragment extends Fragment {
     }
 
     private void initVobblesCount() {
-        AllVobblesCountAsyncTask allVobblesCountAsyncTask = new AllVobblesCountAsyncTask();
-        allVobblesCountAsyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+    	String url = URL.VOBBLES_COUNT;
+		/*
+		RequestParams params = new RequestParams();
+		params.put(Vobble.LATITUDE, "127");
+		params.put(Vobble.LONGITUDE, "37");
+		params.put(Vobble.LIMIT, "6");
+		*/
+    	
+		HttpUtil.get(url, null, null, new VobbleResponseHandler(activity) {
+			
+			@Override
+			public void onStart() {
+				super.onStart();
+				showLoading();
+			}
+
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				hideLoading();
+			}
+
+			@Override
+			public void onSuccess(JSONObject response) {
+				String count = response.optString("count");
+				setVobblesCount(Integer.parseInt(count));
+			}
+		});
+        
     }
 
     private void setVobblesCount(Integer count) {

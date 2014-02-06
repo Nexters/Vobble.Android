@@ -17,6 +17,15 @@ public class IntroActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_intro);
 		
+		// FOR TEST
+		/*
+		PreferenceManager.getDefaultSharedPreferences(IntroActivity.this)
+		.edit().putString(Vobble.USER_ID, "21").commit();
+		PreferenceManager.getDefaultSharedPreferences(SignInActivity.this)
+        .edit().putString(Vobble.TOKEN, "ac59b5a203b2e6f54c887a67b55b0083").commit();
+		
+		
+		*/
 		handler = new Handler();
 		handler.postDelayed(new Runnable() {
 			public void run() {
@@ -26,7 +35,7 @@ public class IntroActivity extends Activity {
 	}
 
 	private void endIntro() {
-		final String token = PreferenceManager.getDefaultSharedPreferences(this).getString(Vobble.TOKEN, "");
+		final String token = Vobble.getToken(this);
 		if(!TextUtils.isEmpty(token)){
 			Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
