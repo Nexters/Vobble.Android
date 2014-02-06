@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 
 import com.nexters.vobble.adapter.*;
+import com.nexters.vobble.common.VobblePreferencesManager;
 
 public class MainActivity extends FragmentActivity implements OnClickListener{
 	private ViewPager viewPager;
@@ -25,12 +26,22 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+        initUserInfo();
 		initResources();
         initEvents();
         initViewPager();
 	}
 
-    public void initResources() {
+    private void initUserInfo() {
+        VobblePreferencesManager pm = new VobblePreferencesManager(this);
+        int userId = pm.getUserId();
+        if (userId < 0) {
+            Intent intent = new Intent(this, StartActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void initResources() {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
 		allVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
