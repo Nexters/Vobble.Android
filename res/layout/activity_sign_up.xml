@@ -126,7 +126,8 @@
                 android:hint="Password"
                 android:textSize="15sp"
                 android:textColor="#000000"
-                android:textColorHint="#6d6e71"/>
+                android:textColorHint="#6d6e71"
+                android:password="true"/>
 	    	<TextView
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
@@ -165,7 +166,8 @@
 		        android:hint="Password Check"
 		        android:textSize="15sp"
                 android:textColor="#000000"
-                android:textColorHint="#6d6e71"/>
+                android:textColorHint="#6d6e71"
+                android:password="true"/>
 	    	<TextView
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"

@@ -1,14 +1,19 @@
 package com.nexters.vobble;
 
-import android.app.*;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.*;
 import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
-import com.nexters.vobble.core.ServerAPIRequest;
 
-public class SignUpActivity extends Activity implements View.OnClickListener {
+import com.loopj.android.http.RequestParams;
+
+import com.nexters.vobble.core.*;
+import com.nexters.vobble.network.*;
+
+public class SignUpActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText etUsername;
     private EditText etEmail;
@@ -63,30 +68,16 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
         return getPassword().equals(getPasswordCheck());
     }
 
-    // TODO: username 형식 확인
-    private boolean isUsernameFormatCorrected() {
-        return true;
+    private boolean isValidUsername() {
+        return getUsername().length() >= 4;
     }
 
-    // TODO: email 형식 확인
-    private boolean isEmailFormatCorrected() {
-        return true;
+    private boolean isValidEmail() {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(getEmail()).matches();
     }
 
-    // TODO: password 형식 확인
-    private boolean isPasswordFormatCorrected() {
-        if (getPassword().length() >= 6) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void showAlertDialog(String msg) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(msg);
-        builder.setNegativeButton("확인", null);
-        builder.show();
+    private boolean isValidPassword() {
+        return getPassword().length() >= 6;
     }
 
     @Override
@@ -94,50 +85,50 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
         switch (view.getId()) {
         case R.id.btn_sign_up:
             if (!isAllFormFilled()) {
-                showAlertDialog("모든 항목을 입력해 주세요.");
+                alert("모든 항목을 입력해 주세요.");
             } else if (!isPasswordCheckCorrected()) {
-                showAlertDialog("비밀번호가 다릅니다. 다시 확인해 주세요.");
-            } else if (!isUsernameFormatCorrected()) {
-                showAlertDialog("Username 형식이 잘못되었습니다. 4글자 이상의 영어, 숫자, 하이픈(-), 언더바(_) 조합이어야 합니다.");
-            } else if (!isEmailFormatCorrected()) {
-                showAlertDialog("Email 형식이 잘못되었습니다. 다시 확인해주세요.");
-            } else if (!isPasswordFormatCorrected()) {
-                showAlertDialog("비밀번호는 6자리 이상이어야 합니다.");
+                alert("비밀번호가 다릅니다. 다시 확인해 주세요.");
+            } else if (!isValidUsername()) {
+                alert("Username 형식이 잘못되었습니다. 4글자 이상의 영어, 숫자, 하이픈(-), 언더바(_) 조합이어야 합니다.");
+            } else if (!isValidEmail()) {
+                alert("Email 형식이 잘못되었습니다. 다시 확인해주세요.");
+            } else if (!isValidPassword()) {
+                alert("비밀번호는 6자리 이상이어야 합니다.");
             } else {
-                SignUpAsyncTask signUpAsyncTask = new SignUpAsyncTask();
-                signUpAsyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, getUsername(), getEmail(), getPassword());
+                executeSignUp();
             }
             break;
         }
     }
 
-    private class SignUpAsyncTask extends AsyncTask<String, Integer, Boolean> {
-        private ProgressDialog progressDialog;
+    private void executeSignUp() {
+        String url = URL.SIGN_UP;
 
-        @Override
-        protected void onPreExecute() {
-            progressDialog = ProgressDialog.show(SignUpActivity.this, "회원가입", "회원가입 중입니다. 잠시 기다려주세요.");
-            super.onPreExecute();
-        }
+        RequestParams params = new RequestParams();
+        params.put(Vobble.EMAIL, getEmail());
+        params.put(Vobble.PASSWORD, getPassword());
+        params.put(Vobble.USERNAME, getUsername());
 
-        @Override
-        protected Boolean doInBackground(String... params) {
-            boolean result = ServerAPIRequest.signUp(params[0], params[1], params[2]);
-            return result;
-        }
+        HttpUtil.post(url, null, params, new VobbleResponseHandler(SignUpActivity.this) {
 
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (result) {
+            @Override
+            public void onStart() {
+                super.onStart();
+                showLoading();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                hideLoading();
+            }
+
+            @Override
+            public void onSuccess(JSONObject response) {
                 Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                 startActivity(intent);
                 finish();
-            } else {
-                // TODO: 회원가입 실패한 이유가 무엇인지 사용자에게 알려주어야 함.
-                showAlertDialog("회원가입에 실패하였습니다. 다시 시도해 주세요.");
             }
-            progressDialog.dismiss();
-            super.onPostExecute(result);
-        }
+        });
     }
 }

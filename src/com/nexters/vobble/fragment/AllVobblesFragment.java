@@ -1,39 +1,40 @@
 package com.nexters.vobble.fragment;
 
-
 import android.os.*;
-import android.support.v4.app.*;
+import android.support.v4.app.Fragment;
 import android.view.*;
 
 import android.widget.TextView;
 import com.nexters.vobble.*;
+import com.nexters.vobble.core.ServerAPIRequest;
 
-public class MyVoiceFragment extends Fragment{
+public class AllVobblesFragment extends Fragment {
 	private View view;
-    private TextView tvMyVobblesCount;
+    private TextView tvAllVobblesCount;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fragment_my_vobbles, null);
-		
+		view = inflater.inflate(R.layout.fragment_all_vobbles, null);
+
         initResources(view);
         initVobblesCount();
         return view;
 	}
 
     private void initResources(View view) {
-        tvMyVobblesCount = (TextView) view.findViewById(R.id.tv_my_vobbles_count);
+        tvAllVobblesCount = (TextView) view.findViewById(R.id.tv_all_vobbles_count);
     }
 
     private void initVobblesCount() {
-        MyVobblesCountAsyncTask myVobblesCountAsyncTask = new MyVobblesCountAsyncTask();
-        myVobblesCountAsyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        AllVobblesCountAsyncTask allVobblesCountAsyncTask = new AllVobblesCountAsyncTask();
+        allVobblesCountAsyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     private void setVobblesCount(Integer count) {
-        tvMyVobblesCount.setText(count + "");
+        tvAllVobblesCount.setText(count + "");
     }
 
-    private class MyVobblesCountAsyncTask extends AsyncTask<Integer, Integer, Integer> {
+    private class AllVobblesCountAsyncTask extends AsyncTask<Integer, Integer, Integer> {
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -41,9 +42,8 @@ public class MyVoiceFragment extends Fragment{
 
         @Override
         protected Integer doInBackground(Integer... integers) {
-            // TODO: User 모델 만들면 userId 받아서 넘겨줘야 함
-            //int count = ServerAPIRequest.getMyVobblesCount();
-            return 0;
+            int count = ServerAPIRequest.getAllVobblesCount();
+            return count;
         }
 
         @Override

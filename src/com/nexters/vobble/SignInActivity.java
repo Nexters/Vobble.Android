@@ -1,14 +1,21 @@
 package com.nexters.vobble;
 
+import org.json.JSONObject;
+
 import android.app.*;
 import android.content.*;
 import android.os.*;
+import android.preference.PreferenceManager;
 import android.view.*;
 import android.widget.*;
-import com.nexters.vobble.common.VobblePreferencesManager;
-import com.nexters.vobble.core.ServerAPIRequest;
 
-public class SignInActivity extends Activity implements View.OnClickListener {
+import com.loopj.android.http.RequestParams;
+
+import com.nexters.vobble.network.*;
+import com.nexters.vobble.core.*;
+
+public class SignInActivity extends BaseActivity implements View.OnClickListener {
+
     private EditText etEmail;
     private EditText etPassword;
     private Button btnSignIn;
@@ -45,61 +52,49 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         return !getEmail().equals("") && !getPassword().equals("");
     }
 
-    private void showAlertDialog(String msg) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(msg);
-        builder.setNegativeButton("확인", null);
-        builder.show();
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
         case R.id.btn_sign_in:
             if (isAllFormsFilled()) {
-                SignInAsyncTask signInAsyncTask = new SignInAsyncTask();
-                signInAsyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, getEmail(), getPassword());
+                executeSignIn();
             } else {
-                showAlertDialog("이메일과 비밀번호를 올바르게 입력해주세요.");
+                alert("이메일과 비밀번호를 올바르게 입력해주세요.");
             }
             break;
         }
     }
 
-    private void saveUserId(int userId) {
-        VobblePreferencesManager pm = new VobblePreferencesManager(this);
-        pm.setUserId(userId);
-    }
+    private void executeSignIn() {
+        String url = URL.SIGN_IN;
 
-    private class SignInAsyncTask extends AsyncTask<String, Integer, Integer> {
-        private ProgressDialog progressDialog;
+        RequestParams params = new RequestParams();
+        params.put(Vobble.EMAIL, getEmail());
+        params.put(Vobble.PASSWORD, getPassword());
 
-        @Override
-        protected void onPreExecute() {
-            progressDialog = ProgressDialog.show(SignInActivity.this, "로그인", "로그인 중입니다. 잠시 기다려주세요.");
-            super.onPreExecute();
-        }
+        HttpUtil.post(url, null, params, new VobbleResponseHandler(SignInActivity.this) {
 
-        @Override
-        protected Integer doInBackground(String... params) {
-            int userId = ServerAPIRequest.signIn(params[0], params[1]);
-            return userId;
-        }
+            @Override
+            public void onStart() {
+                super.onStart();
+                showLoading();
+            }
 
-        @Override
-        protected void onPostExecute(Integer userId) {
-            if (userId <= 0) {
-                // TODO: 실패한 이유를 사용자에게 알려주어야 함.
-                showAlertDialog("로그인에 실패하였습니다. 다시 시도해 주세요.");
-            } else {
-                saveUserId(userId);
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                hideLoading();
+            }
+
+            @Override
+            public void onSuccess(JSONObject response) {
+                PreferenceManager.getDefaultSharedPreferences(SignInActivity.this)
+                        .edit().putString(Vobble.TOKEN, response.optString("token")).commit();
+
                 Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             }
-            progressDialog.dismiss();
-            super.onPostExecute(userId);
-        }
+        });
     }
 }
