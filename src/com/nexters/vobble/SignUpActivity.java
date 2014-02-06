@@ -1,15 +1,21 @@
 package com.nexters.vobble;
 
+import org.json.JSONObject;
+
 import android.app.*;
 import android.content.Intent;
 import android.os.*;
+import android.preference.PreferenceManager;
 import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.nexters.vobble.core.ServerAPIRequest;
+import com.loopj.android.http.RequestParams;
 
-public class SignUpActivity extends Activity {
+import com.nexters.vobble.core.*;
+import com.nexters.vobble.network.*;
+
+public class SignUpActivity extends BaseActivity {
 
     private EditText etUsername;
     private EditText etEmail;
@@ -43,7 +49,9 @@ public class SignUpActivity extends Activity {
                 return !(etUsername.getText().toString().equals("") || etEmail.getText().toString().equals("") ||
                         etPassword.getText().toString().equals("") || etPasswordCheck.toString().equals(""));
             }
-
+            public  boolean isValidEmail() {
+            	return android.util.Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches();
+            }
             private boolean isPasswordCheckCorrected() {
                 return etPassword.getText().toString().equals(etPasswordCheck.getText().toString());
             }
@@ -54,10 +62,37 @@ public class SignUpActivity extends Activity {
                     Toast.makeText(SignUpActivity.this, "Fill in all forms!", Toast.LENGTH_SHORT).show();
                 } else if (!isPasswordCheckCorrected()) {
                     Toast.makeText(SignUpActivity.this, "Incorrect password!", Toast.LENGTH_SHORT).show();
+                } else if(!isValidEmail()){
+                	Toast.makeText(SignUpActivity.this, "Incorrect email!", Toast.LENGTH_SHORT).show();
                 } else {
-                    signUpAsyncTask = new SignUpnAsyncTask();
-                    signUpAsyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, etUsername.getText().toString(),
-                            etEmail.getText().toString(), etPassword.getText().toString());
+                	String url = URL.SIGN_UP;
+                	
+                	RequestParams params = new RequestParams();
+            		params.put(Vobble.EMAIL, etEmail.getText().toString());
+            		params.put(Vobble.PASSWORD, etPassword.getText().toString());
+            		params.put(Vobble.USERNAME, etUsername.getText().toString());
+            		
+            		HttpUtil.post(url, null, params, new VobbleResponseHandler(SignUpActivity.this) {
+            			
+            			@Override
+            			public void onStart() {
+            				super.onStart();
+            				showLoading();
+            			}
+
+            			@Override
+            			public void onFinish() {
+            				super.onFinish();
+            				hideLoading();
+            			}
+
+            			@Override
+            			public void onSuccess(JSONObject response) {
+            				Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+                            startActivity(intent);
+                            finish();
+            			}
+            		});
                 }
             }
         });
