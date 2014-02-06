@@ -41,6 +41,7 @@
             android:layout_height="match_parent"
             android:layout_weight="150"/>
         <ImageView
+            android:id="@+id/iv_record_camera_icon"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="420"
@@ -64,6 +65,7 @@
             android:layout_height="match_parent"
             android:layout_weight="177"/>
         <ImageView 
+            android:id="@+id/iv_record_pause_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="134"
@@ -73,6 +75,7 @@
             android:layout_height="match_parent"
             android:layout_weight="98"/>
         <ImageView
+            android:id="@+id/iv_record_re_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="134"
@@ -86,8 +89,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="183"/>
-	<TextView
-	    android:id="@+id/record_confirm_btn"
+	<Button
+	    android:id="@+id/btn_record_confirm"
 	   	android:layout_width="match_parent"
 	   	android:layout_height="0dp"
 	   	android:layout_weight="200"
