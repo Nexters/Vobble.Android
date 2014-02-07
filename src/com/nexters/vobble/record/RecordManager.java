@@ -50,13 +50,14 @@ public class RecordManager {
 		recorder = null;
 	}
 
-	public void playRecord(String path) {
+	public void playRecord(String path, MediaPlayer.OnCompletionListener listener) {
 		
 		MediaPlayer player = new MediaPlayer();
 		try {
 			player.setDataSource(path);
 			player.prepare();
 			player.start();
+            player.setOnCompletionListener(listener);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
