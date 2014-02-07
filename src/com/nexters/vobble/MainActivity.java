@@ -1,25 +1,43 @@
 package com.nexters.vobble;
 
+import org.json.JSONObject;
+
 import android.app.*;
 import android.content.*;
 import android.graphics.*;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.*;
+import android.preference.PreferenceManager;
 import android.support.v4.app.*;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.*;
+
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import com.loopj.android.http.RequestParams;
 
 import com.nexters.vobble.adapter.*;
+import com.nexters.vobble.core.*;
+import com.nexters.vobble.network.*;
 
-public class MainActivity extends FragmentActivity implements OnClickListener{
+public class MainActivity extends BaseFragmentActivity implements OnClickListener{
 	private ViewPager viewPager;
 	private CustomFragmentPagerAdapter adapter;
 	private FrameLayout allVoiceButtonLayout;
 	private FrameLayout myVoiceButtonLayout;
+<<<<<<< HEAD
 	private ImageView makeVobbleImageView;
 
+=======
+	
+	private double longitude = 37.0f;
+	private double latitude = 127.0f;
+	
+>>>>>>> 5252e6c038186bcce0a58ce98dee61a6794f2b24
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,9 +47,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		initResources();
         initEvents();
         initViewPager();
+        
+        getLocation();
 	}
 
-    public void initResources() {
+    private void initResources() {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
 		allVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
@@ -68,7 +88,55 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
             }
         });
     }
+    
+    private void getLocation(){
+    	LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    	
+    	lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, new LocationListener() {
+            public void onLocationChanged(Location location) {
+                double tLongitude = location.getLongitude();
+                double tLatitude = location.getLatitude();
+                // TODO - 많이안변하면 안바꾸는 로직 
+                longitude = tLongitude;
+                latitude = tLatitude;
+                Vobble.log("longitude : " + longitude);
+                Vobble.log("latitude : " + latitude);
+            }
 
+			@Override
+			public void onProviderDisabled(String provider) {
+				Vobble.log("GPS Provider Disabled");
+				Toast.makeText(MainActivity.this,"GPS Provider Disabled", Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onProviderEnabled(String provider) {
+				Vobble.log("GPS Provider Enabled");
+				Toast.makeText(MainActivity.this,"GPS Provider Enabled", Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {
+				switch (status) {
+	            case LocationProvider.AVAILABLE:
+	            	Vobble.log("GPS available again");
+	                Toast.makeText(MainActivity.this,"GPS available again", Toast.LENGTH_SHORT).show();
+	                break;
+	            case LocationProvider.OUT_OF_SERVICE:
+	            	Vobble.log("GPS available service");
+	                Toast.makeText(MainActivity.this,"GPS out of service", Toast.LENGTH_SHORT).show();
+	                break;
+	            case LocationProvider.TEMPORARILY_UNAVAILABLE:
+	            	Vobble.log("GPS temporarily unavailable");
+	                Toast.makeText(MainActivity.this,"GPS temporarily unavailable", Toast.LENGTH_SHORT).show();
+	                break;
+	            }
+				
+			}
+        });
+    }
+    
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.fl_all_voice_tab_button:

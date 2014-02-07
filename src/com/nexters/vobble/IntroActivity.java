@@ -3,7 +3,11 @@ package com.nexters.vobble;
 import android.app.*;
 import android.content.*;
 import android.os.*;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.view.*;
+
+import com.nexters.vobble.core.*;
 
 public class IntroActivity extends Activity {
 	private Handler handler = null;
@@ -13,6 +17,15 @@ public class IntroActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_intro);
 		
+		// FOR TEST
+		/*
+		PreferenceManager.getDefaultSharedPreferences(IntroActivity.this)
+		.edit().putString(Vobble.USER_ID, "21").commit();
+		PreferenceManager.getDefaultSharedPreferences(SignInActivity.this)
+        .edit().putString(Vobble.TOKEN, "ac59b5a203b2e6f54c887a67b55b0083").commit();
+		
+		
+		*/
 		handler = new Handler();
 		handler.postDelayed(new Runnable() {
 			public void run() {
@@ -22,8 +35,15 @@ public class IntroActivity extends Activity {
 	}
 
 	private void endIntro() {
-		Intent intent = new Intent(this, StartActivity.class);
-		startActivity(intent);
-		finish();
+		final String token = Vobble.getToken(this);
+		if(!TextUtils.isEmpty(token)){
+			Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+		}else{
+			Intent intent = new Intent(this, StartActivity.class);
+			startActivity(intent);
+			finish();
+		}
 	}
 }

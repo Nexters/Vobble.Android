@@ -11,11 +11,11 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
 
 	public Fragment getItem(int position) {
 		if (position == 0) {
-			AllVoiceFragment voiceFragment = new AllVoiceFragment();
+			AllVobblesFragment voiceFragment = new AllVobblesFragment();
 			return voiceFragment;
 		} else if (position == 1) {
-			MyVoiceFragment myVoiceFragment = new MyVoiceFragment();
-			return myVoiceFragment;
+			MyVobblesFragment myVobblesFragment = new MyVobblesFragment();
+			return myVobblesFragment;
 		} 
 		return null;
 	}
