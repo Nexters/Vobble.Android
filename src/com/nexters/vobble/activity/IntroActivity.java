@@ -33,15 +33,8 @@ public class IntroActivity extends Activity {
 	}
 
 	private void endIntro() {
-		final String token = Vobble.getToken(this);
-		if(!TextUtils.isEmpty(token)){
-			Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-		}else{
-			Intent intent = new Intent(this, StartActivity.class);
-			startActivity(intent);
-			finish();
-		}
+		Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
 	}
 }

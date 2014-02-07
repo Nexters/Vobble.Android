@@ -1,5 +1,6 @@
 package com.nexters.vobble.activity;
 
+import android.text.TextUtils;
 import com.nexters.vobble.R;
 
 import android.app.*;
@@ -37,14 +38,24 @@ public class MainActivity extends BaseFragmentActivity implements
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
-		initResources();
+        checkUserInfo();
+
+        initResources();
 		initEvents();
 		initViewPager();
 
 		getLocation();
 	}
 
-	private void initResources() {
+    private void checkUserInfo() {
+        final String token = Vobble.getToken(this);
+        if (TextUtils.isEmpty(token)) {
+            Intent intent = new Intent(this, StartActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void initResources() {
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		allVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);

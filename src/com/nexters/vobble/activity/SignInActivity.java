@@ -90,6 +90,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 .edit().putString(Vobble.USER_ID, response.optString(Vobble.USER_ID)).commit();
                 
                 Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             }
