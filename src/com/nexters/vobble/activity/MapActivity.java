@@ -5,6 +5,8 @@ import java.io.*;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.provider.MediaStore;
 import com.nexters.vobble.R;
 import com.nexters.vobble.util.CommonUtils;
@@ -38,7 +40,6 @@ public class MapActivity extends BaseActivity implements View.OnClickListener {
 		
 		initResources();
 		initEvents();
-        FileIOUtils.deleteImageFile();
 	}
 	
 	private void initResources() {
@@ -97,7 +98,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener {
         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
     }
 
-    private void setPic(Intent data) {
+    private void setPicFromCamera(Intent data) {
         Bundle extras = data.getExtras();
         if (extras != null) {
             imageBitmap = (Bitmap) extras.get("data");
@@ -105,18 +106,38 @@ public class MapActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    private void setPicFromGallery(Intent data) {
+        Uri uri = data.getData();
+        InputStream imageStream = null;
+        try {
+            imageStream = getContentResolver().openInputStream(uri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        imageBitmap = BitmapFactory.decodeStream(imageStream);
+        ivPhoto.setImageBitmap(CommonUtils.getCroppedBitmap(imageBitmap, 450));
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
         case REQUEST_TAKE_PHOTO:
             if (resultCode == Activity.RESULT_OK) {
-                setPic(data);
+                setPicFromCamera(data);
             }
             break;
         case REQUEST_PICK_FROM_GALLERY:
-            Vobble.log("pick from gallery");
+            if (resultCode == Activity.RESULT_OK) {
+                setPicFromGallery(data);
+            }
             break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FileIOUtils.deleteImageFile();
     }
 
     private void executeCreateVobble() throws FileNotFoundException {
@@ -152,7 +173,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onSuccess(JSONObject response) {
-            	Intent intent = new Intent(MapActivity.this, MainActivity.class);
+                Intent intent = new Intent(MapActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     			startActivity(intent);
             }
