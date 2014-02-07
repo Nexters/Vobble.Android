@@ -9,9 +9,11 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
+import com.nexters.vobble.*;
+import com.nexters.vobble.core.*;
 import com.nexters.vobble.record.*;
 
-public class RecordActivity extends Activity implements View.OnClickListener{
+public class RecordActivity extends BaseActivity implements View.OnClickListener{
 	public static final int RECORD_MODE = 1;
 	public static final int STOP_MODE = 2;
 	public static final int PLAY_MODE = 3;	
@@ -33,6 +35,7 @@ public class RecordActivity extends Activity implements View.OnClickListener{
 		recordManager = new RecordManager();
 		initResource();
 		initEvent();
+		deleteSoundFile();
 	}
 	
 	private void initResource(){
@@ -69,7 +72,7 @@ public class RecordActivity extends Activity implements View.OnClickListener{
 		switch(recordMode){
 		case RECORD_MODE :
 			recordImageView.setImageResource(R.drawable.record_stop_btn);
-			recordManager.startRecord(getFilePath() + "vobble.m4a");
+			recordManager.startRecord(getFilePath() + Vobble.SOUND_FILE_NAME);
 			recordMode = STOP_MODE;
 			break;
 		case STOP_MODE :
@@ -80,16 +83,19 @@ public class RecordActivity extends Activity implements View.OnClickListener{
 		case PLAY_MODE :
 			cameraImageView.setImageResource(R.drawable.record_camera_icon);
 			recordImageView.setImageResource(R.drawable.play2_btn);
-			recordManager.playRecord(getFilePath() + "vobble.m4a");
+			recordManager.playRecord(getFilePath() + Vobble.SOUND_FILE_NAME);
 			break;
 		default :
 			break;
 		}
 	}
 	private void confirm(){
-		Intent intent = new Intent(RecordActivity.this, MapActivity.class);
-		intent.putExtra("recordUri", "/storage/sdcard0/Sounds/vobble.m4a");
-		startActivity(intent);
+		if(isExistSoundFile()){
+			Intent intent = new Intent(RecordActivity.this, MapActivity.class);
+			startActivity(intent);
+		}else{
+			alert(R.string.error_not_record);
+		}
 	}
 	
 	private String getFilePath() {
@@ -99,5 +105,20 @@ public class RecordActivity extends Activity implements View.OnClickListener{
 			file.mkdirs();
 		}
 		return path;
+	}
+	static public boolean isExistSoundFile(){
+		String path = Environment.getExternalStorageDirectory().getAbsolutePath() +"/.Sounds/"+Vobble.SOUND_FILE_NAME ;
+		File file = new File(path);
+		if(file.exists()) {
+			return true;
+		}
+		return false;
+	}
+	static public void deleteSoundFile() {
+		String path = Environment.getExternalStorageDirectory().getAbsolutePath() +"/.Sounds/"+Vobble.SOUND_FILE_NAME ;
+		File file = new File(path);
+		if(file.exists()) {
+			file.delete();
+		}
 	}
 }

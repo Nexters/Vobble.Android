@@ -47,7 +47,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         if (isAllFormsFilled()) {
         	executeSignIn();
         } else {
-            alert("이메일과 비밀번호를 올바르게 입력해주세요.");
+            alert(R.string.error_signin);
         }
     }
 	

@@ -51,7 +51,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener{
 				executeCreateVobble();
 			} catch (FileNotFoundException e) {
 				Vobble.log("FileNotFoundException");
-				alert("보블 생성에 실패하였습니다.");
+				alert(R.string.error_vobble_create);
 			}
 			break;
 		}
@@ -59,7 +59,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener{
 	
 	private void executeCreateVobble() throws FileNotFoundException {
         String url = String.format(URL.VOBBLES_CREATE,Vobble.getUserId(this));
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +"/.Sounds/vobble.m4a");
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +"/.Sounds/" + Vobble.SOUND_FILE_NAME);
         
         RequestParams params = new RequestParams();
         params.put(Vobble.TOKEN,Vobble.getToken(this));

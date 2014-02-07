@@ -22,7 +22,10 @@ public class Vobble {
 	public static final String VOICE = "voice";
 	public static final String IMAGE = "image";
 	
+	public static final String SOUND_FILE_NAME = "vobble.m4a";
 	public static final String TAG = "VOBBLE";
+	
+	
 	
 	public static void log(String msg) {
 		log(TAG, msg);

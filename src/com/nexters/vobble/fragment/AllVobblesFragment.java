@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.*;
 
 import android.widget.TextView;
+
+import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.*;
 import com.nexters.vobble.core.ServerAPIRequest;
 import com.nexters.vobble.core.Vobble;
@@ -28,7 +30,7 @@ public class AllVobblesFragment extends BaseFragment {
 
         initResources(view);
         initVobblesCount();
-        Vobble.log("USER_VOBBLES_COUNT");
+        initVobbles();
         return view;
 	}
 
@@ -38,13 +40,6 @@ public class AllVobblesFragment extends BaseFragment {
 
     private void initVobblesCount() {
     	String url = URL.VOBBLES_COUNT;
-		/*
-		RequestParams params = new RequestParams();
-		params.put(Vobble.LATITUDE, "127");
-		params.put(Vobble.LONGITUDE, "37");
-		params.put(Vobble.LIMIT, "6");
-		*/
-    	
 		HttpUtil.get(url, null, null, new VobbleResponseHandler(activity) {
 			
 			@Override
@@ -65,32 +60,38 @@ public class AllVobblesFragment extends BaseFragment {
 				setVobblesCount(Integer.parseInt(count));
 			}
 		});
-        
     }
 
+    private void initVobbles() {
+    	String url = URL.VOBBLES;
+    	
+    	RequestParams params = new RequestParams();
+    	params.put(Vobble.LATITUDE, "127");
+		params.put(Vobble.LONGITUDE, "37");
+		params.put(Vobble.LIMIT, "6");
+        
+		HttpUtil.get(url, null, params, new VobbleResponseHandler(activity) {
+			
+			@Override
+			public void onStart() {
+				super.onStart();
+				showLoading();
+			}
+
+			@Override
+			public void onFinish() {
+				super.onFinish();
+				hideLoading();
+			}
+
+			@Override
+			public void onSuccess(JSONObject response) {
+				
+			}
+		});
+    }
+    
     private void setVobblesCount(Integer count) {
         tvAllVobblesCount.setText(count + "");
-    }
-
-    private class AllVobblesCountAsyncTask extends AsyncTask<Integer, Integer, Integer> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Integer doInBackground(Integer... integers) {
-            int count = ServerAPIRequest.getAllVobblesCount();
-            return count;
-        }
-
-        @Override
-        protected void onPostExecute(Integer count) {
-            if (count >= 0) {
-                setVobblesCount(count);
-            }
-            super.onPostExecute(count);
-        }
     }
 }

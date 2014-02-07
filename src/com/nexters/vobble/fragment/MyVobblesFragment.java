@@ -73,26 +73,4 @@ public class MyVobblesFragment extends BaseFragment{
     private void setVobblesCount(Integer count) {
         tvMyVobblesCount.setText(count + "");
     }
-
-    private class MyVobblesCountAsyncTask extends AsyncTask<Integer, Integer, Integer> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Integer doInBackground(Integer... integers) {
-            // TODO: User 모델 만들면 userId 받아서 넘겨줘야 함
-            //int count = ServerAPIRequest.getMyVobblesCount();
-            return 0;
-        }
-
-        @Override
-        protected void onPostExecute(Integer count) {
-            if (count >= 0) {
-                setVobblesCount(count);
-            }
-            super.onPostExecute(count);
-        }
-    }
 }

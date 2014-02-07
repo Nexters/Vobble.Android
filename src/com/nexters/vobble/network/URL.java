@@ -3,7 +3,7 @@ package com.nexters.vobble.network;
 import com.nexters.vobble.core.*;
 
 public class URL {
-	public static final String BASE_URL_DEVELOPMENT = "http://127.0.0.1";
+	public static final String BASE_URL_DEVELOPMENT = "http://127.0.0.1:3000";
 	public static final String BASE_URL_PRODUCTION = "http://vobble.herokuapp.com";
 	public static final String getBaseUrl() {
 		if(Vobble.SERVER_TARGET == Vobble.SERVER_TEST) {

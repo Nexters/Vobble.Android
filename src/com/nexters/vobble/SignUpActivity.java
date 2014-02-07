@@ -87,15 +87,15 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         switch (view.getId()) {
         case R.id.btn_sign_up:
             if (!isAllFormFilled()) {
-                alert("모든 항목을 입력해 주세요.");
+                alert(R.string.error_signup_form);
             } else if (!isPasswordCheckCorrected()) {
-                alert("비밀번호가 다릅니다. 다시 확인해 주세요.");
+                alert(R.string.error_signup_password);
             } else if (!isValidUsername()) {
-                alert("Username 형식이 잘못되었습니다. 4글자 이상의 영어, 숫자, 하이픈(-), 언더바(_) 조합이어야 합니다.");
+                alert(R.string.error_signup_username);
             } else if (!isValidEmail()) {
-                alert("Email 형식이 잘못되었습니다. 다시 확인해주세요.");
+                alert(R.string.error_signup_email);
             } else if (!isValidPassword()) {
-                alert("비밀번호는 6자리 이상이어야 합니다.");
+                alert(R.string.error_signup_passwrd_length);
             } else {
                 executeSignUp();
             }
@@ -137,25 +137,5 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                 finish();
 			}
         });
-    }
-
-    private class SignUpnAsyncTask extends AsyncTask<String, Integer, Boolean> {
-        @Override
-        protected Boolean doInBackground(String... params) {
-            boolean result = ServerAPIRequest.signUp(params[0], params[1], params[2]);
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (result) {
-                Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(SignUpActivity.this, "Fail!", Toast.LENGTH_SHORT).show();
-            }
-            super.onPostExecute(result);
-        }
     }
 }
