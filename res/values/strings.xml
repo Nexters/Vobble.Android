@@ -47,6 +47,10 @@
     <string name="activity_start_button_sign_in">Sign In</string>
     <string name="activity_fragment_all_vobbles_vobbles">vobbles</string>
     <string name="activity_fragment_my_vobbles_vobbles">vobbles</string>
-    
-    
+
+    <string name="activity_map_choosing_photo_dialog_title">사진</string>
+    <string-array name="activity_map_choosing_photo_dialog_items">
+        <item>카메라</item>
+        <item>앨범</item>
+    </string-array>
 </resources>

@@ -1,9 +1,14 @@
 package com.nexters.vobble.activity;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import com.nexters.vobble.R;
+import com.nexters.vobble.util.CommonUtils;
+import com.nexters.vobble.util.FileIOUtils;
 import org.json.JSONObject;
 
 import com.loopj.android.http.RequestParams;
@@ -16,9 +21,14 @@ import android.widget.*;
 import com.nexters.vobble.core.*;
 import com.nexters.vobble.network.*;
 
-public class MapActivity extends BaseActivity implements View.OnClickListener{
-	private ImageView ivPhoto;
+public class MapActivity extends BaseActivity implements View.OnClickListener {
+    public static final int REQUEST_TAKE_PHOTO = 1;
+    public static final int REQUEST_PICK_FROM_GALLERY = 2;
+
+    private ImageView ivPhoto;
 	private Button btnSave;
+
+    private Bitmap imageBitmap;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +38,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener{
 		
 		initResources();
 		initEvents();
+        FileIOUtils.deleteImageFile();
 	}
 	
 	private void initResources() {
@@ -39,12 +50,13 @@ public class MapActivity extends BaseActivity implements View.OnClickListener{
 		ivPhoto.setOnClickListener(this);
 		btnSave.setOnClickListener(this);
 	}
-	
-	@Override
+
+    @Override
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.iv_photo_view :
-			break;
+            showDialogChoosingPhoto();
+            break;
 		case R.id.btn_save :
 			try {
 				executeCreateVobble();
@@ -55,16 +67,74 @@ public class MapActivity extends BaseActivity implements View.OnClickListener{
 			break;
 		}
 	}
-	
-	private void executeCreateVobble() throws FileNotFoundException {
+
+    private void showDialogChoosingPhoto() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.activity_map_choosing_photo_dialog_title)
+               .setItems(R.array.activity_map_choosing_photo_dialog_items, new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int which) {
+                       switch (which) {
+                           case 0:
+                               dispatchTakePictureIntent();
+                               break;
+                           case 1:
+                               dispatchPickFromGalleryIntent();
+                               break;
+                       }
+                   }
+               });
+        builder.show();
+    }
+
+    private void dispatchPickFromGalleryIntent() {
+        Intent pickFromGalleryIntent = new Intent(Intent.ACTION_PICK);
+        pickFromGalleryIntent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(pickFromGalleryIntent, REQUEST_PICK_FROM_GALLERY);
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+    }
+
+    private void setPic(Intent data) {
+        Bundle extras = data.getExtras();
+        if (extras != null) {
+            imageBitmap = (Bitmap) extras.get("data");
+            ivPhoto.setImageBitmap(CommonUtils.getCroppedBitmap(imageBitmap, 450));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+        case REQUEST_TAKE_PHOTO:
+            if (resultCode == Activity.RESULT_OK) {
+                setPic(data);
+            }
+            break;
+        case REQUEST_PICK_FROM_GALLERY:
+            Vobble.log("pick from gallery");
+            break;
+        }
+    }
+
+    private void executeCreateVobble() throws FileNotFoundException {
         String url = String.format(URL.VOBBLES_CREATE,Vobble.getUserId(this));
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +"/.Sounds/" + Vobble.SOUND_FILE_NAME);
-        
+
+        File voiceFile = FileIOUtils.getVoiceFile();
+
         RequestParams params = new RequestParams();
-        params.put(Vobble.TOKEN,Vobble.getToken(this));
-        params.put(Vobble.VOICE,file);
-        params.put(Vobble.LATITUDE,"127");
-        params.put(Vobble.LONGITUDE,"37");
+        params.put(Vobble.TOKEN, Vobble.getToken(this));
+        params.put(Vobble.VOICE, voiceFile);
+        params.put(Vobble.LATITUDE, "127");
+        params.put(Vobble.LONGITUDE, "37");
+
+        if (imageBitmap != null) {
+            FileIOUtils.saveBitmapToImageFile(imageBitmap);
+            File imageFile = FileIOUtils.getImageFile();
+            params.put(Vobble.IMAGE, imageFile);
+        }
         
         HttpUtil.post(url, null, params, new VobbleResponseHandler(MapActivity.this) {
 
