@@ -1,10 +1,11 @@
-package com.nexters.vobble;
+package com.nexters.vobble.activity;
 
 import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
+import com.nexters.vobble.R;
 
 public class StartActivity extends Activity implements View.OnClickListener {
 	private ImageView loginImageView;

@@ -1,16 +1,15 @@
-package com.nexters.vobble;
+package com.nexters.vobble.activity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import com.nexters.vobble.R;
 import org.json.JSONObject;
 
 import com.loopj.android.http.RequestParams;
 
-import android.app.*;
 import android.content.*;
 import android.os.*;
-import android.preference.PreferenceManager;
 import android.view.*;
 import android.widget.*;
 
@@ -18,8 +17,8 @@ import com.nexters.vobble.core.*;
 import com.nexters.vobble.network.*;
 
 public class MapActivity extends BaseActivity implements View.OnClickListener{
-	private ImageView photoImageView;
-	private Button saveBtn;
+	private ImageView ivPhoto;
+	private Button btnSave;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,23 +26,23 @@ public class MapActivity extends BaseActivity implements View.OnClickListener{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_map);
 		
-		initResource();
-		initEvent();
+		initResources();
+		initEvents();
 	}
 	
-	private void initResource(){
-		photoImageView = (ImageView)findViewById(R.id.iv_photo_view);
-		saveBtn = (Button) findViewById(R.id.btn_save);
+	private void initResources() {
+		ivPhoto = (ImageView) findViewById(R.id.iv_photo_view);
+		btnSave = (Button) findViewById(R.id.btn_save);
 	}
 	
-	private void initEvent(){
-		photoImageView.setOnClickListener(this);
-		saveBtn.setOnClickListener(this);
+	private void initEvents() {
+		ivPhoto.setOnClickListener(this);
+		btnSave.setOnClickListener(this);
 	}
 	
 	@Override
-	public void onClick(View view){
-		switch(view.getId()){
+	public void onClick(View view) {
+		switch (view.getId()) {
 		case R.id.iv_photo_view :
 			break;
 		case R.id.btn_save :

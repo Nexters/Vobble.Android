@@ -3,14 +3,12 @@ package com.nexters.vobble.fragment;
 import org.json.JSONObject;
 
 import android.os.*;
-import android.support.v4.app.Fragment;
 import android.view.*;
 
 import android.widget.TextView;
 
 import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.*;
-import com.nexters.vobble.core.ServerAPIRequest;
 import com.nexters.vobble.core.Vobble;
 import com.nexters.vobble.network.HttpUtil;
 import com.nexters.vobble.network.URL;

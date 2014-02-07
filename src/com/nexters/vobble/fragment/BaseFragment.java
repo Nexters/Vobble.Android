@@ -1,14 +1,12 @@
 package com.nexters.vobble.fragment;
 
-import com.nexters.vobble.core.*;
+import com.nexters.vobble.activity.BaseFragmentActivity;
 
 import android.app.Activity;
 import android.support.v4.app.*;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 

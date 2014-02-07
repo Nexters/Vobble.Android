@@ -1,6 +1,6 @@
-package com.nexters.vobble;
+package com.nexters.vobble.activity;
 
-import org.json.JSONObject;
+import com.nexters.vobble.R;
 
 import android.app.*;
 import android.content.*;
@@ -10,19 +10,15 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.*;
-import android.preference.PreferenceManager;
-import android.support.v4.app.*;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.*;
 
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
-import com.loopj.android.http.RequestParams;
 
 import com.nexters.vobble.adapter.*;
 import com.nexters.vobble.core.*;
-import com.nexters.vobble.network.*;
 
 public class MainActivity extends BaseFragmentActivity implements
 		OnClickListener {

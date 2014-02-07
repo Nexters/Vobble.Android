@@ -1,7 +1,5 @@
 package com.nexters.vobble.core;
 
-import com.nexters.vobble.MainActivity;
-
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -25,8 +23,7 @@ public class Vobble {
 	public static final String SOUND_FILE_NAME = "vobble.m4a";
 	public static final String TAG = "VOBBLE";
 	
-	
-	
+
 	public static void log(String msg) {
 		log(TAG, msg);
 	}

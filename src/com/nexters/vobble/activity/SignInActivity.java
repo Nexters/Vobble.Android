@@ -1,10 +1,9 @@
-package com.nexters.vobble;
+package com.nexters.vobble.activity;
 
+import com.nexters.vobble.R;
 import org.json.JSONObject;
 
-import android.app.*;
 import android.content.*;
-import android.content.DialogInterface.OnCancelListener;
 import android.os.*;
 import android.preference.PreferenceManager;
 import android.view.*;
@@ -14,7 +13,6 @@ import com.nexters.vobble.core.*;
 import com.loopj.android.http.RequestParams;
 
 import com.nexters.vobble.network.*;
-import com.nexters.vobble.core.*;
 
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
 

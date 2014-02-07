@@ -1,4 +1,4 @@
-package com.nexters.vobble.core;
+package com.nexters.vobble.activity;
 
 import com.nexters.vobble.R;
 

@@ -1,5 +1,6 @@
-package com.nexters.vobble;
+package com.nexters.vobble.activity;
 
+import com.nexters.vobble.R;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -8,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
 

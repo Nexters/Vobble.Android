@@ -17,7 +17,7 @@
         android:icon="@drawable/icon2"
         android:label="@string/app_name" >
         <activity
-            android:name="com.nexters.vobble.IntroActivity"
+            android:name=".activity.IntroActivity"
             android:label="@string/title_activity_intro" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,42 +26,42 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.nexters.vobble.StartActivity"
+            android:name=".activity.StartActivity"
             android:label="@string/title_activity_start" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.IntroActivity" />
         </activity>
         <activity
-            android:name="com.nexters.vobble.SignUpActivity"
+            android:name=".activity.SignUpActivity"
             android:label="@string/title_activity_sign_up" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.StartActivity" />
         </activity>
         <activity
-            android:name=".SignInActivity"
+            android:name=".activity.SignInActivity"
             android:label="@string/title_activity_sign_in" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.StartActivity" />
         </activity>
         <activity
-            android:name="com.nexters.vobble.MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/title_activity_main" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.SignInActivity" />
         </activity>
         <activity
-            android:name="com.nexters.vobble.RecordActivity"
+            android:name=".activity.RecordActivity"
             android:label="@string/title_activity_record" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nexters.vobble.MainActivity" />
         </activity>
         <activity
-            android:name="com.nexters.vobble.MapActivity"
+            android:name=".activity.MapActivity"
             android:label="@string/title_activity_map" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

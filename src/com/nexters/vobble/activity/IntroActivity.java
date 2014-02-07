@@ -1,12 +1,12 @@
-package com.nexters.vobble;
+package com.nexters.vobble.activity;
 
 import android.app.*;
 import android.content.*;
 import android.os.*;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.*;
 
+import com.nexters.vobble.R;
 import com.nexters.vobble.core.*;
 
 public class IntroActivity extends Activity {
@@ -23,8 +23,6 @@ public class IntroActivity extends Activity {
 		.edit().putString(Vobble.USER_ID, "21").commit();
 		PreferenceManager.getDefaultSharedPreferences(SignInActivity.this)
         .edit().putString(Vobble.TOKEN, "ac59b5a203b2e6f54c887a67b55b0083").commit();
-		
-		
 		*/
 		handler = new Handler();
 		handler.postDelayed(new Runnable() {
