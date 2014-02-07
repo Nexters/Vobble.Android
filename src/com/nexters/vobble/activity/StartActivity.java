@@ -8,8 +8,8 @@ import android.widget.*;
 import com.nexters.vobble.R;
 
 public class StartActivity extends Activity implements View.OnClickListener {
-	private ImageView loginImageView;
-	private ImageView signUpImageView;
+	private Button btnSignIn;
+	private Button btnSignUp;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,24 +22,24 @@ public class StartActivity extends Activity implements View.OnClickListener {
 	}
 
     private void initResources() {
-        loginImageView = (ImageView) findViewById(R.id.loginBtn);
-        signUpImageView = (ImageView) findViewById(R.id.signUpBtn);
+        btnSignIn = (Button) findViewById(R.id.btn_sign_in);
+        btnSignUp = (Button) findViewById(R.id.btn_sign_up);
     }
 
     private void initEvents() {
-        loginImageView.setOnClickListener(this);
-        signUpImageView.setOnClickListener(this);
+        btnSignIn.setOnClickListener(this);
+        btnSignUp.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         Intent intent;
         switch(view.getId()) {
-        case R.id.loginBtn:
+        case R.id.btn_sign_in:
             intent = new Intent(StartActivity.this, SignInActivity.class);
             startActivity(intent);
             break;
-        case R.id.signUpBtn:
+        case R.id.btn_sign_up:
             intent = new Intent(StartActivity.this, SignUpActivity.class);
             startActivity(intent);
             break;
