@@ -1,5 +1,7 @@
 package com.nexters.vobble;
 
+import java.io.*;
+
 import android.app.*;
 import android.content.*;
 import android.net.*;
@@ -20,8 +22,7 @@ public class RecordActivity extends Activity implements View.OnClickListener{
 	private Button confirmBtn;
 	private RecordManager recordManager;
 	private Uri imageUri;
-	private int recordMode;
-	private boolean isRecordCheck;
+	private int recordMode = 1;
 	
 	
 	@Override
@@ -29,7 +30,7 @@ public class RecordActivity extends Activity implements View.OnClickListener{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_record);
-		
+		recordManager = new RecordManager();
 		initResource();
 		initEvent();
 	}
@@ -50,7 +51,6 @@ public class RecordActivity extends Activity implements View.OnClickListener{
 	
 	@Override
 	public void onClick(View view){
-		Intent intent = null;
 		switch(view.getId()){
 		case R.id.iv_record_camera :
 			break;
@@ -66,12 +66,10 @@ public class RecordActivity extends Activity implements View.OnClickListener{
 	}
 
 	private void recordStatusPattern(){
-		Intent intent = null;
-		
 		switch(recordMode){
 		case RECORD_MODE :
 			recordImageView.setImageResource(R.drawable.record_stop_btn);
-			recordManager.startRecord("/storage/sdcard0/Sounds/vobble.m4a");
+			recordManager.startRecord(getFilePath() + "vobble.m4a");
 			recordMode = STOP_MODE;
 			break;
 		case STOP_MODE :
@@ -81,17 +79,25 @@ public class RecordActivity extends Activity implements View.OnClickListener{
 			break;
 		case PLAY_MODE :
 			cameraImageView.setImageResource(R.drawable.record_camera_icon);
-			cameraImageView.setOnClickListener(RecordActivity.this);
 			recordImageView.setImageResource(R.drawable.play2_btn);
-			recordManager.playRecord("/storage/sdcard0/Sounds/vobble.m4a");
+			recordManager.playRecord(getFilePath() + "vobble.m4a");
 			break;
 		default :
 			break;
 		}
 	}
 	private void confirm(){
-			Intent nextIntent = new Intent(RecordActivity.this, MapActivity.class);
-			nextIntent.putExtra("recordUri", "/storage/sdcard0/Sounds/vobble.m4a");
-			startActivity(nextIntent);
-	}	
+		Intent intent = new Intent(RecordActivity.this, MapActivity.class);
+		intent.putExtra("recordUri", "/storage/sdcard0/Sounds/vobble.m4a");
+		startActivity(intent);
+	}
+	
+	private String getFilePath() {
+		String path = Environment.getExternalStorageDirectory().getAbsolutePath() +"/.Sounds/";
+		File file = new File(path);
+		if(!file.exists()) {
+			file.mkdirs();
+		}
+		return path;
+	}
 }

@@ -2,10 +2,12 @@ package com.nexters.vobble;
 
 import android.app.*;
 import android.content.*;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
-import com.nexters.vobble.core.ServerAPIRequest;
+
+import com.nexters.vobble.core.*;
 
 public class SignInActivity extends Activity {
     private EditText etEmail;
@@ -49,7 +51,26 @@ public class SignInActivity extends Activity {
     }
 
     private class SignInAsyncTask extends AsyncTask<String, Integer, Integer> {
-
+    	
+    	private ProgressDialog dialog;
+    	
+    	@Override
+    	protected void onPreExecute() {
+    		super.onPreExecute();
+    		dialog = new ProgressDialog(SignInActivity.this);
+    		dialog.setCancelable(true);
+    		dialog.setMessage("Loading....");
+    		dialog.setCanceledOnTouchOutside(false);
+    		dialog.setOnCancelListener(new OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					SignInAsyncTask.this.cancel(true);
+				}
+			});
+    		dialog.show();
+    	}
+    	
         @Override
         protected Integer doInBackground(String... params) {
             int userId = ServerAPIRequest.signIn(params[0], params[1]);
@@ -58,6 +79,7 @@ public class SignInActivity extends Activity {
 
         @Override
         protected void onPostExecute(Integer userId) {
+        	dialog.dismiss();
             if (userId <= 0) {
                 Toast.makeText(SignInActivity.this, "Failed! Retry!", Toast.LENGTH_SHORT).show();
             } else {
@@ -66,6 +88,7 @@ public class SignInActivity extends Activity {
                 startActivity(intent);
                 finish();
             }
+            
             super.onPostExecute(userId);
         }
     }
