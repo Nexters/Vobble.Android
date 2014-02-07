@@ -29,7 +29,7 @@ public class HttpUtil {
 
 	public static void post(String url, Map<String, String> headers, RequestParams params, AsyncHttpResponseHandler handler) {
 		setHeaders(headers);
-		Vobble.log("POST : " + url+params);
+		Vobble.log("POST : " + url+"&"+params);
 		getClient().post(url, params, handler);
 	}
 	

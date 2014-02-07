@@ -7,14 +7,11 @@
     <uses-sdk android:minSdkVersion="11" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-<<<<<<< HEAD
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-=======
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
->>>>>>> 5252e6c038186bcce0a58ce98dee61a6794f2b24
+    
     <application
         android:icon="@drawable/icon2"
         android:label="@string/app_name" >

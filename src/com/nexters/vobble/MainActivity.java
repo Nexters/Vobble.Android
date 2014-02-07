@@ -29,15 +29,11 @@ public class MainActivity extends BaseFragmentActivity implements OnClickListene
 	private CustomFragmentPagerAdapter adapter;
 	private FrameLayout allVoiceButtonLayout;
 	private FrameLayout myVoiceButtonLayout;
-<<<<<<< HEAD
 	private ImageView makeVobbleImageView;
-
-=======
 	
 	private double longitude = 37.0f;
 	private double latitude = 127.0f;
 	
->>>>>>> 5252e6c038186bcce0a58ce98dee61a6794f2b24
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
