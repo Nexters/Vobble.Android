@@ -19,6 +19,8 @@ public class Vobble {
 	public static final String LATITUDE = "latitude";
 	public static final String LONGITUDE = "longitude";
 	public static final String LIMIT = "limit";
+	public static final String VOICE = "voice";
+	public static final String IMAGE = "image";
 	
 	public static final String TAG = "VOBBLE";
 	
