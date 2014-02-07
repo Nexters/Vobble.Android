@@ -65,7 +65,8 @@ public class RecordActivity extends BaseActivity implements View.OnClickListener
 			recordStatusPattern();
 			break;
 		case R.id.iv_record_re_btn:
-			break;
+			resetRecord();
+            break;
 		case R.id.btn_record_confirm:
 			confirm();
 			break;
@@ -100,7 +101,7 @@ public class RecordActivity extends BaseActivity implements View.OnClickListener
     private void playRecord() {
         currentMode = PLAY_MODE;
         ivRecordBtn.setImageResource(R.drawable.play2_btn);
-        recordManager.playRecord(FileIOUtils.getVoiceFilePath(), new MediaPlayer.OnCompletionListener() {
+        recordManager.startPlay(FileIOUtils.getVoiceFilePath(), new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 stopRecord();
@@ -128,6 +129,18 @@ public class RecordActivity extends BaseActivity implements View.OnClickListener
             mProgressBarAnimator.cancel();
         }
         animate(mProgressBar, 1f, RECORD_TIME_LIMIT);
+    }
+
+    private void resetRecord() {
+        currentMode = READY_MODE;
+        ivRecordBtn.setImageResource(R.drawable.record_record_btn);
+        recordManager.stopRecord();
+
+        if (mProgressBarAnimator != null) {
+            mProgressBarAnimator.removeAllListeners();
+            mProgressBarAnimator.cancel();
+            mProgressBar.setProgress(0);
+        }
     }
 
     private void animate(final HoloCircularProgressBar progressBar, final float progress, final int duration) {
