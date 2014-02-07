@@ -132,9 +132,14 @@ public class RecordActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void resetRecord() {
+        if (currentMode == PLAY_MODE) {
+            showShortToast("재생이 끝나고 다시 시도해 주세요.");
+            return;
+        }
         currentMode = READY_MODE;
         ivRecordBtn.setImageResource(R.drawable.record_record_btn);
         recordManager.stopRecord();
+        FileIOUtils.deleteSoundFile();
 
         if (mProgressBarAnimator != null) {
             mProgressBarAnimator.removeAllListeners();
