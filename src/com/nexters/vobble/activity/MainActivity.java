@@ -180,10 +180,10 @@ public class MainActivity extends BaseFragmentActivity implements
 
 	public void onBackPressed() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("종료");
+		builder.setTitle(R.string.end);
 		builder.setMessage("Vobble을 종료하시겠습니까?");
-		builder.setNegativeButton("아니요", null);
-		builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(R.string.no, null);
+		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface arg0, int arg1) {
 				finish();
 			}

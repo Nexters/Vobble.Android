@@ -60,7 +60,7 @@
 		        android:layout_marginBottom="5dp"
 		        android:background="#40ddc2"
 		        android:gravity="center_horizontal|center_vertical"
-		        android:text="Sign Up"
+		        android:text="@string/activity_start_button_sign_up"
 		        android:textColor="#ffffff"
 		        android:textSize="18sp" />
 			<TextView
@@ -75,7 +75,7 @@
 		        android:layout_weight="120"
 		        android:background="#40ddc2"
 		        android:gravity="center_horizontal|center_vertical"
-		        android:text="Sign In"
+		        android:text="@string/activity_start_button_sign_in"
 		        android:textColor="#ffffff"
 		        android:textSize="18sp"/>
 		    <TextView

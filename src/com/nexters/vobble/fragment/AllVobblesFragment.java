@@ -1,18 +1,15 @@
 package com.nexters.vobble.fragment;
 
-import org.json.JSONObject;
+import org.json.*;
 
 import android.os.*;
 import android.view.*;
+import android.widget.*;
 
-import android.widget.TextView;
-
-import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.*;
 import com.nexters.vobble.*;
-import com.nexters.vobble.core.Vobble;
-import com.nexters.vobble.network.HttpUtil;
-import com.nexters.vobble.network.URL;
-import com.nexters.vobble.network.VobbleResponseHandler;
+import com.nexters.vobble.core.*;
+import com.nexters.vobble.network.*;
 
 public class AllVobblesFragment extends BaseFragment {
 	private View view;
