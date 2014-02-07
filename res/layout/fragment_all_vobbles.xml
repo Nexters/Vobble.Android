@@ -58,7 +58,7 @@
 		           android:src="@drawable/voice_reload"
 		           />
 		       <ImageView 
-		           android:id="@+id/vobble1"
+		           android:id="@+id/iv_vobble_1"
 		           android:layout_width="100dp"
 		           android:layout_height="100dp"
 		           android:layout_above="@+id/mapMarker"
@@ -66,7 +66,7 @@
 		           android:layout_centerHorizontal="true"
 		           android:src="@drawable/nonpic1_icon"/>
 		       <ImageView
-		           android:id="@+id/vobble2"
+		           android:id="@+id/iv_vobble_2"
 		           android:layout_width="100dp"
 		           android:layout_height="100dp"
 		           android:layout_toRightOf="@+id/mapMarker"
@@ -75,7 +75,7 @@
 		           android:layout_marginBottom="-20dp"
 		           android:src="@drawable/nonpic2_icon"/>
 		       <ImageView
-		           android:id="@+id/vobble3"
+		           android:id="@+id/iv_vobble_3"
 		           android:layout_width="100dp"
 		           android:layout_height="100dp"
 		           android:layout_toRightOf="@+id/mapMarker"
@@ -84,7 +84,7 @@
 		           android:layout_marginTop="-20dp"
 		           android:src="@drawable/nonpic3_icon"/>
 		       <ImageView
-		           android:id="@+id/vobble4"
+		           android:id="@+id/iv_vobble_4"
 		           android:layout_width="100dp"
 		           android:layout_height="100dp"
 		           android:layout_below="@+id/mapMarker"
@@ -92,7 +92,7 @@
 		           android:layout_marginTop="40dp"
 		           android:src="@drawable/nonpic4_icon"/>
 		       <ImageView
-		           android:id="@+id/vobble5"
+		           android:id="@+id/iv_vobble_5"
 		           android:layout_width="100dp"
 		           android:layout_height="100dp"
 		           android:layout_above="@+id/mapMarker"
@@ -101,7 +101,7 @@
 		           android:layout_marginBottom="-20dp"
 		           android:src="@drawable/nonpic5_icon"/>
 		       <ImageView
-		           android:id="@+id/vobble6"
+		           android:id="@+id/iv_vobble_6"
 		           android:layout_width="100dp"
 		           android:layout_height="100dp"
 		           android:layout_below="@+id/mapMarker"

@@ -81,7 +81,7 @@ public class AllVobblesFragment extends BaseFragment {
 
 			@Override
 			public void onSuccess(JSONObject response) {
-				
+
 			}
 		});
     }
