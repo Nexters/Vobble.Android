@@ -1,18 +1,16 @@
 package com.nexters.vobble.activity;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
+import android.animation.*;
 import android.content.*;
-import android.media.MediaPlayer;
+import android.media.*;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
 
-import com.nexters.vobble.R;
+import com.nexters.vobble.*;
 import com.nexters.vobble.record.*;
-import com.nexters.vobble.util.FileIOUtils;
-import com.nexters.vobble.view.HoloCircularProgressBar;
+import com.nexters.vobble.util.*;
+import com.nexters.vobble.view.*;
 
 public class RecordActivity extends BaseActivity implements View.OnClickListener {
 	public static final int READY_MODE = 0;

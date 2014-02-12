@@ -2,26 +2,22 @@ package com.nexters.vobble.activity;
 
 import java.io.*;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.MediaStore;
-import com.nexters.vobble.R;
-import com.nexters.vobble.util.CommonUtils;
-import com.nexters.vobble.util.FileIOUtils;
-import org.json.JSONObject;
+import org.json.*;
 
-import com.loopj.android.http.RequestParams;
-
+import android.app.*;
 import android.content.*;
+import android.graphics.*;
+import android.net.*;
 import android.os.*;
+import android.provider.*;
 import android.view.*;
 import android.widget.*;
 
+import com.loopj.android.http.*;
+import com.nexters.vobble.*;
 import com.nexters.vobble.core.*;
 import com.nexters.vobble.network.*;
+import com.nexters.vobble.util.*;
 
 public class MapActivity extends BaseActivity implements View.OnClickListener {
     public static final int REQUEST_TAKE_PHOTO = 1;
