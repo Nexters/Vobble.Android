@@ -64,7 +64,8 @@
 		           android:layout_above="@+id/mapMarker"
 		           android:layout_marginBottom="40dp"
 		           android:layout_centerHorizontal="true"
-		           android:src="@drawable/nonpic1_icon"/>
+		           android:src="@drawable/nonpic1_icon"
+		           />
 		       <ImageView
 		           android:id="@+id/vobble2"
 		           android:layout_width="100dp"
@@ -73,7 +74,8 @@
 		           android:layout_above="@+id/mapMarker"
 		           android:layout_marginLeft="30dp"
 		           android:layout_marginBottom="-20dp"
-		           android:src="@drawable/nonpic2_icon"/>
+		           android:src="@drawable/nonpic2_icon"
+		           />
 		       <ImageView
 		           android:id="@+id/vobble3"
 		           android:layout_width="100dp"
@@ -82,7 +84,8 @@
 		           android:layout_below="@+id/mapMarker"
 		           android:layout_marginLeft="30dp"
 		           android:layout_marginTop="-20dp"
-		           android:src="@drawable/nonpic3_icon"/>
+		           android:src="@drawable/nonpic3_icon"
+		           />
 		       <ImageView
 		           android:id="@+id/vobble4"
 		           android:layout_width="100dp"
@@ -90,7 +93,8 @@
 		           android:layout_below="@+id/mapMarker"
 		           android:layout_centerHorizontal="true"
 		           android:layout_marginTop="40dp"
-		           android:src="@drawable/nonpic4_icon"/>
+		           android:src="@drawable/nonpic4_icon"
+		           />
 		       <ImageView
 		           android:id="@+id/vobble5"
 		           android:layout_width="100dp"
@@ -99,7 +103,8 @@
 		           android:layout_toLeftOf="@+id/mapMarker"
 		           android:layout_marginRight="30dp"
 		           android:layout_marginBottom="-20dp"
-		           android:src="@drawable/nonpic5_icon"/>
+		           android:src="@drawable/nonpic5_icon"
+		           />
 		       <ImageView
 		           android:id="@+id/vobble6"
 		           android:layout_width="100dp"
@@ -108,7 +113,8 @@
 		           android:layout_toLeftOf="@+id/mapMarker"
 		           android:layout_marginRight="30dp"
 		           android:layout_marginTop="-20dp"
-		           android:src="@drawable/nonpic6_icon"/>
+		           android:src="@drawable/nonpic6_icon"
+		           />
 				<TextView
 		          android:id="@+id/vobble_count"
 		          android:layout_width="wrap_content"
