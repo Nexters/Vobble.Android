@@ -151,7 +151,7 @@ public class MainActivity extends BaseFragmentActivity implements
 				});
 		Location l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		if(l == null){
-			
+
 		}
 	}
 

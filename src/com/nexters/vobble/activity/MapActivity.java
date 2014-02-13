@@ -2,14 +2,21 @@ package com.nexters.vobble.activity;
 
 import java.io.*;
 
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationProvider;
+import com.nexters.vobble.nmap.NMapPOIflagType;
+import com.nexters.vobble.nmap.NMapViewerResourceProvider;
+import com.nhn.android.maps.*;
+import com.nhn.android.maps.overlay.NMapPOIdata;
+import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
+import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
 import org.json.*;
 
-import android.app.*;
 import android.content.*;
 import android.graphics.*;
-import android.net.*;
 import android.os.*;
-import android.provider.*;
 import android.view.*;
 import android.widget.*;
 
@@ -19,21 +26,52 @@ import com.nexters.vobble.core.*;
 import com.nexters.vobble.network.*;
 import com.nexters.vobble.util.*;
 
-public class MapActivity extends BaseActivity implements View.OnClickListener {
+public class MapActivity extends BaseNMapActivity implements View.OnClickListener {
+    private NMapView mMapView;
     private ImageView ivPhoto;
 	private Button btnSave;
+
+    private LocationManager locationManager;
+    private String locationProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_map);
-		
+
+        Location location = getLocation();
+        initMapView(location);
 		initResources();
 		initEvents();
         initImage();
 	}
-	
+
+    private Location getLocation() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationProvider = locationManager.getBestProvider(new Criteria(), true);
+        return locationManager.getLastKnownLocation(locationProvider);
+    }
+
+    private void initMapView(Location location) {
+        mMapView = (NMapView) findViewById(R.id.map_view);
+        mMapView.setApiKey("9d613b3fed909e86f46be79aae114235");
+        mMapView.setClickable(false);
+
+        NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
+        NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
+
+        int markerId = NMapPOIflagType.PIN;
+
+        NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
+        poiData.beginPOIdata(1);
+        poiData.addPOIitem(location.getLongitude(), location.getLatitude(), "현재 위치", markerId, 0);
+        poiData.endPOIdata();
+
+        NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
+        poiDataOverlay.showAllPOIdata(0);
+    }
+
 	private void initResources() {
 		ivPhoto = (ImageView) findViewById(R.id.iv_photo_view);
 		btnSave = (Button) findViewById(R.id.btn_save);
