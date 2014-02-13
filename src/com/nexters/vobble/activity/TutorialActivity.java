@@ -10,113 +10,75 @@ import android.widget.*;
 
 import com.nexters.vobble.*;
 
-public class TutorialActivity extends Activity implements OnTouchListener{
+public class TutorialActivity extends Activity implements OnTouchListener {
 	private ViewFlipper viewflipper;
-	private WindowManager wm = null;
 	private GestureDetector gestureDetector;
-	private Boolean isFirst=false;
 
-	Animation animFlipInForeward;
-	Animation animFlipOutForeward;
+	Animation animFlipInForward;
+	Animation animFlipOutForward;
 	Animation animFlipInBackward;
 	Animation animFlipOutBackward;
 
-	// 터치 이벤트 발생 지점의 x좌표 저장
-	private float xAtDown;
-	private float xAtUp;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_tutorial);
 		
-		initResource();
-		initAnimation();
-		
-		initEvent();		
-		
+		initResources();
+		initAnimations();
+		initEvents();
 	}
 	
-	private void initResource() {
+	private void initResources() {
 		viewflipper = (ViewFlipper) findViewById(R.id.viewflipper);
 	}
 	
-	private void initAnimation() {
-		animFlipInForeward = AnimationUtils.loadAnimation(this, R.anim.flipin);
-		animFlipOutForeward = AnimationUtils .loadAnimation(this, R.anim.flipout);
+	private void initAnimations() {
+		animFlipInForward = AnimationUtils.loadAnimation(this, R.anim.flipin);
+		animFlipOutForward = AnimationUtils .loadAnimation(this, R.anim.flipout);
 		animFlipInBackward = AnimationUtils.loadAnimation(this, R.anim.flipin_reverse);
 		animFlipOutBackward = AnimationUtils.loadAnimation(this, R.anim.flipout_reverse);
 	}
 
-	private void initEvent() {
+	private void initEvents() {
 		viewflipper.setOnTouchListener(this);
-		wm = (WindowManager) getSystemService(Service.WINDOW_SERVICE);
 		gestureDetector = new GestureDetector(getApplicationContext(),simpleOnGestureListener);
-	}
-	
-	public void finishTutorial() {
-		if (wm != null) {
-			wm.removeView(viewflipper);
-			viewflipper.setDisplayedChild(0);
-			wm = null;
-		}
 	}
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		
 		return gestureDetector.onTouchEvent(event);
 	}
 
 	GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
 
+        @Override
 		public boolean onDown(MotionEvent event) {
 			return true;
 		}
 
+        @Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,float velocityY) {
-			String swipe = "abc ";
-			float sensitvity = 50;
-			if ((e1.getX() - e2.getX()) > sensitvity) {
-				swipe += "Swipe Left\n";
-
+			float sensitivity = 50;
+			if ((e1.getX() - e2.getX()) > sensitivity) {
 				if (viewflipper.getDisplayedChild() == viewflipper.getChildCount() - 1) {
-					if (isFirst != null) {
-						if (isFirst) {
-							Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-							startActivity(intent);
-						}
-					}
+                    Intent intent = new Intent(getApplicationContext(), StartActivity.class);
+                    startActivity(intent);
 					finish();
-				}else{
-					viewflipper.setInAnimation(animFlipInForeward);
-					viewflipper.setOutAnimation(animFlipOutForeward);
-
+				} else {
+					viewflipper.setInAnimation(animFlipInForward);
+					viewflipper.setOutAnimation(animFlipOutForward);
 					viewflipper.showNext();
 				}
-			} else if ((e2.getX() - e1.getX()) > sensitvity) {
-				swipe += "Swipe Right\n";
-
+			} else if ((e2.getX() - e1.getX()) > sensitivity) {
 				if (viewflipper.getDisplayedChild()>0){
 					viewflipper.setInAnimation(animFlipInBackward);
 					viewflipper.setOutAnimation(animFlipOutBackward);
 					viewflipper.showPrevious();
 				}
-			} else {
-				swipe += "\n";
-			}
-
-			if ((e1.getY() - e2.getY()) > sensitvity) {
-				swipe += "Swipe Up\n";
-			} else if ((e2.getY() - e1.getY()) > sensitvity) {
-				swipe += "Swipe Down\n";
-			} else {
-				swipe += "\n";
 			}
 			return true;
 		}
-
-	};	
-	
+	};
 }
