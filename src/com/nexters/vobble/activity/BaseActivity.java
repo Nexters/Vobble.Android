@@ -1,8 +1,8 @@
 package com.nexters.vobble.activity;
 
+import android.widget.Toast;
 import com.nexters.vobble.R;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class BaseActivity extends Activity {
@@ -68,17 +67,21 @@ public class BaseActivity extends Activity {
 		}
 	}
 
+    public void showShortToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
 	public void alert(int resId) {
 		alert(getString(resId));
 	}
 
 	public void alert(String message) {
-		Dialog d = new AlertDialog.Builder(this)
-        .setMessage(message)
-        .setPositiveButton(R.string.ok, null)
-        .create();
-		d.show();
-		TextView messageText = (TextView) d.findViewById(android.R.id.message);
+		Dialog dialog = new AlertDialog.Builder(this)
+            .setMessage(message)
+            .setPositiveButton(R.string.ok, null)
+            .create();
+		dialog.show();
+		TextView messageText = (TextView) dialog.findViewById(android.R.id.message);
 		messageText.setGravity(Gravity.CENTER);
 	}
 }

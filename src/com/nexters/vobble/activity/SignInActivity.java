@@ -1,24 +1,26 @@
 package com.nexters.vobble.activity;
 
-import com.nexters.vobble.R;
-import org.json.JSONObject;
+import org.json.*;
 
 import android.content.*;
 import android.os.*;
-import android.preference.PreferenceManager;
+import android.preference.*;
+import android.support.v4.app.*;
+import android.support.v4.view.*;
 import android.view.*;
 import android.widget.*;
+
+import com.loopj.android.http.*;
+import com.nexters.vobble.*;
+import com.nexters.vobble.adapter.*;
 import com.nexters.vobble.core.*;
-
-import com.loopj.android.http.RequestParams;
-
 import com.nexters.vobble.network.*;
 
-public class SignInActivity extends BaseActivity implements View.OnClickListener {
-
+public class SignInActivity extends BaseFragmentActivity implements View.OnClickListener {
     private EditText etEmail;
     private EditText etPassword;
     private Button btnSignIn;
+    private CustomFragmentPagerAdapter adapter;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             alert(R.string.error_signin);
         }
     }
+    
 	
     private String getPassword() {
         return etPassword.getText().toString();

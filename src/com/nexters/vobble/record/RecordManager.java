@@ -7,9 +7,6 @@ import android.os.*;
 
 public class RecordManager {
 	private MediaRecorder recorder = null;
-	private String filePath, fileName = "";
-	private boolean isRecorded = false;
-	private String path = "";
 
 	public void startRecord(String path) {
 		File file = new File(path);
@@ -20,9 +17,7 @@ public class RecordManager {
 				e.printStackTrace();
 			}
 		}
-		
-		this.path = path;
-		
+
 		if (recorder == null) {
 			recorder = new MediaRecorder();
 		} else {
@@ -43,20 +38,21 @@ public class RecordManager {
 	}
 
 	public void stopRecord() {
-		if (recorder == null)
-			return;
+		if (recorder == null) {
+            return;
+        }
 		recorder.stop();
 		recorder.release();
 		recorder = null;
 	}
 
-	public void playRecord(String path) {
-		
+	public void startPlay(String path, MediaPlayer.OnCompletionListener listener) {
 		MediaPlayer player = new MediaPlayer();
 		try {
 			player.setDataSource(path);
 			player.prepare();
 			player.start();
+            player.setOnCompletionListener(listener);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

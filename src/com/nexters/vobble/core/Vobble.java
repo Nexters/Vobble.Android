@@ -19,7 +19,8 @@ public class Vobble {
 	public static final String LIMIT = "limit";
 	public static final String VOICE = "voice";
 	public static final String IMAGE = "image";
-	
+
+    public static final String IMAGE_FILE_NAME = "vobble.jpg";
 	public static final String SOUND_FILE_NAME = "vobble.m4a";
 	public static final String TAG = "VOBBLE";
 	

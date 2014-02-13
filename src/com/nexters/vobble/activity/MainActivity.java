@@ -50,7 +50,7 @@ public class MainActivity extends BaseFragmentActivity implements
     private void checkUserInfo() {
         final String token = Vobble.getToken(this);
         if (TextUtils.isEmpty(token)) {
-            Intent intent = new Intent(this, StartActivity.class);
+            Intent intent = new Intent(this, TutorialActivity.class);
             startActivity(intent);
         }
     }
@@ -60,7 +60,6 @@ public class MainActivity extends BaseFragmentActivity implements
 		allVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
 		makeVobbleImageView = (ImageView) findViewById(R.id.iv_voice_record_btn);
-
 		allVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
 	}
 
