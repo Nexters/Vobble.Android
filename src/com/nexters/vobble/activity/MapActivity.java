@@ -20,13 +20,8 @@ import com.nexters.vobble.network.*;
 import com.nexters.vobble.util.*;
 
 public class MapActivity extends BaseActivity implements View.OnClickListener {
-    public static final int REQUEST_TAKE_PHOTO = 1;
-    public static final int REQUEST_PICK_FROM_GALLERY = 2;
-
     private ImageView ivPhoto;
 	private Button btnSave;
-
-    private Bitmap imageBitmap;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +31,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener {
 		
 		initResources();
 		initEvents();
+        initImage();
 	}
 	
 	private void initResources() {
@@ -44,16 +40,17 @@ public class MapActivity extends BaseActivity implements View.OnClickListener {
 	}
 	
 	private void initEvents() {
-		ivPhoto.setOnClickListener(this);
 		btnSave.setOnClickListener(this);
 	}
+
+    private void initImage() {
+        Bitmap imageBitmap = BitmapFactory.decodeFile(FileIOUtils.getImageFile().getAbsolutePath());
+        ivPhoto.setImageBitmap(CommonUtils.getCroppedBitmap(imageBitmap, 450));
+    }
 
     @Override
 	public void onClick(View view) {
 		switch (view.getId()) {
-		case R.id.iv_photo_view :
-            showDialogChoosingPhoto();
-            break;
 		case R.id.btn_save :
 			try {
 				executeCreateVobble();
@@ -65,93 +62,18 @@ public class MapActivity extends BaseActivity implements View.OnClickListener {
 		}
 	}
 
-    private void showDialogChoosingPhoto() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.activity_map_choosing_photo_dialog_title)
-               .setItems(R.array.activity_map_choosing_photo_dialog_items, new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int which) {
-                       switch (which) {
-                           case 0:
-                               dispatchTakePictureIntent();
-                               break;
-                           case 1:
-                               dispatchPickFromGalleryIntent();
-                               break;
-                       }
-                   }
-               });
-        builder.show();
-    }
-
-    private void dispatchPickFromGalleryIntent() {
-        Intent pickFromGalleryIntent = new Intent(Intent.ACTION_PICK);
-        pickFromGalleryIntent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(pickFromGalleryIntent, REQUEST_PICK_FROM_GALLERY);
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-    }
-
-    private void setPicFromCamera(Intent data) {
-        Bundle extras = data.getExtras();
-        if (extras != null) {
-            imageBitmap = (Bitmap) extras.get("data");
-            ivPhoto.setImageBitmap(CommonUtils.getCroppedBitmap(imageBitmap, 450));
-        }
-    }
-
-    private void setPicFromGallery(Intent data) {
-        Uri uri = data.getData();
-        InputStream imageStream = null;
-        try {
-            imageStream = getContentResolver().openInputStream(uri);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        imageBitmap = BitmapFactory.decodeStream(imageStream);
-        ivPhoto.setImageBitmap(CommonUtils.getCroppedBitmap(imageBitmap, 450));
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-        case REQUEST_TAKE_PHOTO:
-            if (resultCode == Activity.RESULT_OK) {
-                setPicFromCamera(data);
-            }
-            break;
-        case REQUEST_PICK_FROM_GALLERY:
-            if (resultCode == Activity.RESULT_OK) {
-                setPicFromGallery(data);
-            }
-            break;
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        FileIOUtils.deleteImageFile();
-    }
-
     private void executeCreateVobble() throws FileNotFoundException {
         String url = String.format(URL.VOBBLES_CREATE,Vobble.getUserId(this));
 
         File voiceFile = FileIOUtils.getVoiceFile();
+        File imageFile = FileIOUtils.getImageFile();
 
         RequestParams params = new RequestParams();
         params.put(Vobble.TOKEN, Vobble.getToken(this));
         params.put(Vobble.VOICE, voiceFile);
+        params.put(Vobble.IMAGE, imageFile);
         params.put(Vobble.LATITUDE, "127");
         params.put(Vobble.LONGITUDE, "37");
-
-        if (imageBitmap != null) {
-            FileIOUtils.saveBitmapToImageFile(imageBitmap);
-            File imageFile = FileIOUtils.getImageFile();
-            params.put(Vobble.IMAGE, imageFile);
-        }
         
         HttpUtil.post(url, null, params, new VobbleResponseHandler(MapActivity.this) {
 
