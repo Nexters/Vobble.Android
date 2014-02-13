@@ -12,6 +12,7 @@ import android.media.MediaPlayer;
 import android.os.*;
 import android.view.*;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 
 import com.loopj.android.http.*;
 import com.nexters.vobble.*;
@@ -20,9 +21,10 @@ import com.nexters.vobble.activity.RecordActivity;
 import com.nexters.vobble.core.*;
 import com.nexters.vobble.network.*;
 
-public class AllVobblesFragment extends BaseFragment{
-	private View view;
 
+public class AllVobblesFragment extends BaseFragment implements OnClickListener{
+	private View view;
+	private ArrayList<Voice> vobbleArray;
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,7 +39,8 @@ public class AllVobblesFragment extends BaseFragment{
 	}
 
     private void initResources(View view) {
-
+    	vobbleArray = new ArrayList<Voice>();
+    	view.findViewById(R.id.iv_vobble_1).setOnClickListener(this);
     }
 
     private void initVobbles() {
@@ -64,8 +67,30 @@ public class AllVobblesFragment extends BaseFragment{
 
 			@Override
 			public void onSuccess(JSONObject response) {
-
+				JSONArray dataArr = response.optJSONArray("vobbles");
+				for(int i = 0; i < dataArr.length(); i++) {
+					Voice station = Voice.parse(dataArr.optJSONObject(i));
+					vobbleArray.add(station);
+				}
 			}
 		});
     }
+	@Override
+	public void onClick(View v) {
+		Vobble.log("onclick");
+		switch (v.getId()) {
+		case R.id.iv_vobble_1:
+			MediaPlayer mp = new MediaPlayer();
+		    try {
+		    	Voice voice = vobbleArray.get(0);
+		    	Vobble.log(voice.getStreamingVoiceUrl());
+		    	mp.setDataSource(voice.getStreamingVoiceUrl());
+		        mp.prepare();
+		        mp.start();
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+			break;
+		}
+	}
 }

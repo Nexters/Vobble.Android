@@ -7,7 +7,7 @@ import android.util.Log;
 public class Vobble {
 	public static final int SERVER_TEST = 0;
 	public static final int SERVER_PRODUCTION = 1;
-	public static final int SERVER_TARGET = SERVER_TEST;
+	public static final int SERVER_TARGET = SERVER_PRODUCTION;
 	
 	public static final String EMAIL = "email";
 	public static final String USERNAME = "username";
