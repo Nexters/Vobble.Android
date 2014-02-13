@@ -1,16 +1,26 @@
 package com.nexters.vobble.fragment;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.*;
 
+import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.*;
 import android.view.*;
+import android.view.View.OnClickListener;
 
 import com.loopj.android.http.*;
 import com.nexters.vobble.*;
+import com.nexters.vobble.activity.MainActivity;
+import com.nexters.vobble.activity.RecordActivity;
 import com.nexters.vobble.core.*;
 import com.nexters.vobble.network.*;
 
-public class AllVobblesFragment extends BaseFragment {
+public class AllVobblesFragment extends BaseFragment{
 	private View view;
 
     @Override
@@ -39,7 +49,7 @@ public class AllVobblesFragment extends BaseFragment {
 		params.put(Vobble.LIMIT, "6");
         
 		HttpUtil.get(url, null, params, new VobbleResponseHandler(activity) {
-			
+
 			@Override
 			public void onStart() {
 				super.onStart();
