@@ -18,6 +18,7 @@
         android:required="true" />
 
     <application
+        android:name="com.nexters.vobble.core.Vobble"
         android:icon="@drawable/icon2"
         android:label="@string/app_name" >
         <activity
@@ -56,6 +57,10 @@
         <activity
             android:name="com.nexters.vobble.activity.TutorialActivity"
             android:label="@string/title_activity_tutorial" >
+        </activity>
+        <activity
+            android:name="com.nexters.vobble.activity.VobbleActivity"
+            android:label="@string/title_activity_vobble" >
         </activity>
     </application>
 

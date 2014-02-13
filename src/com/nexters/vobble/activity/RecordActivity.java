@@ -1,25 +1,31 @@
 package com.nexters.vobble.activity;
 
-import android.animation.*;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.*;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.*;
-import android.net.Uri;
-import android.os.*;
-import android.provider.MediaStore;
-import android.view.*;
-import android.widget.*;
-
-import com.nexters.vobble.*;
-import com.nexters.vobble.record.*;
-import com.nexters.vobble.util.*;
-import com.nexters.vobble.view.*;
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+
+import com.nexters.vobble.R;
+import com.nexters.vobble.record.RecordManager;
+import com.nexters.vobble.util.CommonUtils;
+import com.nexters.vobble.util.FileIOUtils;
+import com.nexters.vobble.view.HoloCircularProgressBar;
 
 public class RecordActivity extends BaseActivity implements View.OnClickListener {
     public static final int READY_MODE = 0;

@@ -1,9 +1,10 @@
 package com.nexters.vobble.record;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
-import android.media.*;
-import android.os.*;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 
 public class RecordManager {
 	private MediaRecorder recorder = null;

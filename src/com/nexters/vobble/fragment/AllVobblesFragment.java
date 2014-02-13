@@ -1,28 +1,27 @@
 package com.nexters.vobble.fragment;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.os.*;
-import android.view.*;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.loopj.android.http.*;
-import com.nexters.vobble.*;
-import com.nexters.vobble.activity.MainActivity;
-import com.nexters.vobble.activity.RecordActivity;
-import com.nexters.vobble.core.*;
-import com.nexters.vobble.network.*;
+import com.loopj.android.http.RequestParams;
+import com.nexters.vobble.R;
+import com.nexters.vobble.activity.VobbleActivity;
+import com.nexters.vobble.core.Vobble;
+import com.nexters.vobble.network.HttpUtil;
+import com.nexters.vobble.network.URL;
+import com.nexters.vobble.network.VobbleResponseHandler;
+import com.nexters.vobble.network.Voice;
 
 
-public class AllVobblesFragment extends BaseFragment implements OnClickListener{
+public class AllVobblesFragment extends BaseFragment{
 	private View view;
 	private ArrayList<Voice> vobbleArray;
     @Override
@@ -40,7 +39,18 @@ public class AllVobblesFragment extends BaseFragment implements OnClickListener{
 
     private void initResources(View view) {
     	vobbleArray = new ArrayList<Voice>();
-    	view.findViewById(R.id.iv_vobble_1).setOnClickListener(this);
+    	view.findViewById(R.id.iv_vobble_1).setOnClickListener(vobbleClickListener);
+    	view.findViewById(R.id.iv_vobble_1).setTag(0);
+    	view.findViewById(R.id.iv_vobble_2).setOnClickListener(vobbleClickListener);
+    	view.findViewById(R.id.iv_vobble_2).setTag(1);
+    	view.findViewById(R.id.iv_vobble_3).setOnClickListener(vobbleClickListener);
+    	view.findViewById(R.id.iv_vobble_3).setTag(2);
+    	view.findViewById(R.id.iv_vobble_4).setOnClickListener(vobbleClickListener);
+    	view.findViewById(R.id.iv_vobble_4).setTag(3);
+    	view.findViewById(R.id.iv_vobble_5).setOnClickListener(vobbleClickListener);
+    	view.findViewById(R.id.iv_vobble_5).setTag(4);
+    	view.findViewById(R.id.iv_vobble_6).setOnClickListener(vobbleClickListener);
+    	view.findViewById(R.id.iv_vobble_6).setTag(5);
     }
 
     private void initVobbles() {
@@ -75,20 +85,19 @@ public class AllVobblesFragment extends BaseFragment implements OnClickListener{
 			}
 		});
     }
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.iv_vobble_1:
-			MediaPlayer mp = new MediaPlayer();
-		    try {
-		    	Voice voice = vobbleArray.get(0);
-		    	mp.setDataSource(voice.getStreamingVoiceUrl());
-		        mp.prepare();
-		        mp.start();
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-			break;
+    
+    private View.OnClickListener vobbleClickListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// 임시 처리
+			int tag = (Integer)v.getTag();
+			if(tag < vobbleArray.size()){
+				Intent intent = new Intent(activity.getApplicationContext(), VobbleActivity.class);
+				Voice voice = vobbleArray.get(tag);
+				intent.putExtra("vobble", voice);
+				startActivity(intent);
+			}
 		}
-	}
+	};
 }

@@ -16,6 +16,7 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+
 import com.nexters.vobble.R;
 
 /**

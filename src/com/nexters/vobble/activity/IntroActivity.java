@@ -1,13 +1,12 @@
 package com.nexters.vobble.activity;
 
-import android.app.*;
-import android.content.*;
-import android.os.*;
-import android.text.TextUtils;
-import android.view.*;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.Window;
 
 import com.nexters.vobble.R;
-import com.nexters.vobble.core.*;
 
 public class IntroActivity extends Activity {
 	private Handler handler = null;

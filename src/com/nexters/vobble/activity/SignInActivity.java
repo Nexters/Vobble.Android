@@ -1,20 +1,22 @@
 package com.nexters.vobble.activity;
 
-import org.json.*;
+import org.json.JSONObject;
 
-import android.content.*;
-import android.os.*;
-import android.preference.*;
-import android.support.v4.app.*;
-import android.support.v4.view.*;
-import android.view.*;
-import android.widget.*;
+import android.content.Intent;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 
-import com.loopj.android.http.*;
-import com.nexters.vobble.*;
-import com.nexters.vobble.adapter.*;
-import com.nexters.vobble.core.*;
-import com.nexters.vobble.network.*;
+import com.loopj.android.http.RequestParams;
+import com.nexters.vobble.R;
+import com.nexters.vobble.adapter.CustomFragmentPagerAdapter;
+import com.nexters.vobble.core.Vobble;
+import com.nexters.vobble.network.HttpUtil;
+import com.nexters.vobble.network.URL;
+import com.nexters.vobble.network.VobbleResponseHandler;
 
 public class SignInActivity extends BaseFragmentActivity implements View.OnClickListener {
     private EditText etEmail;

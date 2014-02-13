@@ -1,14 +1,15 @@
 package com.nexters.vobble.network;
 
-import org.json.*;
+import org.json.JSONObject;
 
-import android.app.*;
-import android.content.*;
-import android.text.*;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.text.TextUtils;
 
-import com.loopj.android.http.*;
-import com.nexters.vobble.*;
-import com.nexters.vobble.core.*;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nexters.vobble.R;
+import com.nexters.vobble.core.Vobble;
 
 
 public class VobbleResponseHandler extends JsonHttpResponseHandler {

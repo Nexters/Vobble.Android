@@ -1,8 +1,11 @@
 package com.nexters.vobble.adapter;
 
-import android.support.v4.app.*;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 
-import com.nexters.vobble.fragment.*;
+import com.nexters.vobble.fragment.AllVobblesFragment;
+import com.nexters.vobble.fragment.MyVobblesFragment;
 
 public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
 	public CustomFragmentPagerAdapter(FragmentManager fm) {

@@ -1,26 +1,32 @@
 package com.nexters.vobble.activity;
 
-import android.text.TextUtils;
-import com.nexters.vobble.R;
-
-import android.app.*;
-import android.content.*;
-import android.graphics.*;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
-import android.os.*;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.*;
-
-import android.view.*;
+import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.view.Window;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-import com.nexters.vobble.adapter.*;
-import com.nexters.vobble.core.*;
+import com.nexters.vobble.R;
+import com.nexters.vobble.adapter.CustomFragmentPagerAdapter;
+import com.nexters.vobble.core.Vobble;
 
 public class MainActivity extends BaseFragmentActivity implements
 		OnClickListener {

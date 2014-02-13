@@ -1,6 +1,5 @@
 package com.nexters.vobble.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.nexters.vobble.R;
 import com.nhn.android.maps.NMapActivity;
 

@@ -1,10 +1,14 @@
 package com.nexters.vobble.network;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
 import com.nexters.vobble.core.Vobble;
 
-public class Voice {
+public class Voice implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	public double distance = 0.0f;
 	public String voiceUri = "";
 	public String imgUri = "";
@@ -30,6 +34,13 @@ public class Voice {
 			return URL.BASE_URL_DEVELOPMENT+"/files/"+voiceUri;
 		} else {
 			return URL.BASE_URL_PRODUCTION+"/files/"+voiceUri;
+		}
+	}
+	public String getImageUrl(){
+		if(Vobble.SERVER_TARGET == Vobble.SERVER_TEST) {
+			return URL.BASE_URL_DEVELOPMENT+"/files/"+imgUri;
+		} else {
+			return URL.BASE_URL_PRODUCTION+"/files/"+imgUri;
 		}
 	}
 }

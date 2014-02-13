@@ -1,10 +1,12 @@
 package com.nexters.vobble.activity;
 
-import android.app.*;
-import android.content.*;
-import android.os.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+
 import com.nexters.vobble.R;
 
 public class StartActivity extends Activity implements View.OnClickListener {

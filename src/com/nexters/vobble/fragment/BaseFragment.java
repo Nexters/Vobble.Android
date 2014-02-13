@@ -1,13 +1,13 @@
 package com.nexters.vobble.fragment;
 
-import com.nexters.vobble.activity.BaseFragmentActivity;
-
 import android.app.Activity;
-import android.support.v4.app.*;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.nexters.vobble.activity.BaseFragmentActivity;
 
 
 public class BaseFragment extends Fragment {

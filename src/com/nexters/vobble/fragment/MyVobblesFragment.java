@@ -1,9 +1,11 @@
 package com.nexters.vobble.fragment;
 
-import android.os.*;
-import android.view.*;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.nexters.vobble.*;
+import com.nexters.vobble.R;
 
 public class MyVobblesFragment extends BaseFragment{
 	private View view;

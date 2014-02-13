@@ -1,19 +1,21 @@
 package com.nexters.vobble.activity;
 
-import com.nexters.vobble.R;
 import org.json.JSONObject;
 
 import android.content.Intent;
-import android.os.*;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.*;
+import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.loopj.android.http.RequestParams;
-
-import com.nexters.vobble.core.*;
-import com.nexters.vobble.network.*;
+import com.nexters.vobble.R;
+import com.nexters.vobble.core.Vobble;
+import com.nexters.vobble.network.HttpUtil;
+import com.nexters.vobble.network.URL;
+import com.nexters.vobble.network.VobbleResponseHandler;
 
 public class SignUpActivity extends BaseActivity implements View.OnClickListener {
 

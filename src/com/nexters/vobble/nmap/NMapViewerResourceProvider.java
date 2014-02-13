@@ -1,11 +1,11 @@
 package com.nexters.vobble.nmap;
 
-import com.nexters.vobble.*;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import com.nexters.vobble.R;
 import com.nhn.android.maps.NMapOverlayItem;
 import com.nhn.android.maps.overlay.NMapPOIitem;
 import com.nhn.android.mapviewer.overlay.NMapResourceProvider;

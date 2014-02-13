@@ -1,17 +1,18 @@
 package com.nexters.vobble.activity;
 
-import android.app.*;
-import android.content.*;
-import android.os.*;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.*;
-import android.view.View.OnTouchListener;
-import android.view.animation.*;
-import android.widget.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
-import com.nexters.vobble.*;
-import com.nexters.vobble.core.Vobble;
+import com.nexters.vobble.R;
 
 public class TutorialActivity extends Activity {
 	

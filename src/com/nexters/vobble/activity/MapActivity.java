@@ -1,30 +1,37 @@
 package com.nexters.vobble.activity;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.location.LocationProvider;
+import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+
+import com.loopj.android.http.RequestParams;
+import com.nexters.vobble.R;
+import com.nexters.vobble.core.Vobble;
+import com.nexters.vobble.network.HttpUtil;
+import com.nexters.vobble.network.URL;
+import com.nexters.vobble.network.VobbleResponseHandler;
 import com.nexters.vobble.nmap.NMapPOIflagType;
 import com.nexters.vobble.nmap.NMapViewerResourceProvider;
-import com.nhn.android.maps.*;
+import com.nexters.vobble.util.CommonUtils;
+import com.nexters.vobble.util.FileIOUtils;
+import com.nhn.android.maps.NMapView;
 import com.nhn.android.maps.overlay.NMapPOIdata;
 import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
 import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
-import org.json.*;
-
-import android.content.*;
-import android.graphics.*;
-import android.os.*;
-import android.view.*;
-import android.widget.*;
-
-import com.loopj.android.http.*;
-import com.nexters.vobble.*;
-import com.nexters.vobble.core.*;
-import com.nexters.vobble.network.*;
-import com.nexters.vobble.util.*;
 
 public class MapActivity extends BaseNMapActivity implements View.OnClickListener {
     private NMapView mMapView;
