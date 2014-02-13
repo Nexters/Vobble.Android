@@ -77,13 +77,11 @@ public class AllVobblesFragment extends BaseFragment implements OnClickListener{
     }
 	@Override
 	public void onClick(View v) {
-		Vobble.log("onclick");
 		switch (v.getId()) {
 		case R.id.iv_vobble_1:
 			MediaPlayer mp = new MediaPlayer();
 		    try {
 		    	Voice voice = vobbleArray.get(0);
-		    	Vobble.log(voice.getStreamingVoiceUrl());
 		    	mp.setDataSource(voice.getStreamingVoiceUrl());
 		        mp.prepare();
 		        mp.start();

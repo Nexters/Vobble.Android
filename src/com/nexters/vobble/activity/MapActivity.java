@@ -39,7 +39,7 @@ public class MapActivity extends BaseNMapActivity implements View.OnClickListene
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_map);
-
+		
         Location location = getLocation();
         initMapView(location);
 		initResources();
@@ -58,18 +58,19 @@ public class MapActivity extends BaseNMapActivity implements View.OnClickListene
         mMapView.setApiKey("9d613b3fed909e86f46be79aae114235");
         mMapView.setClickable(false);
 
-        NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
-        NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
+        if(location != null){
+        	NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
+            NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
 
-        int markerId = NMapPOIflagType.PIN;
+            int markerId = NMapPOIflagType.PIN;
+            NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
+            poiData.beginPOIdata(1);
+            poiData.addPOIitem(location.getLongitude(), location.getLatitude(), "현재 위치", markerId, 0);
+            poiData.endPOIdata();
 
-        NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
-        poiData.beginPOIdata(1);
-        poiData.addPOIitem(location.getLongitude(), location.getLatitude(), "현재 위치", markerId, 0);
-        poiData.endPOIdata();
-
-        NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
-        poiDataOverlay.showAllPOIdata(0);
+            NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
+            poiDataOverlay.showAllPOIdata(0);
+        }
     }
 
 	private void initResources() {

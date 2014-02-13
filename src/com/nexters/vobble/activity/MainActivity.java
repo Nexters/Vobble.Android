@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.*;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.*;
 
@@ -200,5 +201,26 @@ public class MainActivity extends BaseFragmentActivity implements
 		});
 		builder.show();
 	}
-
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO Auto-generated method stub
+        switch (item.getItemId()) {
+        case R.id.log_out:
+        	PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+            .edit().putString(Vobble.TOKEN, "").commit();
+        	Intent intent = new Intent(getApplicationContext(), StartActivity.class);
+            startActivity(intent);
+			finish();
+            break;
+        }
+ 
+        return false;
+    }
 }
