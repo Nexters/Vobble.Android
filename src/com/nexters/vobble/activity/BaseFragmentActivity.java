@@ -13,10 +13,8 @@ import android.widget.TextView;
 import com.nexters.vobble.R;
 
 public class BaseFragmentActivity extends FragmentActivity {
-
-	private View loadingView;
-
-	private int loadingStackCount = 0;
+    private int loadingStackCount = 0;
+    private View loadingView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,27 +22,6 @@ public class BaseFragmentActivity extends FragmentActivity {
 		
 		loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
 		loadingView.setVisibility(View.INVISIBLE);
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
 	}
 
 	@Override
@@ -72,9 +49,9 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 	public void alert(String message) {
 		Dialog d = new AlertDialog.Builder(this)
-		.setMessage(message)
-		.setPositiveButton(R.string.ok, null)
-		.create();
+            .setMessage(message)
+            .setPositiveButton(R.string.ok, null)
+            .create();
 		d.show();
 		TextView messageText = (TextView) d.findViewById(android.R.id.message);
 		messageText.setGravity(Gravity.CENTER);

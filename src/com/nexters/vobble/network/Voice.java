@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import org.json.JSONObject;
 
+import android.text.TextUtils;
+
 import com.nexters.vobble.core.Vobble;
 
 public class Voice implements Serializable{
@@ -35,6 +37,12 @@ public class Voice implements Serializable{
 		} else {
 			return URL.BASE_URL_PRODUCTION+"/files/"+voiceUri;
 		}
+	}
+	public boolean isImageExist(){ 
+		if(TextUtils.isEmpty(imgUri)){
+			return false;
+		}
+		return true;
 	}
 	public String getImageUrl(){
 		if(Vobble.SERVER_TARGET == Vobble.SERVER_TEST) {

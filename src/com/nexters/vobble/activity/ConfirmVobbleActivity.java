@@ -3,15 +3,13 @@ package com.nexters.vobble.activity;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import com.nexters.vobble.nmap.NMapPOIFlagType;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -24,7 +22,6 @@ import com.nexters.vobble.core.Vobble;
 import com.nexters.vobble.network.HttpUtil;
 import com.nexters.vobble.network.URL;
 import com.nexters.vobble.network.VobbleResponseHandler;
-import com.nexters.vobble.nmap.NMapPOIflagType;
 import com.nexters.vobble.nmap.NMapViewerResourceProvider;
 import com.nexters.vobble.util.CommonUtils;
 import com.nexters.vobble.util.FileIOUtils;
@@ -33,65 +30,60 @@ import com.nhn.android.maps.overlay.NMapPOIdata;
 import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
 import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
 
-public class MapActivity extends BaseNMapActivity implements View.OnClickListener {
+public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnClickListener {
     private NMapView mMapView;
-    private ImageView ivPhoto;
-	private Button btnSave;
+    private ImageView mIvPhoto;
+	private Button mBtnSave;
 
-    private LocationManager locationManager;
-    private String locationProvider;
+    private Location mLocation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_map);
+		setContentView(R.layout.activity_confirm_vobble);
 		
-        Location location = getLocation();
-        initMapView(location);
-		initResources();
+        initResources();
 		initEvents();
         initImage();
+        initMapView();
 	}
 
-    private Location getLocation() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationProvider = locationManager.getBestProvider(new Criteria(), true);
-        return locationManager.getLastKnownLocation(locationProvider);
-    }
-
-    private void initMapView(Location location) {
-        mMapView = (NMapView) findViewById(R.id.map_view);
-        mMapView.setApiKey("9d613b3fed909e86f46be79aae114235");
-        mMapView.setClickable(false);
-
-        if(location != null){
-        	NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
-            NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
-
-            int markerId = NMapPOIflagType.PIN;
-            NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
-            poiData.beginPOIdata(1);
-            poiData.addPOIitem(location.getLongitude(), location.getLatitude(), "현재 위치", markerId, 0);
-            poiData.endPOIdata();
-
-            NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
-            poiDataOverlay.showAllPOIdata(0);
-        }
-    }
-
 	private void initResources() {
-		ivPhoto = (ImageView) findViewById(R.id.iv_photo_view);
-		btnSave = (Button) findViewById(R.id.btn_save);
+        mLocation = CommonUtils.getLocation(this);
+        mIvPhoto = (ImageView) findViewById(R.id.iv_photo_view);
+		mBtnSave = (Button) findViewById(R.id.btn_save);
 	}
 	
 	private void initEvents() {
-		btnSave.setOnClickListener(this);
+		mBtnSave.setOnClickListener(this);
 	}
 
     private void initImage() {
         Bitmap imageBitmap = BitmapFactory.decodeFile(FileIOUtils.getImageFile().getAbsolutePath());
-        ivPhoto.setImageBitmap(CommonUtils.getCroppedBitmap(imageBitmap, 450));
+        mIvPhoto.setImageBitmap(CommonUtils.getCroppedBitmap(imageBitmap, 450));
+    }
+
+    private void initMapView() {
+        mMapView = (NMapView) findViewById(R.id.map_view);
+        mMapView.setApiKey(Vobble.NMAP_API_KEY);
+        mMapView.setClickable(false);
+
+        if (mLocation != null) {
+            NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
+            NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
+
+            int markerId = NMapPOIFlagType.PIN;
+            NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
+            poiData.beginPOIdata(1);
+            poiData.addPOIitem(mLocation.getLongitude(), mLocation.getLatitude(), "현재 위치", markerId, 0);
+            poiData.endPOIdata();
+
+            NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
+            poiDataOverlay.showAllPOIdata(0);
+        } else {
+            alert(R.string.error_cannot_use_gps);
+        }
     }
 
     @Override
@@ -99,11 +91,11 @@ public class MapActivity extends BaseNMapActivity implements View.OnClickListene
 		switch (view.getId()) {
 		case R.id.btn_save :
 			try {
-				executeCreateVobble();
-			} catch (FileNotFoundException e) {
-				Vobble.log("FileNotFoundException");
-				alert(R.string.error_vobble_create);
-			}
+                executeCreateVobble();
+            } catch (FileNotFoundException e) {
+                Vobble.log("FileNotFoundException");
+                alert(R.string.error_cannot_create_vobble);
+            }
 			break;
 		}
 	}
@@ -118,10 +110,16 @@ public class MapActivity extends BaseNMapActivity implements View.OnClickListene
         params.put(Vobble.TOKEN, Vobble.getToken(this));
         params.put(Vobble.VOICE, voiceFile);
         params.put(Vobble.IMAGE, imageFile);
-        params.put(Vobble.LATITUDE, "127");
-        params.put(Vobble.LONGITUDE, "37");
-        
-        HttpUtil.post(url, null, params, new VobbleResponseHandler(MapActivity.this) {
+
+        if (mLocation != null) {
+            params.put(Vobble.LATITUDE, String.valueOf(mLocation.getLatitude()));
+            params.put(Vobble.LONGITUDE, String.valueOf(mLocation.getLongitude()));
+        } else {
+            alert(R.string.error_cannot_use_gps);
+            return;
+        }
+
+        HttpUtil.post(url, null, params, new VobbleResponseHandler(ConfirmVobbleActivity.this) {
 
             @Override
             public void onStart() {
@@ -137,7 +135,7 @@ public class MapActivity extends BaseNMapActivity implements View.OnClickListene
 
             @Override
             public void onSuccess(JSONObject response) {
-                Intent intent = new Intent(MapActivity.this, MainActivity.class);
+                Intent intent = new Intent(ConfirmVobbleActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     			startActivity(intent);
             }

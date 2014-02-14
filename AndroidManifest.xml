@@ -47,20 +47,20 @@
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:name="com.nexters.vobble.activity.RecordActivity"
-            android:label="@string/title_activity_record" >
+            android:name=".activity.CreateVobbleActivity"
+            android:label="@string/title_activity_create_vobble" >
         </activity>
         <activity
-            android:name="com.nexters.vobble.activity.MapActivity"
-            android:label="@string/title_activity_map" >
+            android:name=".activity.ConfirmVobbleActivity"
+            android:label="@string/title_activity_confirm_vobble" >
         </activity>
         <activity
             android:name="com.nexters.vobble.activity.TutorialActivity"
             android:label="@string/title_activity_tutorial" >
         </activity>
         <activity
-            android:name="com.nexters.vobble.activity.VobbleActivity"
-            android:label="@string/title_activity_vobble" >
+            android:name=".activity.ListenVobbleActivity"
+            android:label="@string/title_activity_listen_vobble" >
         </activity>
     </application>
 

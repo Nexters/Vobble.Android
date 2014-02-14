@@ -1,10 +1,12 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.nexters.vobble"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:orientation="vertical"
-    tools:context=".activity.MapActivity" >
+    tools:context=".activity.VobbleActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="640"
-            android:text="@string/activity_map_title"
+            android:text="@string/activity_listen_vobble_title"
             android:gravity="center_horizontal|center_vertical"
             android:textSize="18sp"
             android:textColor="#ffffff"/>
@@ -28,10 +30,12 @@
             android:layout_height="match_parent"
             android:layout_weight="40"/>
     </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="135"/>
+        android:layout_weight="25" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -40,35 +44,42 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="150"/>
-        <ImageView
-            android:id="@+id/iv_photo_view"
+            android:layout_weight="140"/>
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="420"
-            android:src="@drawable/record_camera_icon_o"/>
+            android:layout_weight="440">
+	        <ImageView
+	            android:id="@+id/voice_photo"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_margin="20dp"
+	            android:src="@drawable/record_camera_icon_o"/>
+	        <com.nexters.vobble.view.HoloCircularProgressBar
+	                android:id="@+id/hcpb_vobble_progress"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:gravity="center"
+	                app:stroke_width="10dp"
+	                app:progress="0"
+	                app:marker_progress="1"
+	                app:progress_color="#37D5B5"
+	                app:progress_background_color="#FFFFFF"
+	                app:marker_visible="false"
+	                app:thumb_visible="false"/>
+	    </FrameLayout>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="150"/>
+            android:layout_weight="140"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="105"/>
     <com.nhn.android.maps.NMapView
-        android:id="@+id/map_view"
+        android:id="@+id/vobble_map_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="280"/>
-	<Button
-	    android:id="@+id/btn_save"
-	   	android:layout_width="match_parent"
-	   	android:layout_height="0dp"
-	   	android:layout_weight="200"
-	   	android:background="#ffffff"
-	   	android:gravity="center_vertical|center_horizontal"
-	   	android:text="@string/activity_map_button_save"
-	   	android:textSize="22sp"
-	   	android:textColor="#40ddc2"/>
 </LinearLayout>

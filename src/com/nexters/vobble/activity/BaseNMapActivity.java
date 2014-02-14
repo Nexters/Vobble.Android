@@ -14,10 +14,8 @@ import com.nexters.vobble.R;
 import com.nhn.android.maps.NMapActivity;
 
 public class BaseNMapActivity extends NMapActivity {
-
+    private int loadingStackCount = 0;
 	private View loadingView;
-
-	private int loadingStackCount = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,27 +23,6 @@ public class BaseNMapActivity extends NMapActivity {
 
 		loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
 		loadingView.setVisibility(View.INVISIBLE);
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
 	}
 
 	@Override

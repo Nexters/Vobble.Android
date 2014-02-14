@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import com.nexters.vobble.R;
 import com.nexters.vobble.core.Vobble;
 import com.nexters.vobble.network.Voice;
-import com.nexters.vobble.nmap.NMapPOIflagType;
+import com.nexters.vobble.nmap.NMapPOIFlagType;
 import com.nexters.vobble.nmap.NMapViewerResourceProvider;
 import com.nexters.vobble.util.CommonUtils;
 import com.nexters.vobble.view.HoloCircularProgressBar;
@@ -28,7 +28,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
-public class VobbleActivity extends BaseNMapActivity {
+public class ListenVobbleActivity extends BaseNMapActivity {
 	private NMapView mMapView;
 	private Voice voice;
 	private ImageView vobbleImg;
@@ -40,34 +40,30 @@ public class VobbleActivity extends BaseNMapActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_vobble);
-		initResource();
+		setContentView(R.layout.activity_listen_vobble);
+
+        initResource();
 		initView();
 		initMapView();
+		playVobble();
 	}
-	private void initResource(){
+
+    private void initResource() {
 		Intent intent = getIntent();
-		voice = (Voice)intent.getExtras().getSerializable("vobble");
+		voice = (Voice) intent.getExtras().getSerializable("vobble");
 		mProgressBar = (HoloCircularProgressBar) findViewById(R.id.hcpb_vobble_progress);
 		vobbleImg = (ImageView)findViewById(R.id.voice_photo);
 	}
-	private void initView(){
+
+	private void initView() {
 		vobbleImg.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
-				MediaPlayer mp = new MediaPlayer();
-			    try {
-			    	mp.setDataSource(voice.getStreamingVoiceUrl());
-			        mp.prepare();
-			        animate(mProgressBar, 1f, mp.getDuration());
-			        mp.start();
-			    } catch (Exception e) {
-			        e.printStackTrace();
-			    }
+				playVobble();
 			}
 		});
-		if(!TextUtils.isEmpty(voice.imgUri)){
+
+        if (!TextUtils.isEmpty(voice.imgUri)) {
 			ImageSize targetSize = new ImageSize(450, 450);
 			DisplayImageOptions options = new DisplayImageOptions.Builder()
 			// TODO- 이미지 로딩 중 실패 이미지 넣기
@@ -89,12 +85,12 @@ public class VobbleActivity extends BaseNMapActivity {
 	}
 	private void initMapView() {
         mMapView = (NMapView) findViewById(R.id.vobble_map_view);
-        mMapView.setApiKey("9d613b3fed909e86f46be79aae114235");
+        mMapView.setApiKey(Vobble.NMAP_API_KEY);
         mMapView.setClickable(false);
         NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
 
-        int markerId = NMapPOIflagType.PIN;
+        int markerId = NMapPOIFlagType.PIN;
         NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
         poiData.beginPOIdata(1);
         poiData.addPOIitem(voice.longitude, voice.latitude, "현재 위치", markerId, 0);
@@ -103,7 +99,17 @@ public class VobbleActivity extends BaseNMapActivity {
         NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
         poiDataOverlay.showAllPOIdata(0);
     }
-	
+	private void playVobble(){
+		MediaPlayer mp = new MediaPlayer();
+	    try {
+	    	mp.setDataSource(voice.getStreamingVoiceUrl());
+	        mp.prepare();
+	        animate(mProgressBar, 1f, mp.getDuration());
+	        mp.start();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 	private void animate(final HoloCircularProgressBar progressBar, final float progress, final int duration) {
         mProgressBarAnimator = ObjectAnimator.ofFloat(progressBar, "progress", progress);
         mProgressBarAnimator.setDuration(duration);
@@ -116,7 +122,6 @@ public class VobbleActivity extends BaseNMapActivity {
             @Override
             public void onAnimationEnd(final Animator animation) {
                 progressBar.setProgress(0);
-                
             }
 
             @Override

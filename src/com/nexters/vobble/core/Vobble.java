@@ -5,6 +5,7 @@ import java.io.File;
 import android.app.Application;
 import android.content.Context;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
@@ -33,7 +34,8 @@ public class Vobble extends Application {
     public static final String IMAGE_FILE_NAME = "vobble.jpg";
 	public static final String SOUND_FILE_NAME = "vobble.m4a";
 	public static final String TAG = "VOBBLE";
-	
+
+    public static final String NMAP_API_KEY = "9d613b3fed909e86f46be79aae114235";
 
 	public static void log(String msg) {
 		log(TAG, msg);
@@ -42,32 +44,57 @@ public class Vobble extends Application {
 	public static void log(String tag, String msg) {
 		Log.d(tag, msg);
 	}
+
 	public static String getToken(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context).getString(Vobble.TOKEN, "");
+		return PreferenceManager.getDefaultSharedPreferences(context).getString(TOKEN, "");
 	}
-	public static String getName(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context).getString(Vobble.USERNAME, "");
+
+    public static void setToken(Context context, String token) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(TOKEN, token).commit();
+    }
+
+    public static String getName(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context).getString(USERNAME, "");
 	}
-	public static String getEmail(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context).getString(Vobble.EMAIL, "");
+
+    public static void setUsername(Context context, String username) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(USERNAME, username).commit();
+    }
+
+    public static String getEmail(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context).getString(EMAIL, "");
 	}
-	public static String getUserId(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context).getString(Vobble.USER_ID, "");
+
+    public static void setEmail(Context context, String email) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(EMAIL, email).commit();
+    }
+
+    public static String getUserId(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context).getString(USER_ID, "");
 	}
-	@Override
+
+    public static void setUserId(Context context, String userId) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(USER_ID, userId).commit();
+    }
+
+    public static boolean isLoggedIn(Context context) {
+        return !TextUtils.isEmpty(getToken(context));
+    }
+
+    @Override
 	public void onCreate() {
 		super.onCreate();
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
-		.cacheInMemory(true)
-		.cacheOnDisc(true)
-		.build();
+            .cacheInMemory(true)
+            .cacheOnDisc(true)
+            .build();
 		
 		File cacheDir = StorageUtils.getCacheDirectory(this);
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-		.memoryCache(new LruMemoryCache(8 * 1024 * 1024))
-		.discCache(new TotalSizeLimitedDiscCache(cacheDir, 20 * 1024 * 1024))
-		.defaultDisplayImageOptions(options)
-		.build();
-		ImageLoader.getInstance().init(config);
+            .memoryCache(new LruMemoryCache(8 * 1024 * 1024))
+            .discCache(new TotalSizeLimitedDiscCache(cacheDir, 20 * 1024 * 1024))
+            .defaultDisplayImageOptions(options)
+            .build();
+        ImageLoader.getInstance().init(config);
 	}
 }
