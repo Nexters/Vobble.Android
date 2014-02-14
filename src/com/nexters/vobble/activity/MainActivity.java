@@ -20,8 +20,7 @@ import android.widget.ImageView;
 import com.nexters.vobble.R;
 import com.nexters.vobble.adapter.CustomFragmentPagerAdapter;
 import com.nexters.vobble.core.Vobble;
-import com.nexters.vobble.fragment.AllVobblesFragment;
-import com.nexters.vobble.fragment.MyVobblesFragment;
+import com.nexters.vobble.fragment.ShowVobblesFragment;
 
 public class MainActivity extends BaseFragmentActivity implements
 		OnClickListener {
@@ -48,8 +47,8 @@ public class MainActivity extends BaseFragmentActivity implements
 	}
 
     private void initResources() {
-        fragments[0] = new AllVobblesFragment();
-        fragments[1] = new MyVobblesFragment();
+        fragments[0] = new ShowVobblesFragment("");
+        fragments[1] = new ShowVobblesFragment(Vobble.getUserId(this));
         mFlAllVobbleTab = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
 		mIvCreateVobble = (ImageView) findViewById(R.id.iv_voice_record_btn);

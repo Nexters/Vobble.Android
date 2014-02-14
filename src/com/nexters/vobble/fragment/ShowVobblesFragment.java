@@ -29,7 +29,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 
-public class AllVobblesFragment extends BaseFragment{
+public class ShowVobblesFragment extends BaseFragment{
 
     private final int VOBBLE_COUNT = 14;
     private final String VOBBLE_IMAGEVIEW_ID_PREFIX = "iv_vobble_";
@@ -38,12 +38,17 @@ public class AllVobblesFragment extends BaseFragment{
     private View view;
 	private ArrayList<Voice> vobbleArray;
 
+    private String userId;
     private Location mLocation;
+
+    public ShowVobblesFragment(String userId) {
+        this.userId = userId;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		view = inflater.inflate(R.layout.fragment_all_vobbles, null);
+		view = inflater.inflate(R.layout.fragment_show_vobbles, null);
 
         initResources(view);
         initVobbles();
@@ -62,9 +67,15 @@ public class AllVobblesFragment extends BaseFragment{
     }
 
     private void initVobbles() {
-    	String url = URL.VOBBLES;
-    	
-    	RequestParams params = new RequestParams();
+    	String url;
+
+        if (userId.equals("")) {
+            url = URL.VOBBLES;
+        } else {
+            url = String.format(URL.USER_VOBBLES, userId);
+        }
+
+        RequestParams params = new RequestParams();
         params.put(Vobble.LIMIT, VOBBLE_COUNT + "");
 
         if (mLocation != null) {
