@@ -2,61 +2,69 @@
 <resources>
 
     <string name="app_name">Vobble</string>
+
     <string name="title_activity_intro">IntroActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_tutorial">TutorialActivity</string>
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_sign_in">SignInActivity</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_record">RecordActivity</string>
-    <string name="title_activity_map">MapActivity</string>
-    <string name="title_activity_all_voice_fragment">AllVoiceFragment</string>
-    <string name="title_activity_my_voice_fragment">MyVoiceFragment</string>
-    <string name="error_signin">이메일과 비밀번호를 올바르게 입력해주세요.</string>
-    <string name="error_signup_form">모든 항목을 입력해 주세요.</string>
-    <string name="error_signup_password">비밀번호가 다릅니다. 다시 확인해 주세요.</string>
-    <string name="error_signup_username">Username 형식이 잘못되었습니다. 4글자 이상의 영어, 숫자, 하이픈(-), 언더바(_) 조합이어야 합니다.</string>
-    <string name="error_signup_email">Email 형식이 잘못되었습니다. 다시 확인해주세요.</string>
-    <string name="error_signup_passwrd_length">비밀번호는 6자리 이상이어야 합니다.</string>
-    <string name="error_not_record">녹음을 진행해주세요.</string>
-    <string name="error_not_image">사진을 선택해주세요.</string>
-    <string name="error_vobble_create">보블 생성에 실패하였습니다.</string>
-    <string name="ok">확인</string>
-    <string name="cancel">취소</string>
-    <string name="yes">예</string>
-    <string name="no">아니오</string>
-    <string name="end">종료</string>
+    <string name="title_activity_create_vobble">CreateVobbleActivity</string>
+    <string name="title_activity_confirm_vobble">ConfirmVobbleActivity</string>
+    <string name="title_activity_listen_vobble">ListenVobbleActivity</string>
+
     <string name="activity_main_all_vobbles_tab">All</string>
     <string name="activity_main_my_vobbles_tab">My</string>
-    <string name="activity_map_title">Confirm Vobble</string>
-    <string name="activity_map_button_save">Save</string>
-    <string name="activity_record_title">Make Vobble</string>
-    <string name="activity_record_button_confirm">Confirm</string>
+
+    <string name="activity_confirm_vobble_title">Confirm a vobble</string>
+    <string name="activity_confirm_vobble_button_save">Save</string>
+    <string name="activity_confirm_vobble_choosing_photo_dialog_title">Photo</string>
+
+    <string name="activity_create_vobble_title">Create a vobble</string>
+    <string name="activity_create_vobble_button_confirm">Confirm</string>
+
     <string name="activity_sign_in_title">Sign In</string>
     <string name="activity_sign_in_edit_text_email_hint">Email</string>
     <string name="activity_sign_in_edit_text_password_hint">Password</string>
     <string name="activity_sign_in_button_sign_in">Sign In</string>
+
     <string name="activity_sign_up_title">Sign Up</string>
     <string name="activity_sign_up_edit_text_username_hint">User name</string>
     <string name="activity_sign_up_edit_text_email_hint">Email</string>
     <string name="activity_sign_up_edit_text_password_hint">Password</string>
     <string name="activity_sign_up_edit_text_password_check_hint">Password Check</string>
     <string name="activity_sign_up_button_sign_up">Sign Up</string>
+
     <string name="activity_start_button_sign_up">Sign Up</string>
     <string name="activity_start_button_sign_in">Sign In</string>
-    <string name="activity_fragment_all_vobbles_vobbles">vobbles</string>
-    <string name="activity_fragment_my_vobbles_vobbles">vobbles</string>
-    <string name="activity_map_choosing_photo_dialog_title">사진</string>
-    <string name="activity_vobble_title">Listen vobble</string>
-    <string name="menu_log_out">Log Out</string>
 
-    <string-array name="activity_map_choosing_photo_dialog_items">
-        <item>카메라</item>
-        <item>앨범</item>
+    <string name="fragment_all_vobbles_vobbles">vobbles</string>
+    <string name="fragment_my_vobbles_vobbles">vobbles</string>
+
+    <string name="activity_listen_vobble_title">Listen a vobble</string>
+
+    <string name="error_signin">이메일과 비밀번호를 올바르게 입력해주세요.</string>
+    <string name="error_signup_form">모든 항목을 입력해 주세요.</string>
+    <string name="error_signup_password">비밀번호가 다릅니다. 다시 확인해 주세요.</string>
+    <string name="error_signup_username">Username 형식이 잘못되었습니다. 4글자 이상의 영어, 숫자, 하이픈(-), 언더바(_) 조합이어야 합니다.</string>
+    <string name="error_signup_email">Email 형식이 잘못되었습니다. 다시 확인해주세요.</string>
+    <string name="error_signup_passwrd_length">비밀번호는 6자리 이상이어야 합니다.</string>
+    <string name="error_not_exist_voice">녹음을 진행해주세요.</string>
+    <string name="error_not_exist_image">사진을 선택해주세요.</string>
+    <string name="error_cannot_create_vobble">보블 생성에 실패하였습니다.</string>
+    <string name="error_cannot_use_gps">위치 정보를 가져올 수 없습니다. GPS가 사용가능한 상태인지 확인해주세요.</string>
+
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
+    <string name="yes">예</string>
+    <string name="no">아니오</string>
+    <string name="end">종료</string>
+    <string name="confirm_finish_app">Vobble을 종료하시겠습니까?</string>
+    <string name="log_out">Log Out</string>
+
+    <string-array name="menu_choosing_photo_dialog_items">
+        <item>Camera</item>
+        <item>Gallery</item>
     </string-array>
-
-    <string name="title_activity_tutorial">TutorialActivity</string>
-    <string name="title_activity_vobble">VobbleActivity</string>
 
 </resources>

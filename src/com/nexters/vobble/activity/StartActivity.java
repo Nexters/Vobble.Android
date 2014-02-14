@@ -10,8 +10,8 @@ import android.widget.Button;
 import com.nexters.vobble.R;
 
 public class StartActivity extends Activity implements View.OnClickListener {
-	private Button btnSignIn;
-	private Button btnSignUp;
+	private Button mBtnSignIn;
+	private Button mBtnSignUp;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +24,13 @@ public class StartActivity extends Activity implements View.OnClickListener {
 	}
 
     private void initResources() {
-        btnSignIn = (Button) findViewById(R.id.btn_sign_in);
-        btnSignUp = (Button) findViewById(R.id.btn_sign_up);
+        mBtnSignIn = (Button) findViewById(R.id.btn_sign_in);
+        mBtnSignUp = (Button) findViewById(R.id.btn_sign_up);
     }
 
     private void initEvents() {
-        btnSignIn.setOnClickListener(this);
-        btnSignUp.setOnClickListener(this);
+        mBtnSignIn.setOnClickListener(this);
+        mBtnSignUp.setOnClickListener(this);
     }
 
     @Override

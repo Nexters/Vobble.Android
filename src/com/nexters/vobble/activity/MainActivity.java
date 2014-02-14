@@ -1,19 +1,13 @@
 package com.nexters.vobble.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,205 +16,135 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.nexters.vobble.R;
 import com.nexters.vobble.adapter.CustomFragmentPagerAdapter;
 import com.nexters.vobble.core.Vobble;
+import com.nexters.vobble.fragment.AllVobblesFragment;
+import com.nexters.vobble.fragment.MyVobblesFragment;
 
 public class MainActivity extends BaseFragmentActivity implements
 		OnClickListener {
-	private ViewPager viewPager;
-	private CustomFragmentPagerAdapter adapter;
-	private FrameLayout allVoiceButtonLayout;
-	private FrameLayout myVoiceButtonLayout;
-	private ImageView makeVobbleImageView;
 
-	private double longitude = 37.0f;
-	private double latitude = 127.0f;
+    private final int FRAGMENT_COUNT = 2;
+    private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
+
+	private FrameLayout mFlAllVobbleTab;
+	private FrameLayout myVoiceButtonLayout;
+	private ImageView mIvCreateVobble;
+    private ViewPager mViewPager;
+
+    private CustomFragmentPagerAdapter mCustomFragmentPagerAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
-
-        checkUserInfo();
 
         initResources();
 		initEvents();
 		initViewPager();
-
-		getLocation();
 	}
 
-    private void checkUserInfo() {
-        final String token = Vobble.getToken(this);
-        if (TextUtils.isEmpty(token)) {
-            Intent intent = new Intent(this, TutorialActivity.class);
-            startActivity(intent);
-        }
-    }
-
     private void initResources() {
-		viewPager = (ViewPager) findViewById(R.id.viewPager);
-		allVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
+        fragments[0] = new AllVobblesFragment();
+        fragments[1] = new MyVobblesFragment();
+        mFlAllVobbleTab = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
-		makeVobbleImageView = (ImageView) findViewById(R.id.iv_voice_record_btn);
-		allVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
+		mIvCreateVobble = (ImageView) findViewById(R.id.iv_voice_record_btn);
+		mFlAllVobbleTab.setBackgroundColor(Color.argb(0, 1, 1, 1));
 	}
 
 	private void initEvents() {
-		allVoiceButtonLayout.setOnClickListener(this);
+		mFlAllVobbleTab.setOnClickListener(this);
 		myVoiceButtonLayout.setOnClickListener(this);
-		makeVobbleImageView.setOnClickListener(this);
+		mIvCreateVobble.setOnClickListener(this);
 	}
 
 	private void initViewPager() {
-		FragmentManager fm = getSupportFragmentManager();
-		adapter = new CustomFragmentPagerAdapter(fm);
-		viewPager.setAdapter(adapter);
-		viewPager.setCurrentItem(0);
-		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				setSelectedTab(position);
-			}
+        FragmentManager fm = getSupportFragmentManager();
+        mCustomFragmentPagerAdapter = new CustomFragmentPagerAdapter(fm, FRAGMENT_COUNT, fragments);
 
-			@Override
-			public void onPageScrolled(int i, float v, int i2) {
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+		mViewPager.setAdapter(mCustomFragmentPagerAdapter);
+		mViewPager.setCurrentItem(0);
+		mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-			}
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    onClick(mFlAllVobbleTab);
+                } else if (position == 1) {
+                    onClick(myVoiceButtonLayout);
+                }
+            }
 
-			@Override
-			public void onPageScrollStateChanged(int i) {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
 
-			}
-		});
-	}
+            }
 
-	private void getLocation() {
-		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            @Override
+            public void onPageScrollStateChanged(int i) {
 
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10,
-				new LocationListener() {
-					public void onLocationChanged(Location location) {
-						double tLongitude = location.getLongitude();
-						double tLatitude = location.getLatitude();
-						// TODO - 많이안변하면 안바꾸는 로직
-						longitude = tLongitude;
-						latitude = tLatitude;
-						Vobble.log("longitude : " + longitude);
-						Vobble.log("latitude : " + latitude);
-					}
-
-					@Override
-					public void onProviderDisabled(String provider) {
-						Vobble.log("GPS Provider Disabled");
-						Toast.makeText(MainActivity.this,
-								"GPS Provider Disabled", Toast.LENGTH_SHORT)
-								.show();
-					}
-
-					@Override
-					public void onProviderEnabled(String provider) {
-						Vobble.log("GPS Provider Enabled");
-						Toast.makeText(MainActivity.this,
-								"GPS Provider Enabled", Toast.LENGTH_SHORT)
-								.show();
-					}
-
-					@Override
-					public void onStatusChanged(String provider, int status,
-							Bundle extras) {
-						switch (status) {
-						case LocationProvider.AVAILABLE:
-							Vobble.log("GPS available again");
-							Toast.makeText(MainActivity.this,
-									"GPS available again", Toast.LENGTH_SHORT)
-									.show();
-							break;
-						case LocationProvider.OUT_OF_SERVICE:
-							Vobble.log("GPS available service");
-							Toast.makeText(MainActivity.this,
-									"GPS out of service", Toast.LENGTH_SHORT)
-									.show();
-							break;
-						case LocationProvider.TEMPORARILY_UNAVAILABLE:
-							Vobble.log("GPS temporarily unavailable");
-							Toast.makeText(MainActivity.this,
-									"GPS temporarily unavailable",
-									Toast.LENGTH_SHORT).show();
-							break;
-						}
-
-					}
-				});
-		Location l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if(l == null){
-
-		}
+            }
+        });
 	}
 
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.fl_all_voice_tab_button:
-			showAllVoiceFragment();
+			showAllVobblesFragment();
 			break;
 		case R.id.fl_my_voice_tab_button:
-			showMyVoiceFragment();
+			showMyVobblesFragment();
 			break;
 		case R.id.iv_voice_record_btn:
-			Intent intent = new Intent(MainActivity.this, RecordActivity.class);
+			Intent intent = new Intent(MainActivity.this, CreateVobbleActivity.class);
 			startActivity(intent);
+            break;
 		}
 	}
 
-	private void showAllVoiceFragment() {
-		viewPager.setCurrentItem(0, true);
-		allVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
+	private void showAllVobblesFragment() {
+		mViewPager.setCurrentItem(0, true);
+		mFlAllVobbleTab.setBackgroundColor(Color.argb(0, 1, 1, 1));
 		myVoiceButtonLayout.setBackgroundResource(R.drawable.tab_mask);
 	}
 
-	private void showMyVoiceFragment() {
-		viewPager.setCurrentItem(1, true);
+	private void showMyVobblesFragment() {
+		mViewPager.setCurrentItem(1, true);
 		myVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
-		allVoiceButtonLayout.setBackgroundResource(R.drawable.tab_mask);
+		mFlAllVobbleTab.setBackgroundResource(R.drawable.tab_mask);
 	}
 
-	public void setSelectedTab(int position) {
-		if (position == 0)
-			onClick(allVoiceButtonLayout);
-		else if (position == 1)
-			onClick(myVoiceButtonLayout);
-	}
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.end);
+        builder.setMessage(R.string.confirm_finish_app);
+        builder.setNegativeButton(R.string.no, null);
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                finish();
+            }
+        });
+        builder.show();
+    }
 
-	public void onBackPressed() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.end);
-		builder.setMessage("Vobble을 종료하시겠습니까?");
-		builder.setNegativeButton(R.string.no, null);
-		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface arg0, int arg1) {
-				finish();
-			}
-		});
-		builder.show();
-	}
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO Auto-generated method stub
         switch (item.getItemId()) {
         case R.id.log_out:
-        	PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
-            .edit().putString(Vobble.TOKEN, "").commit();
+            Vobble.setToken(this, "");
         	Intent intent = new Intent(getApplicationContext(), StartActivity.class);
             startActivity(intent);
 			finish();

@@ -1,12 +1,17 @@
 package com.nexters.vobble.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.TextView;
+import com.nexters.vobble.R;
 import com.nexters.vobble.activity.BaseFragmentActivity;
 
 
@@ -16,11 +21,7 @@ public class BaseFragment extends Fragment {
 
 	public LayoutInflater inflater;
 	public BaseFragmentActivity activity;
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-    }
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -40,15 +41,6 @@ public class BaseFragment extends Fragment {
 		return rootView;
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-	}
 	public View getView(ViewGroup container) {
 		return container;
 	}
@@ -61,22 +53,17 @@ public class BaseFragment extends Fragment {
 		activity.hideLoading();
 	}
 
-	public String getName() {
-		StringBuilder nameBuilder = new StringBuilder(getClass().getName());
-		Bundle arguments = getArguments();
-		if(arguments != null) {
-			for(String k : arguments.keySet()) {
-				nameBuilder.append(arguments.get(k).toString());
-			}
-		}
-		return nameBuilder.toString();
-	}
+    public void alert(int resId) {
+        alert(getString(resId));
+    }
 
-	public String getTitle() {
-		return "";
-	}
-	
-	public boolean onBackPressed() {
-		return false;
-	}
+    public void alert(String message) {
+        Dialog dialog = new AlertDialog.Builder(this.getActivity())
+                .setMessage(message)
+                .setPositiveButton(R.string.ok, null)
+                .create();
+        dialog.show();
+        TextView messageText = (TextView) dialog.findViewById(android.R.id.message);
+        messageText.setGravity(Gravity.CENTER);
+    }
 }

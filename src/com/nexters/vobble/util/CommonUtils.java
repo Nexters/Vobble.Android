@@ -1,5 +1,6 @@
 package com.nexters.vobble.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,11 +8,21 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 
 public class CommonUtils {
 
+    public static Location getLocation(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = lm.getBestProvider(new Criteria(), true);
+        return lm.getLastKnownLocation(locationProvider);
+    }
+
     public static Bitmap getCroppedBitmap(Bitmap bitmap, int radius) {
         Bitmap scaledBitmap;
+
         if (bitmap.getWidth() != radius || bitmap.getHeight() != radius) {
             scaledBitmap = Bitmap.createScaledBitmap(bitmap, radius, radius, false);
         } else {
@@ -19,7 +30,6 @@ public class CommonUtils {
         }
 
         Bitmap output = Bitmap.createBitmap(scaledBitmap.getWidth(), scaledBitmap.getHeight(), Bitmap.Config.ARGB_8888);
-
         Canvas canvas = new Canvas(output);
 
         final Paint paint = new Paint();

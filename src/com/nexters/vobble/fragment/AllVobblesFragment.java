@@ -2,6 +2,8 @@ package com.nexters.vobble.fragment;
 
 import java.util.ArrayList;
 
+import android.location.Location;
+import com.nexters.vobble.activity.ListenVobbleActivity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,13 +13,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.R;
-import com.nexters.vobble.activity.VobbleActivity;
 import com.nexters.vobble.core.Vobble;
 import com.nexters.vobble.network.HttpUtil;
 import com.nexters.vobble.network.URL;
@@ -31,18 +30,18 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 
 public class AllVobblesFragment extends BaseFragment{
-	private View view;
+
+    private final int VOBBLE_COUNT = 14;
+    private final String VOBBLE_IMAGEVIEW_ID_PREFIX = "iv_vobble_";
+    private Integer[] vobbleBnts = new Integer[VOBBLE_COUNT];
+
+    private View view;
 	private ArrayList<Voice> vobbleArray;
-	private static final int[] vobbleBnts = {
-			R.id.iv_vobble_1,R.id.iv_vobble_2,R.id.iv_vobble_3,R.id.iv_vobble_4,R.id.iv_vobble_5,
-			R.id.iv_vobble_6,R.id.iv_vobble_7,R.id.iv_vobble_8,R.id.iv_vobble_9,R.id.iv_vobble_10,
-			R.id.iv_vobble_11,R.id.iv_vobble_12,R.id.iv_vobble_13,R.id.iv_vobble_14
-	};
+
+    private Location mLocation;
+
     @Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-    }
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		view = inflater.inflate(R.layout.fragment_all_vobbles, null);
 
@@ -52,11 +51,13 @@ public class AllVobblesFragment extends BaseFragment{
 	}
 
     private void initResources(View view) {
-    	
-    	vobbleArray = new ArrayList<Voice>();
-    	for(int i=0; i < vobbleBnts.length; i++){
-    		view.findViewById(vobbleBnts[i]).setOnClickListener(vobbleClickListener);
-        	view.findViewById(vobbleBnts[i]).setTag(i);
+    	mLocation = CommonUtils.getLocation(this.getActivity());
+        vobbleArray = new ArrayList<Voice>();
+        for (int i = 1; i <= VOBBLE_COUNT; i++) {
+            int resId = getResources().getIdentifier(VOBBLE_IMAGEVIEW_ID_PREFIX + i, "id", this.getActivity().getPackageName());
+            vobbleBnts[i - 1] = resId;
+            view.findViewById(resId).setOnClickListener(vobbleClickListener);
+        	view.findViewById(resId).setTag(i);
     	}
     }
 
@@ -64,10 +65,16 @@ public class AllVobblesFragment extends BaseFragment{
     	String url = URL.VOBBLES;
     	
     	RequestParams params = new RequestParams();
-    	params.put(Vobble.LATITUDE, "127");
-		params.put(Vobble.LONGITUDE, "37");
-		params.put(Vobble.LIMIT, "6");
-        
+        params.put(Vobble.LIMIT, VOBBLE_COUNT + "");
+
+        if (mLocation != null) {
+            params.put(Vobble.LATITUDE, mLocation.getLatitude() + "");
+            params.put(Vobble.LONGITUDE, mLocation.getLongitude() + "");
+        } else {
+            alert(R.string.error_cannot_use_gps);
+            return;
+        }
+
 		HttpUtil.get(url, null, params, new VobbleResponseHandler(activity) {
 
 			@Override
@@ -85,7 +92,7 @@ public class AllVobblesFragment extends BaseFragment{
 			@Override
 			public void onSuccess(JSONObject response) {
 				JSONArray dataArr = response.optJSONArray("vobbles");
-				for(int i = 0; i < dataArr.length(); i++) {
+				for (int i = 0; i < dataArr.length(); i++) {
 					Voice station = Voice.parse(dataArr.optJSONObject(i));
 					vobbleArray.add(station);
 				}
@@ -93,13 +100,13 @@ public class AllVobblesFragment extends BaseFragment{
 			}
 		});
     }
-    private void initVobbleImage(){
-    	int vobbleCnt = vobbleArray.size();
-    	vobbleCnt = (vobbleCnt > vobbleBnts.length) ? vobbleBnts.length : vobbleArray.size();
-    	for(int i=0; i < vobbleCnt; i++){
+
+    private void initVobbleImage() {
+    	int vobbleCnt = (vobbleArray.size() > VOBBLE_COUNT) ? VOBBLE_COUNT : vobbleArray.size();
+        for (int i = 0; i < vobbleCnt; i++) {
     		Voice voice = vobbleArray.get(i);
-        	if(voice.isImageExist()){
-        		final ImageView vobbleImg = (ImageView)view.findViewById(vobbleBnts[i]);
+        	if (voice.isImageExist()) {
+        		final ImageView vobbleImg = (ImageView) view.findViewById(vobbleBnts[i]);
         		
             	ImageSize targetSize = new ImageSize(vobbleImg.getWidth(), vobbleImg.getHeight());
             	DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -129,7 +136,7 @@ public class AllVobblesFragment extends BaseFragment{
 			// 임시 처리
 			int tag = (Integer)v.getTag();
 			if(tag < vobbleArray.size()){
-				Intent intent = new Intent(activity.getApplicationContext(), VobbleActivity.class);
+				Intent intent = new Intent(activity.getApplicationContext(), ListenVobbleActivity.class);
 				Voice voice = vobbleArray.get(tag);
 				intent.putExtra("vobble", voice);
 				startActivity(intent);

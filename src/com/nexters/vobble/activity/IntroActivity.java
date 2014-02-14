@@ -7,33 +7,35 @@ import android.os.Handler;
 import android.view.Window;
 
 import com.nexters.vobble.R;
+import com.nexters.vobble.core.Vobble;
 
 public class IntroActivity extends Activity {
-	private Handler handler = null;
-	@Override
+	private static int INTRO_LOADING_TIME = 1000;
+    private Handler mHandler = null;
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_intro);
-		
-		// FOR TEST
-		/*
-		PreferenceManager.getDefaultSharedPreferences(IntroActivity.this)
-		.edit().putString(Vobble.USER_ID, "21").commit();
-		PreferenceManager.getDefaultSharedPreferences(SignInActivity.this)
-        .edit().putString(Vobble.TOKEN, "ac59b5a203b2e6f54c887a67b55b0083").commit();
-		*/
-		handler = new Handler();
-		handler.postDelayed(new Runnable() {
-			public void run() {
-				endIntro();
-			}
-		}, 1000);		
+
+		mHandler = new Handler();
+		mHandler.postDelayed(new Runnable() {
+            public void run() {
+                endIntro();
+            }
+        }, INTRO_LOADING_TIME);
 	}
 
 	private void endIntro() {
-		Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        if (Vobble.isLoggedIn(this)) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(this, TutorialActivity.class);
+            startActivity(intent);
+            finish();
+        }
 	}
 }

@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="640"
-            android:text="@string/activity_vobble_title"
+            android:text="@string/activity_listen_vobble_title"
             android:gravity="center_horizontal|center_vertical"
             android:textSize="18sp"
             android:textColor="#ffffff"/>
