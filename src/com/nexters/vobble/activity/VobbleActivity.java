@@ -44,6 +44,7 @@ public class VobbleActivity extends BaseNMapActivity {
 		initResource();
 		initView();
 		initMapView();
+		playVobble();
 	}
 	private void initResource(){
 		Intent intent = getIntent();
@@ -55,16 +56,7 @@ public class VobbleActivity extends BaseNMapActivity {
 		vobbleImg.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
-				MediaPlayer mp = new MediaPlayer();
-			    try {
-			    	mp.setDataSource(voice.getStreamingVoiceUrl());
-			        mp.prepare();
-			        animate(mProgressBar, 1f, mp.getDuration());
-			        mp.start();
-			    } catch (Exception e) {
-			        e.printStackTrace();
-			    }
+				playVobble();
 			}
 		});
 		if(!TextUtils.isEmpty(voice.imgUri)){
@@ -103,7 +95,17 @@ public class VobbleActivity extends BaseNMapActivity {
         NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
         poiDataOverlay.showAllPOIdata(0);
     }
-	
+	private void playVobble(){
+		MediaPlayer mp = new MediaPlayer();
+	    try {
+	    	mp.setDataSource(voice.getStreamingVoiceUrl());
+	        mp.prepare();
+	        animate(mProgressBar, 1f, mp.getDuration());
+	        mp.start();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 	private void animate(final HoloCircularProgressBar progressBar, final float progress, final int duration) {
         mProgressBarAnimator = ObjectAnimator.ofFloat(progressBar, "progress", progress);
         mProgressBarAnimator.setDuration(duration);
