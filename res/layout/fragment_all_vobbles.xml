@@ -3,17 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-<RelativeLayout 
-	android:layout_width="match_parent"
-	android:layout_height="match_parent" >
-	<ImageView
-	    android:id="@+id/mapMarker"
-	    android:layout_width="36dp"
-	    android:layout_height="67.5dp"
-	    android:layout_centerHorizontal="true"
-	    android:layout_centerVertical="true"
-	    android:src="@drawable/voice_reload" />
-</RelativeLayout>
+	<RelativeLayout 
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" >
+		<ImageView
+		    android:id="@+id/mapMarker"
+		    android:layout_width="36dp"
+		    android:layout_height="67.5dp"
+		    android:layout_centerHorizontal="true"
+		    android:layout_centerVertical="true"
+		    android:src="@drawable/voice_reload" />
+	</RelativeLayout>
+	
 	<LinearLayout 
 		android:id="@+id/ll_fragment_all_voice"
 		android:layout_width="match_parent"
