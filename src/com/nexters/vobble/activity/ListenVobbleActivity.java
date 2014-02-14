@@ -40,7 +40,7 @@ public class ListenVobbleActivity extends BaseNMapActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_vobble);
+		setContentView(R.layout.activity_listen_vobble);
 
         initResource();
 		initView();

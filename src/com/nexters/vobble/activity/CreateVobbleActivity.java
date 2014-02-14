@@ -54,7 +54,7 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_record);
+		setContentView(R.layout.activity_create_vobble);
 
         initResources();
 		initEvents();

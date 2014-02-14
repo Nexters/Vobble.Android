@@ -1,10 +1,12 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.nexters.vobble"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:orientation="vertical"
-    tools:context=".activity.VobbleActivity" xmlns:app="http://schemas.android.com/apk/res/com.nexters.vobble">
+    tools:context=".activity.VobbleActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,11 +44,11 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="130"/>
+            android:layout_weight="140"/>
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="460">
+            android:layout_weight="440">
 	        <ImageView
 	            android:id="@+id/voice_photo"
 	            android:layout_width="match_parent"
@@ -69,13 +71,13 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="130"/>
+            android:layout_weight="140"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="105"/>
-     <com.nhn.android.maps.NMapView
+    <com.nhn.android.maps.NMapView
         android:id="@+id/vobble_map_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

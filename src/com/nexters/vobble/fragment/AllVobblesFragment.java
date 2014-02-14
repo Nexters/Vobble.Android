@@ -57,7 +57,7 @@ public class AllVobblesFragment extends BaseFragment{
             int resId = getResources().getIdentifier(VOBBLE_IMAGEVIEW_ID_PREFIX + i, "id", this.getActivity().getPackageName());
             vobbleBnts[i - 1] = resId;
             view.findViewById(resId).setOnClickListener(vobbleClickListener);
-        	view.findViewById(resId).setTag(i);
+        	view.findViewById(resId).setTag(i - 1);
     	}
     }
 
