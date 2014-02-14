@@ -1,34 +1,25 @@
 package com.nexters.vobble.activity;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 
-import com.nexters.vobble.nmap.NMapPOIFlagType;
-import org.json.JSONObject;
+import org.json.*;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.Location;
-import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.content.*;
+import android.graphics.*;
+import android.location.*;
+import android.os.*;
+import android.view.*;
+import android.widget.*;
 
-import com.loopj.android.http.RequestParams;
-import com.nexters.vobble.R;
-import com.nexters.vobble.core.Vobble;
-import com.nexters.vobble.network.HttpUtil;
-import com.nexters.vobble.network.URL;
-import com.nexters.vobble.network.VobbleResponseHandler;
-import com.nexters.vobble.nmap.NMapViewerResourceProvider;
-import com.nexters.vobble.util.CommonUtils;
-import com.nexters.vobble.util.FileIOUtils;
-import com.nhn.android.maps.NMapView;
-import com.nhn.android.maps.overlay.NMapPOIdata;
-import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
-import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
+import com.loopj.android.http.*;
+import com.nexters.vobble.*;
+import com.nexters.vobble.core.*;
+import com.nexters.vobble.network.*;
+import com.nexters.vobble.nmap.*;
+import com.nexters.vobble.util.*;
+import com.nhn.android.maps.*;
+import com.nhn.android.maps.overlay.*;
+import com.nhn.android.mapviewer.overlay.*;
 
 public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnClickListener {
     private NMapView mMapView;
@@ -73,7 +64,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
             NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
             NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
 
-            int markerId = NMapPOIFlagType.PIN;
+            int markerId = NMapPOIflagType.PIN;
             NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
             poiData.beginPOIdata(1);
             poiData.addPOIitem(mLocation.getLongitude(), mLocation.getLatitude(), "현재 위치", markerId, 0);

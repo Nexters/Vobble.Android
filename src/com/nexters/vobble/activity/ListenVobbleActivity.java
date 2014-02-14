@@ -1,32 +1,25 @@
 package com.nexters.vobble.activity;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.Window;
-import android.widget.ImageView;
+import android.animation.*;
+import android.content.*;
+import android.graphics.*;
+import android.media.*;
+import android.os.*;
+import android.text.*;
+import android.view.*;
+import android.widget.*;
 
-import com.nexters.vobble.R;
-import com.nexters.vobble.core.Vobble;
-import com.nexters.vobble.network.Voice;
-import com.nexters.vobble.nmap.NMapPOIFlagType;
-import com.nexters.vobble.nmap.NMapViewerResourceProvider;
-import com.nexters.vobble.util.CommonUtils;
-import com.nexters.vobble.view.HoloCircularProgressBar;
-import com.nhn.android.maps.NMapView;
-import com.nhn.android.maps.overlay.NMapPOIdata;
-import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
-import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.nexters.vobble.*;
+import com.nexters.vobble.core.*;
+import com.nexters.vobble.network.*;
+import com.nexters.vobble.nmap.*;
+import com.nexters.vobble.util.*;
+import com.nexters.vobble.view.*;
+import com.nhn.android.maps.*;
+import com.nhn.android.maps.overlay.*;
+import com.nhn.android.mapviewer.overlay.*;
+import com.nostra13.universalimageloader.core.*;
+import com.nostra13.universalimageloader.core.assist.*;
 
 public class ListenVobbleActivity extends BaseNMapActivity {
 	private NMapView mMapView;
@@ -90,7 +83,7 @@ public class ListenVobbleActivity extends BaseNMapActivity {
         NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
 
-        int markerId = NMapPOIFlagType.PIN;
+        int markerId = NMapPOIflagType.PIN;
         NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
         poiData.beginPOIdata(1);
         poiData.addPOIitem(voice.longitude, voice.latitude, "현재 위치", markerId, 0);

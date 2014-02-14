@@ -1,6 +1,6 @@
 package com.nexters.vobble.nmap;
 
-public class NMapPOIFlagType {
+public class NMapPOIflagType {
 
     public static final int PIN = 1;
 
