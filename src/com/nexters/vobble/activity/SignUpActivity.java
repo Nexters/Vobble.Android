@@ -19,11 +19,11 @@ import com.nexters.vobble.network.VobbleResponseHandler;
 
 public class SignUpActivity extends BaseActivity implements View.OnClickListener {
 
-    private EditText etUsername;
-    private EditText etEmail;
-    private EditText etPassword;
-    private EditText etPasswordCheck;
-    private Button btnSignUp;
+    private EditText mEtUsername;
+    private EditText mEtEmail;
+    private EditText mEtPassword;
+    private EditText mEtPasswordCheck;
+    private Button mBtnSignUp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,31 +36,31 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 	}
 
     private void initResources() {
-        etUsername = (EditText) findViewById(R.id.et_sign_up_username);
-        etEmail = (EditText) findViewById(R.id.et_sign_up_email);
-        etPassword = (EditText) findViewById(R.id.et_sign_up_password);
-        etPasswordCheck = (EditText) findViewById(R.id.et_sign_up_password_check);
-        btnSignUp = (Button) findViewById(R.id.btn_sign_up);
+        mEtUsername = (EditText) findViewById(R.id.et_sign_up_username);
+        mEtEmail = (EditText) findViewById(R.id.et_sign_up_email);
+        mEtPassword = (EditText) findViewById(R.id.et_sign_up_password);
+        mEtPasswordCheck = (EditText) findViewById(R.id.et_sign_up_password_check);
+        mBtnSignUp = (Button) findViewById(R.id.btn_sign_up);
     }
 
     private void initEvents() {
-        btnSignUp.setOnClickListener(this);
+        mBtnSignUp.setOnClickListener(this);
     }
 
     private String getUsername() {
-        return etUsername.getText().toString();
+        return mEtUsername.getText().toString();
     }
 
     private String getEmail() {
-        return etEmail.getText().toString();
+        return mEtEmail.getText().toString();
     }
 
     private String getPassword() {
-        return etPassword.getText().toString();
+        return mEtPassword.getText().toString();
     }
 
     private String getPasswordCheck() {
-        return etPasswordCheck.getText().toString();
+        return mEtPasswordCheck.getText().toString();
     }
 
     private boolean isAllFormFilled() {
@@ -129,11 +129,9 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
 			@Override
 			public void onSuccess(JSONObject response) {
-				PreferenceManager.getDefaultSharedPreferences(SignUpActivity.this)
-				.edit().putString(Vobble.EMAIL, etEmail.getText().toString()).commit();
-				PreferenceManager.getDefaultSharedPreferences(SignUpActivity.this)
-				.edit().putString(Vobble.USERNAME, etUsername.getText().toString()).commit();
-				
+                Vobble.setUsername(SignUpActivity.this, getUsername());
+                Vobble.setEmail(SignUpActivity.this, getEmail());
+
 				Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                 startActivity(intent);
                 finish();

@@ -19,10 +19,9 @@ import com.nexters.vobble.network.URL;
 import com.nexters.vobble.network.VobbleResponseHandler;
 
 public class SignInActivity extends BaseFragmentActivity implements View.OnClickListener {
-    private EditText etEmail;
-    private EditText etPassword;
-    private Button btnSignIn;
-    private CustomFragmentPagerAdapter adapter;
+    private EditText mEtEmail;
+    private EditText mEtPassword;
+    private Button mBtnSignIn;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +34,14 @@ public class SignInActivity extends BaseFragmentActivity implements View.OnClick
 	}
 
     private void initResources() {
-        etEmail = (EditText) findViewById(R.id.et_sign_in_email);
-        etPassword = (EditText) findViewById(R.id.et_sign_in_password);
-        btnSignIn = (Button) findViewById(R.id.btn_sign_in);
+        mEtEmail = (EditText) findViewById(R.id.et_sign_in_email);
+        mEtPassword = (EditText) findViewById(R.id.et_sign_in_password);
+        mBtnSignIn = (Button) findViewById(R.id.btn_sign_in);
     }
 
     private void initEvents() {
-        btnSignIn.setOnClickListener(this);
+        mBtnSignIn.setOnClickListener(this);
     }
-
 
     public void onClick(View v) {
         if (isAllFormsFilled()) {
@@ -52,14 +50,13 @@ public class SignInActivity extends BaseFragmentActivity implements View.OnClick
             alert(R.string.error_signin);
         }
     }
-    
-	
+
     private String getPassword() {
-        return etPassword.getText().toString();
+        return mEtPassword.getText().toString();
     }
 
     private String getEmail() {
-        return etEmail.getText().toString();
+        return mEtEmail.getText().toString();
     }
 
     private boolean isAllFormsFilled() {
@@ -89,13 +86,10 @@ public class SignInActivity extends BaseFragmentActivity implements View.OnClick
 
             @Override
             public void onSuccess(JSONObject response) {
-                PreferenceManager.getDefaultSharedPreferences(SignInActivity.this)
-                        .edit().putString(Vobble.TOKEN, response.optString(Vobble.TOKEN)).commit();
-                PreferenceManager.getDefaultSharedPreferences(SignInActivity.this)
-                .edit().putString(Vobble.USER_ID, response.optString(Vobble.USER_ID)).commit();
-                
+                Vobble.setToken(SignInActivity.this, response.optString(Vobble.TOKEN));
+                Vobble.setUserId(SignInActivity.this, response.optString(Vobble.USER_ID));
+
                 Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             }

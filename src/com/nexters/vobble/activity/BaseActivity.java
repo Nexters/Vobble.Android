@@ -14,10 +14,8 @@ import android.widget.Toast;
 import com.nexters.vobble.R;
 
 public class BaseActivity extends Activity {
-
-	private View loadingView;
-
-	private int loadingStackCount = 0;
+    private int loadingStackCount = 0;
+    private View loadingView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,27 +23,6 @@ public class BaseActivity extends Activity {
 
 		loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
 		loadingView.setVisibility(View.INVISIBLE);
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
 	}
 
 	@Override
