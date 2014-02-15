@@ -29,7 +29,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
-
 @SuppressLint("ValidFragment")
 public class ShowVobblesFragment extends BaseFragment{
 
