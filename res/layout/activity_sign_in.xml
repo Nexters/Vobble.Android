@@ -121,11 +121,11 @@
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="600"
-	        android:background="#40ddc2"
+	        android:background="@drawable/btn_effect_bg_color_mint"
 	        android:text="@string/activity_sign_in_button_sign_in"
 	        android:gravity="center_horizontal|center_vertical"
 	        android:textSize="18sp"
-	        android:textColor="#ffffff"/>
+	        android:textColor="@color/white"/>
 	    <TextView
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
