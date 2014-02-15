@@ -81,11 +81,4 @@ public class VobbleResponseHandler extends JsonHttpResponseHandler {
 	}
 	
 	public void onCompletelyFinish() {}
-	
-	private boolean isNetworkConnected(){
-	    ConnectivityManager connectivityManager 
-	            = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();    
-	}
 }

@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.loopj.android.http.RequestParams;
@@ -138,9 +140,9 @@ public class ShowVobblesFragment extends BaseFragment{
         		    @Override
         		    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
         		        // Do whatever you want with Bitmap
-        		    	//Animation fadeIn = AnimationUtils.loadAnimation(activity, R.anim.vobble_scale_up);
+        		    	Animation fadeIn = AnimationUtils.loadAnimation(activity, R.anim.vobble_scale_up);
         		    	vobbleImg.setImageBitmap(CommonUtils.getCroppedBitmap(loadedImage, vobbleImg.getWidth()));
-        		    	//vobbleImg.startAnimation(fadeIn);
+        		    	vobbleImg.startAnimation(fadeIn);
         		    }
         		});
         	}
