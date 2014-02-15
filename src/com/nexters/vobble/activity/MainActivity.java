@@ -106,6 +106,13 @@ public class MainActivity extends BaseFragmentActivity implements
 			Intent intent = new Intent(MainActivity.this, CreateVobbleActivity.class);
 			startActivity(intent);
             break;
+		case R.id.iv_reload_btn:
+			Vobble.log("iv_reload_btn");
+			ShowVobblesFragment fragment =  (ShowVobblesFragment)fragments[0];
+			fragment.reloadVobbles();
+			ShowVobblesFragment fragment2 =  (ShowVobblesFragment)fragments[1];
+			fragment2.reloadVobbles();
+			break;
 		}
 	}
 

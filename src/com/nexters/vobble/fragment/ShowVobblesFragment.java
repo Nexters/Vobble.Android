@@ -37,7 +37,8 @@ public class ShowVobblesFragment extends BaseFragment{
     private final int VOBBLE_COUNT = 12;
     private final String VOBBLE_IMAGEVIEW_ID_PREFIX = "iv_vobble_";
     private Integer[] vobbleBnts = new Integer[VOBBLE_COUNT];
-
+    private Integer[] vobbleBacks = new Integer[VOBBLE_COUNT];
+    
     private View view;
 	private ArrayList<Voice> vobbleArray;
 
@@ -59,13 +60,16 @@ public class ShowVobblesFragment extends BaseFragment{
 	}
 
     private void initResources(View view) {
+    	
     	mLocation = CommonUtils.getLocation(this.getActivity());
         vobbleArray = new ArrayList<Voice>();
         for (int i = 1; i <= VOBBLE_COUNT; i++) {
             int resId = getResources().getIdentifier(VOBBLE_IMAGEVIEW_ID_PREFIX + i, "id", this.getActivity().getPackageName());
             vobbleBnts[i - 1] = resId;
+            int backResId = getResources().getIdentifier(VOBBLE_IMAGEVIEW_ID_PREFIX +"back_" + i, "id", this.getActivity().getPackageName());
+            vobbleBacks[i-1] = backResId;
             view.findViewById(resId).setOnClickListener(vobbleClickListener);
-        	view.findViewById(resId).setTag(i - 1);
+        	view.findViewById(resId).setTag(i - 1);           
     	}
     }
 
@@ -106,9 +110,10 @@ public class ShowVobblesFragment extends BaseFragment{
 				super.onFinish();
 				hideLoading();
 			}
-
+			
 			@Override
 			public void onSuccess(JSONObject response) {
+				vobbleArray.clear();
 				JSONArray dataArr = response.optJSONArray("vobbles");
 				for (int i = 0; i < dataArr.length(); i++) {
 					Voice station = Voice.parse(dataArr.optJSONObject(i));
@@ -116,36 +121,52 @@ public class ShowVobblesFragment extends BaseFragment{
 				}
 				initVobbleImage();
 			}
+			@Override
+			public void onFailure(Throwable error, String response){
+				super.onFailure(error, response);
+				initVobbleImage();
+			}
 		});
     }
 
-    private void initVobbleImage() {
-    	int vobbleCnt = (vobbleArray.size() > VOBBLE_COUNT) ? VOBBLE_COUNT : vobbleArray.size();
+    private void initVobbleImage() {    	
+    	int vobbleCnt = VOBBLE_COUNT;
         for (int i = 0; i < vobbleCnt; i++) {
-    		Voice voice = vobbleArray.get(i);
-        	if (voice.isImageExist()) {
+        	if(i < vobbleArray.size()){
+        		Voice voice = vobbleArray.get(i);
+            	if (voice.isImageExist()) {
+            		final ImageView vobbleImg = (ImageView) view.findViewById(vobbleBnts[i]);
+            		
+                	ImageSize targetSize = new ImageSize(vobbleImg.getWidth(), vobbleImg.getHeight());
+                	DisplayImageOptions options = new DisplayImageOptions.Builder()
+            		// TODO- 이미지 로딩 중 실패 이미지 넣기
+                    /*
+            		.showImageOnLoading(R.drawable.ic_stub)
+                    .showImageForEmptyUri(R.drawable.ic_empty)
+                    .showImageOnFail(R.drawable.ic_error)
+                    */
+                    .build();
+                	ImageLoader.getInstance().loadImage(voice.getImageUrl(), targetSize, options, new SimpleImageLoadingListener() {
+            		    @Override
+            		    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            		        // Do whatever you want with Bitmap
+            		    	Animation fadeIn = AnimationUtils.loadAnimation(activity, R.anim.vobble_scale_up);
+            		    	vobbleImg.setImageBitmap(CommonUtils.getCroppedBitmap(loadedImage, vobbleImg.getWidth()));
+            		    	vobbleImg.startAnimation(fadeIn);
+            		    }
+            		});
+            	}
+        	}else{
         		final ImageView vobbleImg = (ImageView) view.findViewById(vobbleBnts[i]);
-        		
-            	ImageSize targetSize = new ImageSize(vobbleImg.getWidth(), vobbleImg.getHeight());
-            	DisplayImageOptions options = new DisplayImageOptions.Builder()
-        		// TODO- 이미지 로딩 중 실패 이미지 넣기
-                /*
-        		.showImageOnLoading(R.drawable.ic_stub)
-                .showImageForEmptyUri(R.drawable.ic_empty)
-                .showImageOnFail(R.drawable.ic_error)
-                */
-                .build();
-            	ImageLoader.getInstance().loadImage(voice.getImageUrl(), targetSize, options, new SimpleImageLoadingListener() {
-        		    @Override
-        		    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-        		        // Do whatever you want with Bitmap
-        		    	Animation fadeIn = AnimationUtils.loadAnimation(activity, R.anim.vobble_scale_up);
-        		    	vobbleImg.setImageBitmap(CommonUtils.getCroppedBitmap(loadedImage, vobbleImg.getWidth()));
-        		    	vobbleImg.startAnimation(fadeIn);
-        		    }
-        		});
+        		vobbleImg.setVisibility(View.INVISIBLE);
+        		final ImageView vobbleBackImg = (ImageView) view.findViewById(vobbleBacks[i]);
+        		vobbleBackImg.setVisibility(View.INVISIBLE);
         	}
+    		
     	}
+    }
+    public void reloadVobbles(){
+    	initVobbles();
     }
     private View.OnClickListener vobbleClickListener = new View.OnClickListener() {
 		

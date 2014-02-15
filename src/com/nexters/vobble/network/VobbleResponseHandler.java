@@ -15,7 +15,7 @@ import com.nexters.vobble.core.Vobble;
 
 
 public class VobbleResponseHandler extends JsonHttpResponseHandler {
-	
+	private AlertDialog alertDialog;
 	public static final String CODE_SUCCESS = "1";
 	
 	private Context context;
@@ -58,11 +58,14 @@ public class VobbleResponseHandler extends JsonHttpResponseHandler {
 			errorMessageBuilder.append(error.getMessage());
 		}
 		
-		Dialog d = new AlertDialog.Builder(context)
-		.setMessage(R.string.error_network)
-		.setPositiveButton(R.string.ok, null)
-		.create();
-		d.show();
+		if( alertDialog != null && alertDialog.isShowing() ) return;
+    	
+    	AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(R.string.error_network);
+        builder.setPositiveButton(R.string.ok, null);
+        
+        alertDialog = builder.create();
+        alertDialog.show();
 		
 		onCompletelyFinish();
 		Vobble.log(errorMessageBuilder.toString().trim());
@@ -70,12 +73,14 @@ public class VobbleResponseHandler extends JsonHttpResponseHandler {
 	@Override
 	public void onFailure ( Throwable e, JSONObject errorResponse ) {
 		// 그냥 에러가 들어오는 곳
-		Dialog d = new AlertDialog.Builder(context)
-		.setMessage(errorResponse.optString("msg"))
-		.setPositiveButton(R.string.ok, null)
-		.create();
-		d.show();
-		
+		if( alertDialog != null && alertDialog.isShowing() ) return;
+    	
+    	AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(R.string.error_network);
+        builder.setPositiveButton(R.string.ok, null);
+        
+        alertDialog = builder.create();
+        alertDialog.show();
 		onCompletelyFinish();
 		Vobble.log(errorResponse.optString("msg"));
 	}

@@ -3,6 +3,9 @@ package com.nexters.vobble.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -38,6 +41,7 @@ public class BaseFragment extends Fragment {
 		if(rootView == null) {
 			rootView = (ViewGroup) getView(container);
 		}
+		
 		return rootView;
 	}
 
@@ -70,4 +74,13 @@ public class BaseFragment extends Fragment {
         TextView messageText = (TextView) alertDialog.findViewById(android.R.id.message);
         messageText.setGravity(Gravity.CENTER);
     }
+    protected boolean isNetworkConnected(){
+    	ConnectivityManager cm =
+    	        (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+    	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+    	        return true;
+    	    }
+    	    return false;   
+	}
 }
