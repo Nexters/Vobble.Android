@@ -12,7 +12,7 @@ public class URL {
 			return BASE_URL_PRODUCTION;
 		}
 	}
-
+	
 	public static final String SIGN_UP = getBaseUrl() + "/users";
 	public static final String SIGN_IN = getBaseUrl() + "/tokens";
 	public static final String VOBBLES = getBaseUrl() + "/vobbles";

@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@drawable/vobble_bg"
     android:orientation="vertical">
 
     <LinearLayout
@@ -54,28 +54,69 @@
         	android:id="@+id/viewPager"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"/>
+ 		<LinearLayout 
+ 		    android:layout_width="match_parent"
+ 		    android:layout_height="match_parent"
+ 		    android:orientation="horizontal">
+ 		    <LinearLayout
+ 		     android:layout_width="0dp"
+ 		     android:layout_height="match_parent"
+ 		     android:layout_weight="1"
+ 		     android:orientation="vertical">
+ 		 </LinearLayout>
+ 		 <LinearLayout
+ 		     android:layout_width="0dp"
+ 		     android:layout_height="match_parent"
+ 		     android:layout_weight="2"
+ 		     android:orientation="vertical">
+ 		 </LinearLayout>
+ 		 <LinearLayout
+ 		     android:layout_width="0dp"
+ 		     android:layout_height="match_parent"
+ 		     android:layout_weight="2"
+ 		     android:orientation="vertical">
+        	<LinearLayout
+        	    android:layout_width="match_parent"
+        	    android:layout_height="0dp"
+        	    android:layout_weight="5" >
+        	</LinearLayout>
+        	<LinearLayout
+        	    android:layout_width="match_parent"
+        	    android:layout_height="0dp"
+        	    android:layout_weight="2" >
+        	    <ImageView 
+        	        android:id="@+id/iv_voice_record_btn"
+        	        android:layout_width="match_parent"
+        	        android:layout_height="match_parent"
+        	        android:src="@drawable/record_vobble_btn"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5">
+            
+        </LinearLayout>
+ 		     
+ 		 </LinearLayout>
+ 		 <LinearLayout
+ 		     android:layout_width="0dp"
+ 		     android:layout_height="match_parent"
+ 		     android:layout_weight="2"
+ 		     android:orientation="vertical">
+ 		     
+ 		 </LinearLayout>
+ 		 <LinearLayout
+ 		     android:layout_width="0dp"
+ 		     android:layout_height="match_parent"
+ 		     android:layout_weight="1"
+ 		     android:orientation="vertical">
+ 		     
+ 		 </LinearLayout>
+ 		</LinearLayout>
+ 		 
     </FrameLayout>
 
-     <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="0dp"
-         android:layout_weight="134"
-         android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="293"/>
-        <ImageView
-            android:id="@+id/iv_voice_record_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="134"
-            android:src="@drawable/voice_record_btn"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="293"/>
-     </LinearLayout>
+    
      <TextView
          android:layout_width="match_parent"
          android:layout_height="0dp"
