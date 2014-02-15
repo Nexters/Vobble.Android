@@ -29,7 +29,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 
-public class ShowVobblesFragment extends BaseFragment{
+public class ShowVobblesFragment extends BaseFragment {
 
     private final int VOBBLE_COUNT = 14;
     private final String VOBBLE_IMAGEVIEW_ID_PREFIX = "iv_vobble_";
