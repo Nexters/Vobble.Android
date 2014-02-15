@@ -16,7 +16,7 @@ import com.nexters.vobble.R;
 public class BaseActivity extends Activity {
     private int loadingStackCount = 0;
     private View loadingView;
-
+    private AlertDialog alertDialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,12 +53,16 @@ public class BaseActivity extends Activity {
 	}
 
 	public void alert(String message) {
-		Dialog dialog = new AlertDialog.Builder(this)
-            .setMessage(message)
-            .setPositiveButton(R.string.ok, null)
-            .create();
-		dialog.show();
-		TextView messageText = (TextView) dialog.findViewById(android.R.id.message);
-		messageText.setGravity(Gravity.CENTER);
-	}
+    	if( alertDialog != null && alertDialog.isShowing() ) return;
+    	
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.ok, null);
+        
+        alertDialog = builder.create();
+        alertDialog.show();
+        
+        TextView messageText = (TextView) alertDialog.findViewById(android.R.id.message);
+        messageText.setGravity(Gravity.CENTER);
+    }
 }
