@@ -31,11 +31,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
-
 @SuppressLint("ValidFragment")
 public class ShowVobblesFragment extends BaseFragment{
 
-    private final int VOBBLE_COUNT = 14;
+    private final int VOBBLE_COUNT = 12;
     private final String VOBBLE_IMAGEVIEW_ID_PREFIX = "iv_vobble_";
     private Integer[] vobbleBnts = new Integer[VOBBLE_COUNT];
 

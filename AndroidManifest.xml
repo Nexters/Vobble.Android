@@ -19,11 +19,11 @@
 
     <application
         android:name="com.nexters.vobble.core.Vobble"
-        android:icon="@drawable/icon2"
+        android:icon="@drawable/icon"
         android:label="@string/app_name" >
         <activity
             android:name="com.nexters.vobble.activity.IntroActivity"
-            android:label="@string/app_name" 
+            android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +38,7 @@
         </activity>
         <activity
             android:name="com.nexters.vobble.activity.SignUpActivity"
-            android:label="@string/title_activity_sign_up" 
+            android:label="@string/title_activity_sign_up"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -53,22 +53,22 @@
         </activity>
         <activity
             android:name=".activity.CreateVobbleActivity"
-            android:label="@string/title_activity_create_vobble" 
+            android:label="@string/title_activity_create_vobble"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.ConfirmVobbleActivity"
-            android:label="@string/title_activity_confirm_vobble" 
+            android:label="@string/title_activity_confirm_vobble"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.nexters.vobble.activity.TutorialActivity"
-            android:label="@string/title_activity_tutorial" 
+            android:label="@string/title_activity_tutorial"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.ListenVobbleActivity"
-            android:label="@string/title_activity_listen_vobble" 
+            android:label="@string/title_activity_listen_vobble"
             android:screenOrientation="portrait">
         </activity>
     </application>

@@ -85,9 +85,9 @@
 	   	android:layout_width="match_parent"
 	   	android:layout_height="0dp"
 	   	android:layout_weight="200"
-	   	android:background="#ffffff"
+	   	android:background="@drawable/btn_effect_bg_color_white"
 	   	android:gravity="center_vertical|center_horizontal"
 	   	android:text="@string/activity_confirm_vobble_button_save"
 	   	android:textSize="22sp"
-	   	android:textColor="#40ddc2"/>
+	   	android:textColor="@color/btn_effect_text_color_mint"/>
 </LinearLayout>

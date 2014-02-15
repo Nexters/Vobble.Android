@@ -160,10 +160,16 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void confirm() {
+        if (mCurrentRecordMode == RECORD_RECORDING_MODE) {
+            stopRecord();
+        }
+
         if (!FileIOUtils.isExistSoundFile()) {
             alert(R.string.error_not_exist_voice);
+            return;
         } else if (mImageBitmap == null) {
             alert(R.string.error_not_exist_image);
+            return;
         } else {
             FileIOUtils.saveBitmapToImageFile(mImageBitmap);
             Intent intent = new Intent(CreateVobbleActivity.this, ConfirmVobbleActivity.class);
@@ -180,22 +186,22 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
             stopRecord();
 			break;
 		case RECORD_STOP_MODE:
-            playRecord();
+            startPlay();
 			break;
 		default :
 			break;
 		}
 	}
 
-    private void playRecord() {
-        mCurrentRecordMode = RECORD_PLAY_MODE;
-        mIvRecordBtn.setImageResource(R.drawable.play2_btn);
-        mRecordManager.startPlay(FileIOUtils.getVoiceFilePath(), new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                stopRecord();
-            }
-        });
+    private void startRecord() {
+        mCurrentRecordMode = RECORD_RECORDING_MODE;
+        mIvRecordBtn.setImageResource(R.drawable.record_stop_btn);
+        mRecordManager.startRecord(FileIOUtils.getVoiceFilePath());
+
+        if (mCircularProgressBarAnimator != null) {
+            mCircularProgressBarAnimator.cancel();
+        }
+        animate(mCircularProgressBar, 1f, RECORD_TIME_LIMIT);
     }
 
     private void stopRecord() {
@@ -209,32 +215,40 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    private void startRecord() {
-        mCurrentRecordMode = RECORD_RECORDING_MODE;
-        mIvRecordBtn.setImageResource(R.drawable.record_stop_btn);
-        mRecordManager.startRecord(FileIOUtils.getVoiceFilePath());
-
-        if (mCircularProgressBarAnimator != null) {
-            mCircularProgressBarAnimator.cancel();
-        }
-        animate(mCircularProgressBar, 1f, RECORD_TIME_LIMIT);
-    }
-
     private void resetRecord() {
-        if (mCurrentRecordMode == RECORD_PLAY_MODE) {
-            showShortToast("재생이 끝나고 다시 시도해 주세요.");
+        if (mCurrentRecordMode == RECORD_READY_MODE) {
             return;
         }
+
+        if (mCurrentRecordMode == RECORD_PLAY_MODE) {
+            stopPlay();
+        } else if (mCurrentRecordMode == RECORD_RECORDING_MODE) {
+            stopRecord();
+        } else if (mCurrentRecordMode == RECORD_STOP_MODE) {
+
+        }
+
         mCurrentRecordMode = RECORD_READY_MODE;
         mIvRecordBtn.setImageResource(R.drawable.record_record_btn);
-        mRecordManager.stopRecord();
+        mCircularProgressBar.setProgress(0);
         FileIOUtils.deleteSoundFile();
+    }
 
-        if (mCircularProgressBarAnimator != null) {
-            mCircularProgressBarAnimator.removeAllListeners();
-            mCircularProgressBarAnimator.cancel();
-            mCircularProgressBar.setProgress(0);
-        }
+    private void startPlay() {
+        mCurrentRecordMode = RECORD_PLAY_MODE;
+        mIvRecordBtn.setImageResource(R.drawable.play2_btn);
+        mRecordManager.startPlay(FileIOUtils.getVoiceFilePath(), new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                stopPlay();
+            }
+        });
+    }
+
+    private void stopPlay() {
+        mCurrentRecordMode = RECORD_STOP_MODE;
+        mIvRecordBtn.setImageResource(R.drawable.play_btn);
+        mRecordManager.stopPlay();
     }
 
     private void animate(final HoloCircularProgressBar progressBar, final float progress, final int duration) {
@@ -276,5 +290,15 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
         super.onDestroy();
         FileIOUtils.deleteImageFile();
         FileIOUtils.deleteSoundFile();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mCurrentRecordMode == RECORD_RECORDING_MODE) {
+            stopRecord();
+        } else if (mCurrentRecordMode == RECORD_PLAY_MODE) {
+            stopPlay();
+        }
     }
 }
