@@ -21,7 +21,7 @@ public class BaseFragment extends Fragment {
 
 	public LayoutInflater inflater;
 	public BaseFragmentActivity activity;
-
+	private AlertDialog alertDialog;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -58,12 +58,16 @@ public class BaseFragment extends Fragment {
     }
 
     public void alert(String message) {
-        Dialog dialog = new AlertDialog.Builder(this.getActivity())
-                .setMessage(message)
-                .setPositiveButton(R.string.ok, null)
-                .create();
-        dialog.show();
-        TextView messageText = (TextView) dialog.findViewById(android.R.id.message);
+    	if( alertDialog != null && alertDialog.isShowing() ) return;
+    	
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.ok, null);
+        
+        alertDialog = builder.create();
+        alertDialog.show();
+        
+        TextView messageText = (TextView) alertDialog.findViewById(android.R.id.message);
         messageText.setGravity(Gravity.CENTER);
     }
 }

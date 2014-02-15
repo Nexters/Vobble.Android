@@ -7,6 +7,7 @@ import com.nexters.vobble.activity.ListenVobbleActivity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 
+@SuppressLint("ValidFragment")
 public class ShowVobblesFragment extends BaseFragment{
 
     private final int VOBBLE_COUNT = 14;
@@ -82,8 +84,12 @@ public class ShowVobblesFragment extends BaseFragment{
             params.put(Vobble.LATITUDE, mLocation.getLatitude() + "");
             params.put(Vobble.LONGITUDE, mLocation.getLongitude() + "");
         } else {
-            alert(R.string.error_cannot_use_gps);
-            return;
+        	params.put(Vobble.LATITUDE, "37");
+            params.put(Vobble.LONGITUDE, "137");
+            if(userId == ""){
+            	alert(R.string.error_cannot_use_gps);
+            }
+            //return;
         }
 
 		HttpUtil.get(url, null, params, new VobbleResponseHandler(activity) {

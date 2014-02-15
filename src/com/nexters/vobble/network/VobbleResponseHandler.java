@@ -5,6 +5,8 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -21,7 +23,9 @@ public class VobbleResponseHandler extends JsonHttpResponseHandler {
 		this.context = context;
 	}
 	@Override
-	public void onStart() {}
+	public void onStart() {
+		
+	}
 
 	@Override
 	public void onFinish() {}
@@ -55,7 +59,7 @@ public class VobbleResponseHandler extends JsonHttpResponseHandler {
 		}
 		
 		Dialog d = new AlertDialog.Builder(context)
-		.setMessage(errorMessageBuilder.toString().trim())
+		.setMessage(R.string.error_network)
 		.setPositiveButton(R.string.ok, null)
 		.create();
 		d.show();
@@ -75,6 +79,13 @@ public class VobbleResponseHandler extends JsonHttpResponseHandler {
 		onCompletelyFinish();
 		Vobble.log(errorResponse.optString("msg"));
 	}
-
+	
 	public void onCompletelyFinish() {}
+	
+	private boolean isNetworkConnected(){
+	    ConnectivityManager connectivityManager 
+	            = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();    
+	}
 }
