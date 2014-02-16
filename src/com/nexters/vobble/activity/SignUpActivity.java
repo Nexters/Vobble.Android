@@ -1,10 +1,11 @@
 package com.nexters.vobble.activity;
 
+import com.nexters.vobble.entity.User;
+import com.nexters.vobble.network.APIResponseHandler;
 import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -12,10 +13,8 @@ import android.widget.EditText;
 
 import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.R;
-import com.nexters.vobble.core.Vobble;
 import com.nexters.vobble.network.HttpUtil;
 import com.nexters.vobble.network.URL;
-import com.nexters.vobble.network.VobbleResponseHandler;
 
 public class SignUpActivity extends BaseActivity implements View.OnClickListener {
 
@@ -109,11 +108,11 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         String url = URL.SIGN_UP;
 
         RequestParams params = new RequestParams();
-        params.put(Vobble.EMAIL, getEmail());
-        params.put(Vobble.PASSWORD, getPassword());
-        params.put(Vobble.USERNAME, getUsername());
+        params.put(User.EMAIL, getEmail());
+        params.put(User.PASSWORD, getPassword());
+        params.put(User.USERNAME, getUsername());
 
-        HttpUtil.post(url, null, params, new VobbleResponseHandler(SignUpActivity.this) {
+        HttpUtil.post(url, null, params, new APIResponseHandler(SignUpActivity.this) {
 
             @Override
             public void onStart() {
@@ -129,10 +128,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
 			@Override
 			public void onSuccess(JSONObject response) {
-                Vobble.setUsername(SignUpActivity.this, getUsername());
-                Vobble.setEmail(SignUpActivity.this, getEmail());
-
-				Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+                Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                 startActivity(intent);
                 finish();
 			}

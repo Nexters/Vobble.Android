@@ -1,10 +1,12 @@
 package com.nexters.vobble.activity;
 
+import com.nexters.vobble.core.AccountManager;
+import com.nexters.vobble.entity.User;
+import com.nexters.vobble.network.APIResponseHandler;
 import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -12,11 +14,8 @@ import android.widget.EditText;
 
 import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.R;
-import com.nexters.vobble.adapter.CustomFragmentPagerAdapter;
-import com.nexters.vobble.core.Vobble;
 import com.nexters.vobble.network.HttpUtil;
 import com.nexters.vobble.network.URL;
-import com.nexters.vobble.network.VobbleResponseHandler;
 
 public class SignInActivity extends BaseFragmentActivity implements View.OnClickListener {
     private EditText mEtEmail;
@@ -67,10 +66,10 @@ public class SignInActivity extends BaseFragmentActivity implements View.OnClick
         String url = URL.SIGN_IN;
 
         RequestParams params = new RequestParams();
-        params.put(Vobble.EMAIL, getEmail());
-        params.put(Vobble.PASSWORD, getPassword());
+        params.put(User.EMAIL, getEmail());
+        params.put(User.PASSWORD, getPassword());
 
-        HttpUtil.post(url, null, params, new VobbleResponseHandler(SignInActivity.this) {
+        HttpUtil.post(url, null, params, new APIResponseHandler(SignInActivity.this) {
 
             @Override
             public void onStart() {
@@ -86,8 +85,7 @@ public class SignInActivity extends BaseFragmentActivity implements View.OnClick
 
             @Override
             public void onSuccess(JSONObject response) {
-                Vobble.setToken(SignInActivity.this, response.optString(Vobble.TOKEN));
-                Vobble.setUserId(SignInActivity.this, response.optString(Vobble.USER_ID));
+                AccountManager.getInstance().signIn(SignInActivity.this, User.build(response));
 
                 Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                 startActivity(intent);

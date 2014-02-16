@@ -7,15 +7,17 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 
 public class RecordManager {
-	private MediaRecorder recorder = null;
-    private MediaPlayer player = null;
+    public static final int READY_MODE = 0;
+    public static final int RECORDING_MODE = 1;
+    public static final int STOP_MODE = 2;
+    public static final int PLAYING_MODE = 3;
 
-    public RecordManager() {
-        recorder = new MediaRecorder();
-        player = new MediaPlayer();
-    }
+    private int mCurrentRecordingMode = READY_MODE;
 
-	public void startRecord(String path) {
+    private MediaRecorder recorder;
+    private MediaPlayer player;
+
+	public void startRecording(String path) {
 		File file = new File(path);
 		if(!file.exists()) {
 			try {
@@ -33,42 +35,66 @@ public class RecordManager {
 
         try {
 			recorder.prepare();
+            recorder.start();
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-
-        recorder.start();
-	}
-
-	public void stopRecord() {
-		if (recorder == null) {
-            return;
+		} finally {
+            setRecordingMode(RecordManager.RECORDING_MODE);
         }
-
-        recorder.stop();
-		recorder.release();
-        recorder = null;
 	}
 
-    public void startPlay(String path) {
-        startPlay(path, null);
+	public void stopRecording() {
+		if (recorder == null)
+            return;
+
+        try {
+            recorder.stop();
+            recorder.reset();
+            recorder.release();
+            recorder = null;
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } finally {
+            setRecordingMode(RecordManager.STOP_MODE);
+        }
+	}
+
+    public void startPlaying(String path) {
+        startPlaying(path, null);
     }
 
-	public void startPlay(String path, MediaPlayer.OnCompletionListener listener) {
+	public void startPlaying(String path, MediaPlayer.OnCompletionListener listener) {
         try {
             player = new MediaPlayer();
             player.setDataSource(path);
 			player.prepare();
 			player.start();
-            if (listener != null) {
+            if (listener != null)
                 player.setOnCompletionListener(listener);
-            }
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		} finally {
+            setRecordingMode(RecordManager.PLAYING_MODE);
+        }
 	}
+
+    public void stopPlaying() {
+        if (player == null)
+            return;
+
+        try {
+            player.stop();
+            player.reset();
+            player.release();
+            player = null;
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } finally {
+            setRecordingMode(RecordManager.STOP_MODE);
+        }
+    }
 
     public int getDurationOfCurrentMedia() {
         if (player == null) {
@@ -78,16 +104,28 @@ public class RecordManager {
         }
     }
 
-    public void stopPlay() {
-        if (player == null) {
-            return;
-        } else if (!player.isPlaying()) {
-            return;
-        }
+    public void resetRecording() {
+        setRecordingMode(RecordManager.READY_MODE);
+    }
 
-        player.stop();
-        player.release();
-        player = null;
+    public boolean isPlaying() {
+        return mCurrentRecordingMode == RecordManager.PLAYING_MODE;
+    }
+
+    public boolean isRecording() {
+        return mCurrentRecordingMode == RecordManager.RECORDING_MODE;
+    }
+
+    public boolean isReadyToRecording() {
+        return mCurrentRecordingMode == RecordManager.READY_MODE;
+    }
+
+    public boolean isStopRecording() {
+        return mCurrentRecordingMode == RecordManager.STOP_MODE;
+    }
+
+    private void setRecordingMode(int mode) {
+        mCurrentRecordingMode = mode;
     }
 }
 

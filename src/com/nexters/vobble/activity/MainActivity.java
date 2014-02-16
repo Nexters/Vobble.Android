@@ -1,12 +1,9 @@
 package com.nexters.vobble.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,7 +19,7 @@ import android.widget.ImageView;
 
 import com.nexters.vobble.R;
 import com.nexters.vobble.adapter.CustomFragmentPagerAdapter;
-import com.nexters.vobble.core.Vobble;
+import com.nexters.vobble.core.AccountManager;
 import com.nexters.vobble.fragment.ShowVobblesFragment;
 
 public class MainActivity extends BaseFragmentActivity implements
@@ -34,6 +31,7 @@ public class MainActivity extends BaseFragmentActivity implements
 	private FrameLayout mFlAllVobbleTab;
 	private FrameLayout myVoiceButtonLayout;
 	private ImageView mIvCreateVobble;
+    private ImageView mIvReloadBtn;
     private ViewPager mViewPager;
 
     private CustomFragmentPagerAdapter mCustomFragmentPagerAdapter;
@@ -46,23 +44,29 @@ public class MainActivity extends BaseFragmentActivity implements
 		
         initResources();
 		initEvents();
-		initViewPager();
+        initFragments();
+        initViewPager();
 	}
 
     private void initResources() {
-        fragments[0] = new ShowVobblesFragment("");
-        fragments[1] = new ShowVobblesFragment(Vobble.getUserId(this));
         mFlAllVobbleTab = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
 		mIvCreateVobble = (ImageView) findViewById(R.id.iv_voice_record_btn);
+        mIvReloadBtn = (ImageView) findViewById(R.id.iv_reload_btn);
 		mFlAllVobbleTab.setBackgroundColor(Color.argb(0, 1, 1, 1));
 	}
 
-	private void initEvents() {
+    private void initEvents() {
 		mFlAllVobbleTab.setOnClickListener(this);
 		myVoiceButtonLayout.setOnClickListener(this);
 		mIvCreateVobble.setOnClickListener(this);
+        mIvReloadBtn.setOnClickListener(this);
 	}
+
+    private void initFragments() {
+        fragments[0] = new ShowVobblesFragment("");
+        fragments[1] = new ShowVobblesFragment(AccountManager.getInstance().getUserId(this));
+    }
 
 	private void initViewPager() {
         FragmentManager fm = getSupportFragmentManager();
@@ -107,11 +111,8 @@ public class MainActivity extends BaseFragmentActivity implements
 			startActivity(intent);
             break;
 		case R.id.iv_reload_btn:
-			Vobble.log("iv_reload_btn");
-			ShowVobblesFragment fragment =  (ShowVobblesFragment)fragments[0];
-			fragment.reloadVobbles();
-			ShowVobblesFragment fragment2 =  (ShowVobblesFragment)fragments[1];
-			fragment2.reloadVobbles();
+			((ShowVobblesFragment) fragments[0]).reloadVobbles();
+            ((ShowVobblesFragment) fragments[1]).reloadVobbles();
 			break;
 		}
 	}
@@ -153,7 +154,7 @@ public class MainActivity extends BaseFragmentActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.log_out:
-            Vobble.setToken(this, "");
+            AccountManager.getInstance().signOut(this);
         	Intent intent = new Intent(getApplicationContext(), StartActivity.class);
             startActivity(intent);
 			finish();

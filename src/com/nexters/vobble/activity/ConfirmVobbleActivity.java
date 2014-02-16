@@ -2,6 +2,8 @@ package com.nexters.vobble.activity;
 
 import java.io.*;
 
+import com.nexters.vobble.entity.User;
+import com.nexters.vobble.entity.Vobble;
 import org.json.*;
 
 import android.content.*;
@@ -33,17 +35,31 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_confirm_vobble);
-		
+
+        initLocation();
         initResources();
 		initEvents();
         initImage();
         initMapView();
 	}
 
+    private void initLocation() {
+        LocationHelper locationHelper = new LocationHelper(this);
+
+        if (locationHelper.isGPSEnabled()) {
+            mLocation = locationHelper.getCurrentLocation();
+        } else {
+            alert(R.string.error_cannot_use_gps);
+            mLocation = new Location("");
+            mLocation.setLatitude(37);
+            mLocation.setLongitude(127);
+        }
+    }
+
 	private void initResources() {
-        mLocation = CommonUtils.getLocation(this);
         mIvPhoto = (ImageView) findViewById(R.id.iv_photo_view);
 		mBtnSave = (Button) findViewById(R.id.btn_save);
+        mMapView = (NMapView) findViewById(R.id.map_view);
 	}
 	
 	private void initEvents() {
@@ -51,66 +67,59 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
 	}
 
     private void initImage() {
-        Bitmap imageBitmap = BitmapFactory.decodeFile(FileIOUtils.getImageFile().getAbsolutePath());
+        Bitmap imageBitmap = BitmapFactory.decodeFile(TempFileManager.getImageFile().getAbsolutePath());
         mIvPhoto.setImageBitmap(CommonUtils.getCroppedBitmap(imageBitmap, 450));
     }
 
     private void initMapView() {
-        mMapView = (NMapView) findViewById(R.id.map_view);
-        mMapView.setApiKey(Vobble.NMAP_API_KEY);
+        mMapView.setApiKey(App.NMAP_API_KEY);
         mMapView.setClickable(false);
 
-        if (mLocation != null) {
-            NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
-            NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
+        NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
+        NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
 
-            int markerId = NMapPOIflagType.PIN;
-            NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
-            poiData.beginPOIdata(1);
-            poiData.addPOIitem(mLocation.getLongitude(), mLocation.getLatitude(), "현재 위치", markerId, 0);
-            poiData.endPOIdata();
+        int markerId = NMapPOIflagType.PIN;
+        NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
+        poiData.beginPOIdata(1);
+        poiData.addPOIitem(mLocation.getLongitude(), mLocation.getLatitude(), "현재 위치", markerId, 0);
+        poiData.endPOIdata();
 
-            NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
-            poiDataOverlay.showAllPOIdata(0);
-        } else {
-            alert(R.string.error_cannot_use_gps);
-        }
+        NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
+        poiDataOverlay.showAllPOIdata(0);
     }
 
     @Override
 	public void onClick(View view) {
 		switch (view.getId()) {
-		case R.id.btn_save :
-			try {
-                executeCreateVobble();
-            } catch (FileNotFoundException e) {
-                Vobble.log("FileNotFoundException");
-                alert(R.string.error_cannot_create_vobble);
-            }
-			break;
+		case R.id.btn_save:
+            executeSaving();
+            break;
 		}
 	}
 
-    private void executeCreateVobble() throws FileNotFoundException {
-        String url = String.format(URL.VOBBLES_CREATE,Vobble.getUserId(this));
+    private void executeSaving() {
+        try {
+            executeCreatingVobble();
+        } catch (FileNotFoundException e) {
+            App.log("FileNotFoundException");
+            alert(R.string.error_cannot_create_vobble);
+        }
+    }
 
-        File voiceFile = FileIOUtils.getVoiceFile();
-        File imageFile = FileIOUtils.getImageFile();
+    private void executeCreatingVobble() throws FileNotFoundException {
+        String url = String.format(URL.VOBBLES_CREATE, AccountManager.getInstance().getUserId(this));
+
+        File voiceFile = TempFileManager.getVoiceFile();
+        File imageFile = TempFileManager.getImageFile();
 
         RequestParams params = new RequestParams();
-        params.put(Vobble.TOKEN, Vobble.getToken(this));
-        params.put(Vobble.VOICE, voiceFile);
-        params.put(Vobble.IMAGE, imageFile);
+        params.put(User.TOKEN, AccountManager.getInstance().getToken(this));
+        params.put(Vobble.LATITUDE, String.valueOf(mLocation.getLatitude()));
+        params.put(Vobble.LONGITUDE, String.valueOf(mLocation.getLongitude()));
+        params.put(App.VOICE, voiceFile);
+        params.put(App.IMAGE, imageFile);
 
-        if (mLocation != null) {
-            params.put(Vobble.LATITUDE, String.valueOf(mLocation.getLatitude()));
-            params.put(Vobble.LONGITUDE, String.valueOf(mLocation.getLongitude()));
-        } else {
-            alert(R.string.error_cannot_use_gps);
-            return;
-        }
-
-        HttpUtil.post(url, null, params, new VobbleResponseHandler(ConfirmVobbleActivity.this) {
+        HttpUtil.post(url, null, params, new APIResponseHandler(ConfirmVobbleActivity.this) {
 
             @Override
             public void onStart() {

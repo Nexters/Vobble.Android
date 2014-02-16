@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.view.Window;
 
 import com.nexters.vobble.R;
-import com.nexters.vobble.core.Vobble;
+import com.nexters.vobble.core.AccountManager;
 
 public class IntroActivity extends Activity {
 	private static int INTRO_LOADING_TIME = 1000;
@@ -28,7 +28,7 @@ public class IntroActivity extends Activity {
 	}
 
 	private void endIntro() {
-        if (Vobble.isLoggedIn(this)) {
+        if (AccountManager.getInstance().isSignedIn(this)) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();

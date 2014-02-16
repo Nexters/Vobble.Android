@@ -74,13 +74,13 @@ public class BaseFragment extends Fragment {
         TextView messageText = (TextView) alertDialog.findViewById(android.R.id.message);
         messageText.setGravity(Gravity.CENTER);
     }
-    protected boolean isNetworkConnected(){
+    protected boolean isNetworkConnected() {
     	ConnectivityManager cm =
     	        (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-    	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
-    	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-    	        return true;
-    	    }
-    	    return false;   
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
 	}
 }

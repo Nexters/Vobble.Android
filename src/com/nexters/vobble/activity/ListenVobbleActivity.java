@@ -10,7 +10,7 @@ import android.widget.*;
 
 import com.nexters.vobble.*;
 import com.nexters.vobble.core.*;
-import com.nexters.vobble.network.*;
+import com.nexters.vobble.entity.Vobble;
 import com.nexters.vobble.nmap.*;
 import com.nexters.vobble.record.RecordManager;
 import com.nexters.vobble.util.*;
@@ -27,8 +27,10 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
     private int currentMode = STOP_MODE;
 
     private NMapView mMapView;
-	private Voice voice;
+	private Vobble vobble;
 	private ImageView vobbleImg;
+    private TextView tvUsername;
+    private TextView tvCreatedAt;
 	
 	private HoloCircularProgressBar mProgressBar;
 	private ObjectAnimator mProgressBarAnimator;
@@ -49,11 +51,13 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
 
     private void initResources() {
 		Intent intent = getIntent();
-		voice = (Voice) intent.getExtras().getSerializable("vobble");
+		vobble = (Vobble) intent.getExtras().getSerializable("vobble");
 
         mRecordManager = new RecordManager();
         mProgressBar = (HoloCircularProgressBar) findViewById(R.id.hcpb_vobble_progress);
 		vobbleImg = (ImageView) findViewById(R.id.voice_photo);
+        tvUsername = (TextView) findViewById(R.id.tv_username);
+        tvCreatedAt = (TextView) findViewById(R.id.tv_created_at);
 	}
 
     private void initEvents() {
@@ -61,7 +65,10 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
     }
 
 	private void initView() {
-		if (!TextUtils.isEmpty(voice.imgUri)) {
+        tvUsername.setText(vobble.getUsername());
+        tvCreatedAt.setText(vobble.getCreatedAt());
+
+        if (!TextUtils.isEmpty(vobble.getImageUrl())) {
 			ImageSize targetSize = new ImageSize(450, 450);
 			DisplayImageOptions options = new DisplayImageOptions.Builder()
 			// TODO- 이미지 로딩 중 실패 이미지 넣기
@@ -72,7 +79,7 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
 	        */
 	        .build();
 			
-			ImageLoader.getInstance().loadImage(voice.getImageUrl(), targetSize, options, new SimpleImageLoadingListener() {
+			ImageLoader.getInstance().loadImage(vobble.getImageUrl(), targetSize, options, new SimpleImageLoadingListener() {
 			    @Override
 			    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 			    	vobbleImg.setImageBitmap(CommonUtils.getCroppedBitmap(loadedImage, 450));
@@ -82,7 +89,7 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
 	}
 	private void initMapView() {
         mMapView = (NMapView) findViewById(R.id.vobble_map_view);
-        mMapView.setApiKey(Vobble.NMAP_API_KEY);
+        mMapView.setApiKey(App.NMAP_API_KEY);
         mMapView.setClickable(false);
         NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
@@ -90,7 +97,7 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
         int markerId = NMapPOIflagType.PIN;
         NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
         poiData.beginPOIdata(1);
-        poiData.addPOIitem(voice.longitude, voice.latitude, "현재 위치", markerId, 0);
+        poiData.addPOIitem(vobble.getLongitude(), vobble.getLatitude(), "현재 위치", markerId, 0);
         poiData.endPOIdata();
 
         NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
@@ -99,13 +106,13 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
 
     private void playVobble() {
 		currentMode = PLAY_MODE;
-        mRecordManager.startPlay(voice.getStreamingVoiceUrl());
+        mRecordManager.startPlaying(vobble.getStreamingVoiceUrl());
         animate(mProgressBar, 1f, mRecordManager.getDurationOfCurrentMedia());
 	}
 
     private void stopVobble() {
         currentMode = STOP_MODE;
-        mRecordManager.stopPlay();
+        mRecordManager.stopPlaying();
         mProgressBar.setProgress(0);
 
         if (mProgressBarAnimator != null) {

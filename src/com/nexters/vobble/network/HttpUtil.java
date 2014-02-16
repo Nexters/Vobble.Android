@@ -2,14 +2,10 @@ package com.nexters.vobble.network;
 
 import java.util.Map;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.nexters.vobble.core.Vobble;
+import com.nexters.vobble.core.App;
 
 public class HttpUtil {
 	
@@ -25,13 +21,13 @@ public class HttpUtil {
 	
 	public static void get(String url, Map<String, String> headers, RequestParams params, AsyncHttpResponseHandler handler) {
 		setHeaders(headers);
-		Vobble.log("GET : " + url);
+		App.log("GET : " + url);
 		getClient().get(url, params, handler);
 	}
 
 	public static void post(String url, Map<String, String> headers, RequestParams params, AsyncHttpResponseHandler handler) {
 		setHeaders(headers);
-		Vobble.log("POST : " + url+"&"+params);
+		App.log("POST : " + url + "&" + params);
 		getClient().post(url, params, handler);
 	}
 	

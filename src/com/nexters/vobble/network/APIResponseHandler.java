@@ -1,25 +1,22 @@
 package com.nexters.vobble.network;
 
+import com.nexters.vobble.core.App;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nexters.vobble.R;
-import com.nexters.vobble.core.Vobble;
 
 
-public class VobbleResponseHandler extends JsonHttpResponseHandler {
+public class APIResponseHandler extends JsonHttpResponseHandler {
 	private AlertDialog alertDialog;
 	public static final String CODE_SUCCESS = "1";
 	
 	private Context context;
-	public VobbleResponseHandler(Context context) {
+	public APIResponseHandler(Context context) {
 		this.context = context;
 	}
 	@Override
@@ -35,7 +32,7 @@ public class VobbleResponseHandler extends JsonHttpResponseHandler {
 
 	@Override
 	public final void onSuccess(int statusCode, JSONObject response) {
-		Vobble.log("HTTP  : " + response.toString());
+		App.log("HTTP  : " + response.toString());
 		String code = response.optString("result");
 		String message = response.optString("msg");
 		
@@ -68,7 +65,7 @@ public class VobbleResponseHandler extends JsonHttpResponseHandler {
         alertDialog.show();
 		
 		onCompletelyFinish();
-		Vobble.log(errorMessageBuilder.toString().trim());
+		App.log(errorMessageBuilder.toString().trim());
 	}
 	@Override
 	public void onFailure ( Throwable e, JSONObject errorResponse ) {
@@ -82,7 +79,7 @@ public class VobbleResponseHandler extends JsonHttpResponseHandler {
         alertDialog = builder.create();
         alertDialog.show();
 		onCompletelyFinish();
-		Vobble.log(errorResponse.optString("msg"));
+		App.log(errorResponse.optString("msg"));
 	}
 	
 	public void onCompletelyFinish() {}

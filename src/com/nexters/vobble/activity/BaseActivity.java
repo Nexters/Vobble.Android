@@ -20,10 +20,11 @@ public class BaseActivity extends Activity {
     private int loadingStackCount = 0;
     private View loadingView;
     private AlertDialog alertDialog;
-	@Override
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(!isNetworkConnected()){
+		if (!isNetworkConnected()) {
 			alert(R.string.error_network);
 		}
 		loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
@@ -58,7 +59,8 @@ public class BaseActivity extends Activity {
 	}
 
 	public void alert(String message) {
-    	if( alertDialog != null && alertDialog.isShowing() ) return;
+    	if (alertDialog != null && alertDialog.isShowing())
+            return;
     	
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message);
@@ -70,7 +72,8 @@ public class BaseActivity extends Activity {
         TextView messageText = (TextView) alertDialog.findViewById(android.R.id.message);
         messageText.setGravity(Gravity.CENTER);
     }
-	private boolean isNetworkConnected(){
+
+	private boolean isNetworkConnected() {
 	    ConnectivityManager connectivityManager 
 	            = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
