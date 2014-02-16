@@ -23,7 +23,7 @@ import android.widget.ImageView;
 
 import com.nexters.vobble.R;
 import com.nexters.vobble.record.RecordManager;
-import com.nexters.vobble.util.CommonUtils;
+import com.nexters.vobble.util.ImageManagingHelper;
 import com.nexters.vobble.util.TempFileManager;
 import com.nexters.vobble.view.HoloCircularProgressBar;
 
@@ -121,7 +121,7 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
         Bundle extras = data.getExtras();
         if (extras != null) {
             mImageBitmap = (Bitmap) extras.get("data");
-            mIvPhotoBtn.setImageBitmap(CommonUtils.getCroppedBitmap(mImageBitmap, 450));
+            mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, 450));
         }
     }
 
@@ -134,7 +134,7 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
             e.printStackTrace();
         }
         mImageBitmap = BitmapFactory.decodeStream(imageStream);
-        mIvPhotoBtn.setImageBitmap(CommonUtils.getCroppedBitmap(mImageBitmap, 450));
+        mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, 450));
     }
 
     private void decideRecordingOrPlayingActionByRecordingStatus() {

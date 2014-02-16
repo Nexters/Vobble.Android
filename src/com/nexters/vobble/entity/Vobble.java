@@ -45,18 +45,12 @@ public class Vobble implements Serializable {
 		return vobble;
 	}
 
-	public String getStreamingVoiceUrl() {
+	public String getVoiceUrl() {
 		if (App.SERVER_TARGET == App.SERVER_TEST) {
 			return URL.BASE_URL_DEVELOPMENT + "/files/" + voiceUri;
 		} else {
 			return URL.BASE_URL_PRODUCTION + "/files/" + voiceUri;
 		}
-	}
-
-	public boolean isImageExist() {
-		if (TextUtils.isEmpty(imageUri))
-			return false;
-		return true;
 	}
 
 	public String getImageUrl() {

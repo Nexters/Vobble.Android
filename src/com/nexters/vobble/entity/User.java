@@ -10,7 +10,6 @@ public class User {
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String TOKEN = "token";
-    public static final String LIMIT = "limit";
 
     private int userId;
     private String email;

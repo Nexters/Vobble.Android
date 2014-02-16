@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -25,18 +24,22 @@ import com.nexters.vobble.fragment.ShowVobblesFragment;
 public class MainActivity extends BaseFragmentActivity implements
 		OnClickListener {
 
-    private final int FRAGMENT_COUNT = 2;
-    private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
+    private final int TAB_COUNT = 2;
+    private final int INDEX_ALL_VOBBLES = 0;
+    private final int INDEX_MY_VOBBLES = 1;
 
-	private FrameLayout mFlAllVobbleTab;
-	private FrameLayout myVoiceButtonLayout;
+    private Boolean[] isLoaded = new Boolean[]{ false, false };
+
+    private ShowVobblesFragment[] fragments = new ShowVobblesFragment[TAB_COUNT];
+	private FrameLayout[] tabs = new FrameLayout[TAB_COUNT];
+
 	private ImageView mIvCreateVobble;
     private ImageView mIvReloadBtn;
     private ViewPager mViewPager;
 
     private CustomFragmentPagerAdapter mCustomFragmentPagerAdapter;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -46,43 +49,44 @@ public class MainActivity extends BaseFragmentActivity implements
 		initEvents();
         initFragments();
         initViewPager();
+
+        showTab(INDEX_ALL_VOBBLES);
 	}
 
     private void initResources() {
-        mFlAllVobbleTab = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
-		myVoiceButtonLayout = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
+        tabs[INDEX_ALL_VOBBLES] = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
+		tabs[INDEX_MY_VOBBLES] = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
 		mIvCreateVobble = (ImageView) findViewById(R.id.iv_voice_record_btn);
         mIvReloadBtn = (ImageView) findViewById(R.id.iv_reload_btn);
-		mFlAllVobbleTab.setBackgroundColor(Color.argb(0, 1, 1, 1));
 	}
 
     private void initEvents() {
-		mFlAllVobbleTab.setOnClickListener(this);
-		myVoiceButtonLayout.setOnClickListener(this);
+		tabs[INDEX_ALL_VOBBLES].setOnClickListener(this);
+        tabs[INDEX_MY_VOBBLES].setOnClickListener(this);
 		mIvCreateVobble.setOnClickListener(this);
         mIvReloadBtn.setOnClickListener(this);
 	}
 
     private void initFragments() {
-        fragments[0] = new ShowVobblesFragment("");
-        fragments[1] = new ShowVobblesFragment(AccountManager.getInstance().getUserId(this));
+        fragments[INDEX_ALL_VOBBLES] = new ShowVobblesFragment("");
+        fragments[INDEX_MY_VOBBLES] = new ShowVobblesFragment(AccountManager.getInstance().getUserId(this));
     }
 
 	private void initViewPager() {
         FragmentManager fm = getSupportFragmentManager();
-        mCustomFragmentPagerAdapter = new CustomFragmentPagerAdapter(fm, FRAGMENT_COUNT, fragments);
+        mCustomFragmentPagerAdapter = new CustomFragmentPagerAdapter(fm, TAB_COUNT, fragments);
 
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
 		mViewPager.setAdapter(mCustomFragmentPagerAdapter);
-		mViewPager.setCurrentItem(0);
+		mViewPager.setCurrentItem(INDEX_ALL_VOBBLES);
 		mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 0) {
-                    onClick(mFlAllVobbleTab);
-                } else if (position == 1) {
-                    onClick(myVoiceButtonLayout);
+                if (position == INDEX_ALL_VOBBLES) {
+                    onClick(tabs[INDEX_ALL_VOBBLES]);
+                } else if (position == INDEX_MY_VOBBLES) {
+                    onClick(tabs[INDEX_MY_VOBBLES]);
                 }
             }
 
@@ -101,33 +105,38 @@ public class MainActivity extends BaseFragmentActivity implements
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.fl_all_voice_tab_button:
-			showAllVobblesFragment();
+			showTab(INDEX_ALL_VOBBLES);
 			break;
 		case R.id.fl_my_voice_tab_button:
-			showMyVobblesFragment();
+            showTab(INDEX_MY_VOBBLES);
+            if (!isLoaded[INDEX_MY_VOBBLES])
+                loadTab(INDEX_MY_VOBBLES);
 			break;
 		case R.id.iv_voice_record_btn:
 			Intent intent = new Intent(MainActivity.this, CreateVobbleActivity.class);
 			startActivity(intent);
             break;
 		case R.id.iv_reload_btn:
-			((ShowVobblesFragment) fragments[0]).reloadVobbles();
-            ((ShowVobblesFragment) fragments[1]).reloadVobbles();
+            loadTab(mViewPager.getCurrentItem());
 			break;
 		}
 	}
 
-	private void showAllVobblesFragment() {
-		mViewPager.setCurrentItem(0, true);
-		mFlAllVobbleTab.setBackgroundColor(Color.argb(0, 1, 1, 1));
-		myVoiceButtonLayout.setBackgroundResource(R.drawable.tab_mask);
-	}
+    private void showTab(int index) {
+        mViewPager.setCurrentItem(index, true);
+        for (int i = 0; i < TAB_COUNT; i++) {
+            if (i == index) {
+                tabs[i].setBackgroundColor(Color.argb(0, 1, 1, 1));
+            } else {
+                tabs[i].setBackgroundResource(R.drawable.tab_mask);
+            }
+        }
+    }
 
-	private void showMyVobblesFragment() {
-		mViewPager.setCurrentItem(1, true);
-		myVoiceButtonLayout.setBackgroundColor(Color.argb(0, 1, 1, 1));
-		mFlAllVobbleTab.setBackgroundResource(R.drawable.tab_mask);
-	}
+    private void loadTab(int index) {
+        isLoaded[index] = true;
+        fragments[index].load();
+    }
 
     @Override
     public void onBackPressed() {

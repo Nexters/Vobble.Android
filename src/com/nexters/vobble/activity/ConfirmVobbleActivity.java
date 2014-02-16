@@ -68,7 +68,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
 
     private void initImage() {
         Bitmap imageBitmap = BitmapFactory.decodeFile(TempFileManager.getImageFile().getAbsolutePath());
-        mIvPhoto.setImageBitmap(CommonUtils.getCroppedBitmap(imageBitmap, 450));
+        mIvPhoto.setImageBitmap(ImageManagingHelper.getCroppedBitmap(imageBitmap, 450));
     }
 
     private void initMapView() {

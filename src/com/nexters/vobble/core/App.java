@@ -22,12 +22,13 @@ public class App extends Application {
 
     public static final String VOICE = "voice";
 	public static final String IMAGE = "image";
+    public static final String LIMIT = "limit";
 
     public static final String TAG = "VOBBLE";
-
     public static final String NMAP_API_KEY = "9d613b3fed909e86f46be79aae114235";
 
-	public static void log(String msg) {
+
+    public static void log(String msg) {
 		log(TAG, msg);
 	}
 	
