@@ -23,7 +23,6 @@ public class Vobble implements Serializable {
     private int userId;
     private String voiceUri;
 	private String imageUri;
-    private String username;
     private String createdAt;
     private double latitude;
     private double longitude;
@@ -35,10 +34,9 @@ public class Vobble implements Serializable {
 		
 		Vobble vobble = new Vobble();
 		vobble.vobbleId = json.optInt(VOBBLE_ID);
+        vobble.userId = json.optInt(User.USER_ID);
         vobble.voiceUri = json.optString(VOICE_URI);
 		vobble.imageUri = json.optString(IMAGE_URI);
-		vobble.userId = json.optInt(User.USER_ID);
-        vobble.username = json.optString(User.USERNAME);
         vobble.createdAt = json.optString(CREATED_AT).substring(0, 10);
 		vobble.latitude = json.optDouble(LATITUDE);
 		vobble.longitude = json.optDouble(LONGITUDE);
@@ -61,8 +59,8 @@ public class Vobble implements Serializable {
 		}
 	}
 
-    public String getUsername() {
-        return username;
+    public int getUserId() {
+        return userId;
     }
 
     public String getCreatedAt() {

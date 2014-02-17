@@ -7,9 +7,14 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
+import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.*;
 import com.nexters.vobble.core.*;
+import com.nexters.vobble.entity.User;
 import com.nexters.vobble.entity.Vobble;
+import com.nexters.vobble.network.APIResponseHandler;
+import com.nexters.vobble.network.HttpUtil;
+import com.nexters.vobble.network.URL;
 import com.nexters.vobble.nmap.*;
 import com.nexters.vobble.record.RecordManager;
 import com.nexters.vobble.util.*;
@@ -17,9 +22,15 @@ import com.nexters.vobble.view.*;
 import com.nhn.android.maps.*;
 import com.nhn.android.maps.overlay.*;
 import com.nhn.android.mapviewer.overlay.*;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 
 public class ListenVobbleActivity extends BaseNMapActivity implements View.OnClickListener {
-	private NMapView mMapView;
+	private boolean loadImage = false;
+
+    private NMapView mMapView;
 	private Vobble vobble;
 	private ImageView vobbleImg;
     private TextView tvUsername;
@@ -39,6 +50,7 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
 		initEvents();
         initView();
 		initMapView();
+        initUserInfo();
 		startPlaying();
 	}
 
@@ -58,7 +70,6 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
     }
 
 	private void initView() {
-        tvUsername.setText(vobble.getUsername());
         tvCreatedAt.setText(vobble.getCreatedAt());
 	}
 
@@ -68,7 +79,10 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
         // [주의] onCreate에서 보블 이미지를 이미지뷰에 붙이면 ImageView의 getWidth()가 0을 반환해서 제대로 붙지 않음
         // onWindowFocusChanged부터 ImageView가 Window에 잘 붙어서 올바른 getWidth()를 반환하므로
         // 여기에서 초기화시켜야 함 - by 수완
-        ImageManagingHelper.loadAndAttachCroppedImage(vobbleImg, vobble.getImageUrl());
+        if (!loadImage) {
+            loadImage = true;
+            ImageManagingHelper.loadAndAttachCroppedImage(vobbleImg, vobble.getImageUrl());
+        }
     }
 
 	private void initMapView() {
@@ -105,6 +119,39 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
             return new NMapCalloutBasicOverlay(itemOverlay, overlayItem, itemBounds);
         }
     };
+
+    private void initUserInfo() {
+        String url = String.format(URL.USER_INFO, vobble.getUserId());
+
+        HttpUtil.get(url, null, null, new APIResponseHandler(ListenVobbleActivity.this) {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                showLoading();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                hideLoading();
+            }
+
+            @Override
+            public void onSuccess(JSONObject response) {
+                JSONObject dataObj = null;
+                try {
+                    dataObj = response.getJSONObject("user");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (dataObj != null) {
+                    User user = new User().build(dataObj);
+                    tvUsername.setText(user.getUsername());
+                }
+            }
+        });
+    }
 
     private void startPlaying() {
 		mRecordManager.startPlaying(vobble.getVoiceUrl());
