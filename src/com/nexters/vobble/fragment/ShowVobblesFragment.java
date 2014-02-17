@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.location.Location;
+import android.os.AsyncTask;
 import com.nexters.vobble.activity.ListenVobbleActivity;
 import com.nexters.vobble.core.App;
 import com.nexters.vobble.network.APIResponseHandler;
@@ -32,10 +33,8 @@ import com.nexters.vobble.entity.Vobble;
 public class ShowVobblesFragment extends BaseFragment {
     private static final int VOBBLE_COUNT = 12;
     private static final String VOBBLE_IMG_ID_PREFIX = "iv_vobble_";
-    private static final String VOBBLE_BACK_IMG_ID_PREFIX = "iv_vobble_back_";
 
     private ImageView[] vobbleImageViews = new ImageView[VOBBLE_COUNT];
-    private ImageView[] vobbleBackupImageViews = new ImageView[VOBBLE_COUNT];
     private ArrayList<Vobble> vobbleList = new ArrayList<Vobble>();
 
     private String userId;
@@ -58,15 +57,9 @@ public class ShowVobblesFragment extends BaseFragment {
 	}
 
     private void initResources(View view) {
-        int resId, backResId;
         for (int i = 1; i <= VOBBLE_COUNT; i++) {
-            resId = getResources().getIdentifier(VOBBLE_IMG_ID_PREFIX + i, "id", this.getActivity().getPackageName());
+            int resId = getResources().getIdentifier(VOBBLE_IMG_ID_PREFIX + i, "id", this.getActivity().getPackageName());
             vobbleImageViews[i - 1] = (ImageView) view.findViewById(resId);
-            vobbleImageViews[i - 1].setVisibility(View.INVISIBLE);
-
-            backResId = getResources().getIdentifier(VOBBLE_BACK_IMG_ID_PREFIX + i, "id", this.getActivity().getPackageName());
-            vobbleBackupImageViews[i - 1] = (ImageView) view.findViewById(backResId);
-            vobbleBackupImageViews[i - 1].setVisibility(View.INVISIBLE);
     	}
     }
 
@@ -79,7 +72,6 @@ public class ShowVobblesFragment extends BaseFragment {
 
     public void load() {
         initLocation();
-        initVobbleImageViews();
         loadVobbles();
     }
 
@@ -92,14 +84,6 @@ public class ShowVobblesFragment extends BaseFragment {
             mLocation = new Location("");
             mLocation.setLatitude(37);
             mLocation.setLongitude(127);
-        }
-    }
-
-    private void initVobbleImageViews() {
-        for (int i = 0; i < VOBBLE_COUNT; i++) {
-            vobbleImageViews[i].setImageResource(R.drawable.vobble_cache_image_icon);
-            vobbleImageViews[i].setVisibility(View.INVISIBLE);
-            vobbleBackupImageViews[i].setVisibility(View.INVISIBLE);
         }
     }
 
@@ -148,17 +132,42 @@ public class ShowVobblesFragment extends BaseFragment {
     }
 
     private void loadVobbleImages() {
-    	Animation scaleUp = AnimationUtils.loadAnimation(activity, R.anim.vobble_scale_up);
-        for (int i = 0; i < VOBBLE_COUNT; i++) {
-            if (i < vobbleList.size()) {
-                vobbleBackupImageViews[i].setVisibility(View.VISIBLE);
-                vobbleImageViews[i].setVisibility(View.VISIBLE);
+        new AttachImageHelper().execute();
+    }
+
+    private class AttachImageHelper extends AsyncTask<Void, Integer, Void> {
+        private final int IMAGE_LOADING_INTERVAL = 300;
+        private int vobbleListSize;
+
+        @Override
+        protected void onPreExecute() {
+            vobbleListSize = vobbleList.size();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            for (int i = 0; i < VOBBLE_COUNT; i++) {
+                publishProgress(i);
+                try {
+                    Thread.sleep(IMAGE_LOADING_INTERVAL);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            int i = values[0];
+            if (i < vobbleListSize) {
+                Animation scaleUp = AnimationUtils.loadAnimation(activity, R.anim.vobble_scale_up);
                 ImageManagingHelper.loadAndAttachCroppedImage(vobbleImageViews[i], vobbleList.get(i).getImageUrl(), scaleUp);
-        	} else {
-                vobbleBackupImageViews[i].setVisibility(View.INVISIBLE);
+                vobbleImageViews[i].setVisibility(View.VISIBLE);
+            } else {
                 vobbleImageViews[i].setVisibility(View.INVISIBLE);
-        	}
-    	}
+            }
+        }
     }
 
     private View.OnClickListener vobbleClickListener = new View.OnClickListener() {
