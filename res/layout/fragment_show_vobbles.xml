@@ -26,10 +26,11 @@
                     android:layout_marginLeft="-60dp"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
+                    android:id="@+id/iv_vobble_11"
+                    android:layout_width="match_parent"
             	    android:layout_height="match_parent"
             	    android:layout_marginLeft="-60dp"
-            	    android:id="@+id/iv_vobble_11"/>
+                    android:alpha="0.5"/>
             </FrameLayout>
 
         </LinearLayout>
@@ -64,9 +65,10 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
+                    android:id="@+id/iv_vobble_12"
+                    android:layout_width="match_parent"
             	    android:layout_height="match_parent"
-            	    android:id="@+id/iv_vobble_12"/>
+                    android:alpha="0.5"/>
             </FrameLayout>
         </LinearLayout>
         <LinearLayout
@@ -88,9 +90,9 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-            	    android:id="@+id/iv_vobble_6"/>
+                    android:id="@+id/iv_vobble_6"
+                    android:layout_width="match_parent"
+            	    android:layout_height="match_parent"/>
             </FrameLayout>
         </LinearLayout>
         <LinearLayout
@@ -112,9 +114,9 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-            	    android:id="@+id/iv_vobble_5"/>
+                    android:id="@+id/iv_vobble_5"
+                    android:layout_width="match_parent"
+            	    android:layout_height="match_parent"/>
             </FrameLayout>
         </LinearLayout>
         <LinearLayout
@@ -136,9 +138,10 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
+                    android:id="@+id/iv_vobble_10"
+                    android:layout_width="match_parent"
             	    android:layout_height="match_parent"
-            	    android:id="@+id/iv_vobble_10"/>
+                    android:alpha="0.5"/>
             </FrameLayout>
         </LinearLayout>
         <LinearLayout
@@ -172,9 +175,9 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-            	    android:id="@+id/iv_vobble_1"/>
+                    android:id="@+id/iv_vobble_1"
+                    android:layout_width="match_parent"
+            	    android:layout_height="match_parent"/>
             </FrameLayout>
         </LinearLayout>
         <LinearLayout
@@ -208,9 +211,9 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-            	    android:id="@+id/iv_vobble_4"/>
+                    android:id="@+id/iv_vobble_4"
+                    android:layout_width="match_parent"
+            	    android:layout_height="match_parent"/>
             </FrameLayout>
         </LinearLayout>
         <LinearLayout
@@ -245,9 +248,10 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
+                    android:id="@+id/iv_vobble_7"
+                    android:layout_width="match_parent"
             	    android:layout_height="match_parent"
-            	    android:id="@+id/iv_vobble_7"/>
+                    android:alpha="0.5"/>
             </FrameLayout>
 
         </LinearLayout>
@@ -270,9 +274,9 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-            	    android:id="@+id/iv_vobble_2"/>
+                    android:id="@+id/iv_vobble_2"
+                    android:layout_width="match_parent"
+            	    android:layout_height="match_parent"/>
             </FrameLayout>
 
         </LinearLayout>
@@ -294,9 +298,9 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-            	    android:id="@+id/iv_vobble_3"/>
+                    android:id="@+id/iv_vobble_3"
+                    android:layout_width="match_parent"
+            	    android:layout_height="match_parent"/>
             </FrameLayout>
 
         </LinearLayout>
@@ -318,9 +322,10 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
+                    android:id="@+id/iv_vobble_9"
+                    android:layout_width="match_parent"
             	    android:layout_height="match_parent"
-            	    android:id="@+id/iv_vobble_9"/>
+                    android:alpha="0.5"/>
             </FrameLayout>
 
         </LinearLayout>
@@ -356,10 +361,11 @@
                     android:layout_marginRight="-60dp"
                     android:src="@drawable/voice_vobble" />
             	<ImageView
-            	    android:layout_width="match_parent"
+                    android:id="@+id/iv_vobble_8"
+                    android:layout_width="match_parent"
             	    android:layout_height="match_parent"
             	    android:layout_marginRight="-60dp"
-            	    android:id="@+id/iv_vobble_8"/>
+                    android:alpha="0.5"/>
             </FrameLayout>
         </LinearLayout>
         <LinearLayout
