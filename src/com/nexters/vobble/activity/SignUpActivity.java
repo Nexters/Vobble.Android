@@ -1,5 +1,6 @@
 package com.nexters.vobble.activity;
 
+import android.app.Activity;
 import com.nexters.vobble.entity.User;
 import com.nexters.vobble.network.APIResponseHandler;
 import org.json.JSONObject;
@@ -128,8 +129,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
 			@Override
 			public void onSuccess(JSONObject response) {
-                Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-                startActivity(intent);
+                setResult(Activity.RESULT_OK);
                 finish();
 			}
         });
