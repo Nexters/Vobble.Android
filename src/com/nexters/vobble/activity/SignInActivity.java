@@ -89,6 +89,7 @@ public class SignInActivity extends BaseFragmentActivity implements View.OnClick
 
                 Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                 startActivity(intent);
+                setResult(RESULT_OK, null);
                 finish();
             }
         });

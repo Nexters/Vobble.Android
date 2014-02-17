@@ -10,7 +10,9 @@ import android.widget.Button;
 import com.nexters.vobble.R;
 
 public class StartActivity extends Activity implements View.OnClickListener {
-	private Button mBtnSignIn;
+	public static final int REQUEST_EXIT = 0;
+
+    private Button mBtnSignIn;
 	private Button mBtnSignUp;
 	
 	@Override
@@ -39,12 +41,22 @@ public class StartActivity extends Activity implements View.OnClickListener {
         switch(view.getId()) {
         case R.id.btn_sign_in:
             intent = new Intent(StartActivity.this, SignInActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_EXIT);
             break;
         case R.id.btn_sign_up:
             intent = new Intent(StartActivity.this, SignUpActivity.class);
             startActivity(intent);
             break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_EXIT) {
+            if (resultCode == Activity.RESULT_OK) {
+                this.finish();
+            }
         }
     }
 }
