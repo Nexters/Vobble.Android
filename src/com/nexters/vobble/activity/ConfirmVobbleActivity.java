@@ -30,7 +30,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
 
     private Location mLocation;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -73,20 +73,38 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
 
     private void initMapView() {
         mMapView.setApiKey(App.NMAP_API_KEY);
-        mMapView.setClickable(false);
+        mMapView.setClickable(true);
 
         NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
+        mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
 
         int markerId = NMapPOIflagType.PIN;
         NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
         poiData.beginPOIdata(1);
-        poiData.addPOIitem(mLocation.getLongitude(), mLocation.getLatitude(), "현재 위치", markerId, 0);
+        poiData.addPOIitem(mLocation.getLongitude(), mLocation.getLatitude(), "You're in here.", markerId, 0);
         poiData.endPOIdata();
 
         NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
         poiDataOverlay.showAllPOIdata(0);
+        poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
+
     }
+
+    private NMapPOIdataOverlay.OnStateChangeListener onPOIdataStateChangeListener = new NMapPOIdataOverlay.OnStateChangeListener() {
+        @Override
+        public void onFocusChanged(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {}
+
+        @Override
+        public void onCalloutClick(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {}
+    };
+
+    private NMapOverlayManager.OnCalloutOverlayListener onCalloutOverlayListener = new NMapOverlayManager.OnCalloutOverlayListener() {
+        @Override
+        public NMapCalloutOverlay onCreateCalloutOverlay(NMapOverlay itemOverlay, NMapOverlayItem overlayItem, Rect itemBounds) {
+            return new NMapCalloutBasicOverlay(itemOverlay, overlayItem, itemBounds);
+        }
+    };
 
     @Override
 	public void onClick(View view) {

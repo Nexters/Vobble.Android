@@ -2,6 +2,7 @@ package com.nexters.vobble.activity;
 
 import android.animation.*;
 import android.content.*;
+import android.graphics.Rect;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -65,19 +66,37 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
 	private void initMapView() {
         mMapView = (NMapView) findViewById(R.id.vobble_map_view);
         mMapView.setApiKey(App.NMAP_API_KEY);
-        mMapView.setClickable(false);
+        mMapView.setClickable(true);
+
         NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
+        mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
 
         int markerId = NMapPOIflagType.PIN;
         NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
         poiData.beginPOIdata(1);
-        poiData.addPOIitem(vobble.getLongitude(), vobble.getLatitude(), "현재 위치", markerId, 0);
+        poiData.addPOIitem(vobble.getLongitude(), vobble.getLatitude(), "This vobble was created in here.", markerId, 0);
         poiData.endPOIdata();
 
         NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
         poiDataOverlay.showAllPOIdata(0);
+        poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
     }
+
+    private NMapPOIdataOverlay.OnStateChangeListener onPOIdataStateChangeListener = new NMapPOIdataOverlay.OnStateChangeListener() {
+        @Override
+        public void onFocusChanged(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {}
+
+        @Override
+        public void onCalloutClick(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {}
+    };
+
+    private NMapOverlayManager.OnCalloutOverlayListener onCalloutOverlayListener = new NMapOverlayManager.OnCalloutOverlayListener() {
+        @Override
+        public NMapCalloutOverlay onCreateCalloutOverlay(NMapOverlay itemOverlay, NMapOverlayItem overlayItem, Rect itemBounds) {
+            return new NMapCalloutBasicOverlay(itemOverlay, overlayItem, itemBounds);
+        }
+    };
 
     private void startPlaying() {
 		mRecordManager.startPlaying(vobble.getVoiceUrl());
