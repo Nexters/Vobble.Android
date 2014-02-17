@@ -33,6 +33,7 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
     public static final int REQUEST_TAKE_PHOTO = 1;
     public static final int REQUEST_PICK_FROM_GALLERY = 2;
 
+    private int mIvPhotoWidth;
     private ImageView mIvPhotoBtn;
     private ImageView mIvRecordBtn;
 	private ImageView mIvResetBtn;
@@ -52,8 +53,14 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
         initResources();
 		initEvents();
 	}
-	
-	private void initResources() {
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        mIvPhotoWidth = mIvPhotoBtn.getWidth();
+    }
+
+    private void initResources() {
         mRecordManager = new RecordManager();
         mIvPhotoBtn = (ImageView) findViewById(R.id.iv_record_photo_btn);
         mIvRecordBtn = (ImageView) findViewById(R.id.iv_record_record_btn);
@@ -121,7 +128,7 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
         Bundle extras = data.getExtras();
         if (extras != null) {
             mImageBitmap = (Bitmap) extras.get("data");
-            mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, 450));
+            mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
         }
     }
 
@@ -134,7 +141,7 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
             e.printStackTrace();
         }
         mImageBitmap = BitmapFactory.decodeStream(imageStream);
-        mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, 450));
+        mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
     }
 
     private void decideRecordingOrPlayingActionByRecordingStatus() {
@@ -167,7 +174,7 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void startPlaying() {
-        mIvRecordBtn.setImageResource(R.drawable.play2_btn);
+        mIvRecordBtn.setImageResource(R.drawable.play_btn_o);
         mRecordManager.startPlaying(TempFileManager.getVoiceFilePath(), new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {

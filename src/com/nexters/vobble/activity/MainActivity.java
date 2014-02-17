@@ -7,12 +7,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -79,30 +75,32 @@ public class MainActivity extends BaseFragmentActivity implements
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
 		mViewPager.setAdapter(mCustomFragmentPagerAdapter);
 		mViewPager.setCurrentItem(INDEX_ALL_VOBBLES);
-		mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int position) {
-                if (position == INDEX_ALL_VOBBLES) {
-                    onClick(tabs[INDEX_ALL_VOBBLES]);
-                } else if (position == INDEX_MY_VOBBLES) {
-                    onClick(tabs[INDEX_MY_VOBBLES]);
-                }
-            }
-
-            @Override
-            public void onPageScrolled(int i, float v, int i2) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
+		mViewPager.setOnPageChangeListener(onPageChangeListener);
 	}
 
-	public void onClick(View view) {
+    private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+
+        @Override
+        public void onPageSelected(int position) {
+            if (position == INDEX_ALL_VOBBLES) {
+                onClick(tabs[INDEX_ALL_VOBBLES]);
+            } else if (position == INDEX_MY_VOBBLES) {
+                onClick(tabs[INDEX_MY_VOBBLES]);
+            }
+        }
+
+        @Override
+        public void onPageScrolled(int i, float v, int i2) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int i) {
+
+        }
+    };
+
+    public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.fl_all_voice_tab_button:
 			showTab(INDEX_ALL_VOBBLES);
@@ -139,6 +137,20 @@ public class MainActivity extends BaseFragmentActivity implements
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.log_out:
+                AccountManager.getInstance().signOut(this);
+                Intent intent = new Intent(getApplicationContext(), StartActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+        }
+
+        return false;
+    }
+
+    @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.end);
@@ -157,19 +169,5 @@ public class MainActivity extends BaseFragmentActivity implements
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.log_out:
-            AccountManager.getInstance().signOut(this);
-        	Intent intent = new Intent(getApplicationContext(), StartActivity.class);
-            startActivity(intent);
-			finish();
-            break;
-        }
- 
-        return false;
     }
 }

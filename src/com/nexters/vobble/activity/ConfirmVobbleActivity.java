@@ -24,11 +24,12 @@ import com.nhn.android.maps.overlay.*;
 import com.nhn.android.mapviewer.overlay.*;
 
 public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnClickListener {
+    private int mIvPhotoWidth;
+    private Location mLocation;
+
     private NMapView mMapView;
     private ImageView mIvPhoto;
 	private Button mBtnSave;
-
-    private Location mLocation;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,6 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
         initLocation();
         initResources();
 		initEvents();
-        initImage();
         initMapView();
 	}
 
@@ -66,11 +66,6 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
 		mBtnSave.setOnClickListener(this);
 	}
 
-    private void initImage() {
-        Bitmap imageBitmap = BitmapFactory.decodeFile(TempFileManager.getImageFile().getAbsolutePath());
-        mIvPhoto.setImageBitmap(ImageManagingHelper.getCroppedBitmap(imageBitmap, 450));
-    }
-
     private void initMapView() {
         mMapView.setApiKey(App.NMAP_API_KEY);
         mMapView.setClickable(true);
@@ -88,7 +83,18 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
         NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
         poiDataOverlay.showAllPOIdata(0);
         poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
+    }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        mIvPhotoWidth = mIvPhoto.getWidth();
+        initImage();
+    }
+
+    private void initImage() {
+        Bitmap imageBitmap = BitmapFactory.decodeFile(TempFileManager.getImageFile().getAbsolutePath());
+        mIvPhoto.setImageBitmap(ImageManagingHelper.getCroppedBitmap(imageBitmap, mIvPhotoWidth));
     }
 
     private NMapPOIdataOverlay.OnStateChangeListener onPOIdataStateChangeListener = new NMapPOIdataOverlay.OnStateChangeListener() {

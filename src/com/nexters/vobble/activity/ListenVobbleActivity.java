@@ -60,8 +60,16 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
 	private void initView() {
         tvUsername.setText(vobble.getUsername());
         tvCreatedAt.setText(vobble.getCreatedAt());
-        ImageManagingHelper.loadAndAttachCroppedImage(vobbleImg, vobble.getImageUrl());
 	}
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        // [주의] onCreate에서 보블 이미지를 이미지뷰에 붙이면 ImageView의 getWidth()가 0을 반환해서 제대로 붙지 않음
+        // onWindowFocusChanged부터 ImageView가 Window에 잘 붙어서 올바른 getWidth()를 반환하므로
+        // 여기에서 초기화시켜야 함 - by 수완
+        ImageManagingHelper.loadAndAttachCroppedImage(vobbleImg, vobble.getImageUrl());
+    }
 
 	private void initMapView() {
         mMapView = (NMapView) findViewById(R.id.vobble_map_view);

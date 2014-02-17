@@ -35,10 +35,6 @@ public class ImageManagingHelper {
     }
 
     public static Bitmap getCroppedBitmap(Bitmap bitmap, int radius) {
-        if (radius <= 0) {
-            radius = 450;
-        }
-
         Bitmap scaledBitmap;
 
         if (bitmap.getWidth() != radius || bitmap.getHeight() != radius) {
