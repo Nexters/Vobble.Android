@@ -15,7 +15,8 @@
 
     <string name="activity_main_all_vobbles_tab">All</string>
     <string name="activity_main_my_vobbles_tab">My</string>
-
+	<string name="activity_main_friend_vobbles_tab">Friend</string>
+	
     <string name="activity_confirm_vobble_title">Confirm a vobble</string>
     <string name="activity_confirm_vobble_button_save">Save</string>
     <string name="activity_confirm_vobble_choosing_photo_dialog_title">Photo</string>
@@ -61,7 +62,7 @@
     <string name="end">종료</string>
     <string name="confirm_finish_app">Vobble을 종료하시겠습니까?</string>
     <string name="log_out">Log Out</string>
-
+	<string name="service_ready">서비스 준비중입니다.</string>
     <string-array name="menu_choosing_photo_dialog_items">
         <item>Camera</item>
         <item>Gallery</item>

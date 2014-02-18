@@ -9,8 +9,10 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.google.analytics.tracking.android.Fields;
 import com.nexters.vobble.R;
 import com.nexters.vobble.adapter.CustomPagerAdapter;
+import com.nexters.vobble.core.App;
 
 public class TutorialActivity extends BaseActivity {
 	
@@ -29,6 +31,8 @@ public class TutorialActivity extends BaseActivity {
         initResources();
 		initViewPager();
 		initAnimations();
+		
+		App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
 
     private void initResources() {

@@ -21,7 +21,9 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.analytics.tracking.android.Fields;
 import com.nexters.vobble.R;
+import com.nexters.vobble.core.App;
 import com.nexters.vobble.record.RecordManager;
 import com.nexters.vobble.util.ImageManagingHelper;
 import com.nexters.vobble.util.TempFileManager;
@@ -52,6 +54,8 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
 
         initResources();
 		initEvents();
+		
+		App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
 
     @Override

@@ -9,7 +9,7 @@
         android:layout_height="0dp"
         android:layout_weight="90"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:weightSum="3">
 
         <FrameLayout
             android:id="@+id/fl_all_voice_tab_button"
@@ -25,7 +25,7 @@
                 android:text="@string/activity_main_all_vobbles_tab"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#ffffff"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </FrameLayout>
 
         <FrameLayout
@@ -42,7 +42,22 @@
                 android:text="@string/activity_main_my_vobbles_tab"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#ffffff"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/fl_friend_voice_tab_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/tab_mask">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/activity_main_friend_vobbles_tab"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
         </FrameLayout>
     </LinearLayout>
  	

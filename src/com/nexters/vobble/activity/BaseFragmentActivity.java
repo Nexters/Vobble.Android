@@ -10,7 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.nexters.vobble.R;
+import com.nexters.vobble.core.App;
 
 public class BaseFragmentActivity extends FragmentActivity {
     private int loadingStackCount = 0;
@@ -22,8 +26,15 @@ public class BaseFragmentActivity extends FragmentActivity {
 		
 		loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
 		loadingView.setVisibility(View.INVISIBLE);
+		
+		App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
-
+	@Override
+	protected void onStart() {
+		super.onStart();
+		App.getGaTracker().send(MapBuilder.createAppView().build());
+	}
+	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);

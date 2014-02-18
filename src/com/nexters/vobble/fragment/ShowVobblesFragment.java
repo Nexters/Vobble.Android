@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.R;
@@ -31,6 +32,12 @@ import com.nexters.vobble.entity.Vobble;
 
 @SuppressLint("ValidFragment")
 public class ShowVobblesFragment extends BaseFragment {
+	public enum VOBBLE_FRAMGMENT_TYPE{
+		ALL,
+		MY,
+		FRIEND,
+		MAX
+	};
     private static final int VOBBLE_COUNT = 12;
     private static final String VOBBLE_IMG_ID_PREFIX = "iv_vobble_";
 
@@ -39,20 +46,26 @@ public class ShowVobblesFragment extends BaseFragment {
 
     private String userId;
     private Location mLocation;
-
-    public ShowVobblesFragment(String userId) {
+    private VOBBLE_FRAMGMENT_TYPE type;
+    
+    public ShowVobblesFragment(String userId,VOBBLE_FRAMGMENT_TYPE type) {
         this.userId = userId;
+        this.type = type;
     }
-
+    @Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (type == VOBBLE_FRAMGMENT_TYPE.ALL || type == VOBBLE_FRAMGMENT_TYPE.MY)
+            load();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_show_vobbles, null);
-
         initResources(view);
-        initEvents();
-        if (userId.equals(""))
-            load();
+        initEvents(); 
+        loadVobbleImages();
+        
         return view;
 	}
 
@@ -66,6 +79,9 @@ public class ShowVobblesFragment extends BaseFragment {
     private void initEvents() {
         for (int i = 0; i < VOBBLE_COUNT; i++) {
             vobbleImageViews[i].setOnClickListener(vobbleClickListener);
+            if(type == VOBBLE_FRAMGMENT_TYPE.MY){
+            	vobbleImageViews[i].setOnLongClickListener(vobbleLongClickListener);
+            }
             vobbleImageViews[i].setTag(i);
         }
     }
@@ -79,6 +95,11 @@ public class ShowVobblesFragment extends BaseFragment {
         LocationHelper locationHelper = new LocationHelper(getActivity());
         if (locationHelper.isGPSEnabled()) {
             mLocation = locationHelper.getCurrentLocation();
+            if(mLocation == null){
+            	mLocation = new Location("");
+                mLocation.setLatitude(37);
+                mLocation.setLongitude(127);
+            }
         } else {
             alert(R.string.error_cannot_use_gps);
             mLocation = new Location("");
@@ -88,18 +109,17 @@ public class ShowVobblesFragment extends BaseFragment {
     }
 
     private void loadVobbles() {
-    	String url;
-
-        if (userId.equals("")) {
-            url = URL.VOBBLES;
-        } else {
+    	String url = "";
+    	if(type == VOBBLE_FRAMGMENT_TYPE.ALL){
+    		url = URL.VOBBLES;
+        } else if(type == VOBBLE_FRAMGMENT_TYPE.MY){
             url = String.format(URL.USER_VOBBLES, userId);
         }
 
         RequestParams params = new RequestParams();
         params.put(App.LIMIT, VOBBLE_COUNT + "");
-        params.put(Vobble.LATITUDE, mLocation.getLatitude() + "");
-        params.put(Vobble.LONGITUDE, mLocation.getLongitude() + "");
+        params.put(Vobble.LATITUDE, String.valueOf(mLocation.getLatitude()));
+        params.put(Vobble.LONGITUDE, String.valueOf(mLocation.getLongitude()));
 
 		HttpUtil.get(url, null, params, new APIResponseHandler(activity) {
 
@@ -181,6 +201,16 @@ public class ShowVobblesFragment extends BaseFragment {
 				intent.putExtra("vobble", vobble);
 				startActivity(intent);
 			}
+		}
+	};
+	
+	private View.OnLongClickListener vobbleLongClickListener = new View.OnLongClickListener() {
+		
+		@Override
+		public boolean onLongClick(View v) {
+			
+			
+			return false;
 		}
 	};
 }

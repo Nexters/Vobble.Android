@@ -13,6 +13,7 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
+import com.google.analytics.tracking.android.Fields;
 import com.loopj.android.http.*;
 import com.nexters.vobble.*;
 import com.nexters.vobble.core.*;
@@ -42,6 +43,8 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
         initResources();
 		initEvents();
         initMapView();
+        
+        App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
 
     private void initLocation() {
@@ -49,6 +52,11 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
 
         if (locationHelper.isGPSEnabled()) {
             mLocation = locationHelper.getCurrentLocation();
+            if(mLocation == null){
+            	mLocation = new Location("");
+                mLocation.setLatitude(37);
+                mLocation.setLongitude(127);
+            }
         } else {
             alert(R.string.error_cannot_use_gps);
             mLocation = new Location("");
@@ -147,6 +155,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
         params.put(User.TOKEN, AccountManager.getInstance().getToken(this));
         params.put(Vobble.LATITUDE, String.valueOf(mLocation.getLatitude()));
         params.put(Vobble.LONGITUDE, String.valueOf(mLocation.getLongitude()));
+        
         params.put(App.VOICE, voiceFile);
         params.put(App.IMAGE, imageFile);
 

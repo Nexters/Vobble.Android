@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.Fields;
 import com.nexters.vobble.R;
+import com.nexters.vobble.core.App;
 import com.nhn.android.maps.NMapActivity;
 
 public class BaseNMapActivity extends NMapActivity {
@@ -23,6 +25,7 @@ public class BaseNMapActivity extends NMapActivity {
 
 		loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
 		loadingView.setVisibility(View.INVISIBLE);
+		 App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
 
 	@Override
