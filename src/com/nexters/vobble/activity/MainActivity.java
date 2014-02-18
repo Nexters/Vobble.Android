@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -16,6 +17,7 @@ import com.nexters.vobble.R;
 import com.nexters.vobble.adapter.CustomFragmentPagerAdapter;
 import com.nexters.vobble.core.AccountManager;
 import com.nexters.vobble.fragment.ShowVobblesFragment;
+import com.nexters.vobble.network.URL;
 
 public class MainActivity extends BaseFragmentActivity implements
 		OnClickListener {

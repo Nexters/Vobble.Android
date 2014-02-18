@@ -12,7 +12,7 @@
             android:layout_height="0dp"
             android:layout_weight="5">
         </LinearLayout>
-         <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2">
@@ -30,6 +30,7 @@
                     android:layout_width="match_parent"
             	    android:layout_height="match_parent"
             	    android:layout_marginLeft="-60dp"
+                    android:layout_margin="2dp"
                     android:alpha="0.5"/>
             </FrameLayout>
 
@@ -68,6 +69,7 @@
                     android:id="@+id/iv_vobble_12"
                     android:layout_width="match_parent"
             	    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
                     android:alpha="0.5"/>
             </FrameLayout>
         </LinearLayout>
@@ -92,7 +94,8 @@
             	<ImageView
                     android:id="@+id/iv_vobble_6"
                     android:layout_width="match_parent"
-            	    android:layout_height="match_parent"/>
+            	    android:layout_height="match_parent"
+                    android:layout_margin="2dp"/>
             </FrameLayout>
         </LinearLayout>
         <LinearLayout
@@ -116,7 +119,8 @@
             	<ImageView
                     android:id="@+id/iv_vobble_5"
                     android:layout_width="match_parent"
-            	    android:layout_height="match_parent"/>
+            	    android:layout_height="match_parent"
+                    android:layout_margin="2dp"/>
             </FrameLayout>
         </LinearLayout>
         <LinearLayout
@@ -141,6 +145,7 @@
                     android:id="@+id/iv_vobble_10"
                     android:layout_width="match_parent"
             	    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
                     android:alpha="0.5"/>
             </FrameLayout>
         </LinearLayout>
@@ -177,7 +182,8 @@
             	<ImageView
                     android:id="@+id/iv_vobble_1"
                     android:layout_width="match_parent"
-            	    android:layout_height="match_parent"/>
+            	    android:layout_height="match_parent"
+                    android:layout_margin="2dp"/>
             </FrameLayout>
         </LinearLayout>
         <LinearLayout
@@ -213,7 +219,8 @@
             	<ImageView
                     android:id="@+id/iv_vobble_4"
                     android:layout_width="match_parent"
-            	    android:layout_height="match_parent"/>
+            	    android:layout_height="match_parent"
+                    android:layout_margin="2dp"/>
             </FrameLayout>
         </LinearLayout>
         <LinearLayout
@@ -251,6 +258,7 @@
                     android:id="@+id/iv_vobble_7"
                     android:layout_width="match_parent"
             	    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
                     android:alpha="0.5"/>
             </FrameLayout>
 
@@ -276,7 +284,8 @@
             	<ImageView
                     android:id="@+id/iv_vobble_2"
                     android:layout_width="match_parent"
-            	    android:layout_height="match_parent"/>
+            	    android:layout_height="match_parent"
+                    android:layout_margin="2dp"/>
             </FrameLayout>
 
         </LinearLayout>
@@ -300,7 +309,8 @@
             	<ImageView
                     android:id="@+id/iv_vobble_3"
                     android:layout_width="match_parent"
-            	    android:layout_height="match_parent"/>
+            	    android:layout_height="match_parent"
+                    android:layout_margin="2dp"/>
             </FrameLayout>
 
         </LinearLayout>
@@ -325,6 +335,7 @@
                     android:id="@+id/iv_vobble_9"
                     android:layout_width="match_parent"
             	    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
                     android:alpha="0.5"/>
             </FrameLayout>
 
@@ -365,6 +376,7 @@
                     android:layout_width="match_parent"
             	    android:layout_height="match_parent"
             	    android:layout_marginRight="-60dp"
+                    android:layout_margin="2dp"
                     android:alpha="0.5"/>
             </FrameLayout>
         </LinearLayout>

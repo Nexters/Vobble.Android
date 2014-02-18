@@ -12,6 +12,7 @@
     <string name="title_activity_create_vobble">CreateVobbleActivity</string>
     <string name="title_activity_confirm_vobble">ConfirmVobbleActivity</string>
     <string name="title_activity_listen_vobble">ListenVobbleActivity</string>
+    <string name="title_activity_event">EventActivity</string>
 
     <string name="activity_main_all_vobbles_tab">All</string>
     <string name="activity_main_my_vobbles_tab">My</string>

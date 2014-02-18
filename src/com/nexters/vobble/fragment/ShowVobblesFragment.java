@@ -136,7 +136,7 @@ public class ShowVobblesFragment extends BaseFragment {
     }
 
     private class AttachImageHelper extends AsyncTask<Void, Integer, Void> {
-        private final int IMAGE_LOADING_INTERVAL = 300;
+        private final int IMAGE_LOADING_INTERVAL = 200;
         private int vobbleListSize;
 
         @Override
