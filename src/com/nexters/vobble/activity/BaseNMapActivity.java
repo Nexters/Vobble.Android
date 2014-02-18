@@ -25,7 +25,6 @@ public class BaseNMapActivity extends NMapActivity {
 
 		loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
 		loadingView.setVisibility(View.INVISIBLE);
-		 App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
 
 	@Override

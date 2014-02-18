@@ -54,8 +54,6 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
 
         initResources();
 		initEvents();
-		
-		App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
 
     @Override

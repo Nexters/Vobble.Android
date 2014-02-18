@@ -32,7 +32,6 @@ public class TutorialActivity extends BaseActivity {
 		initViewPager();
 		initAnimations();
 		
-		App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
 
     private void initResources() {

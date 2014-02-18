@@ -33,7 +33,6 @@ public class SignInActivity extends BaseFragmentActivity implements View.OnClick
 
         initResources();
         initEvents();
-        App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
     
     private void initResources() {

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.nexters.vobble.R;
 import com.nexters.vobble.core.App;
@@ -37,9 +38,7 @@ public class BaseActivity extends Activity {
     @Override
 	protected void onStart() {
 		super.onStart();
-		if(App.SERVER_TARGET == App.SERVER_PRODUCTION) {
-			EasyTracker.getInstance(this).activityStart(this);
-		}
+		App.getGaTracker().set(Fields.SCREEN_NAME, (String)getTitle());
 		App.getGaTracker().send(MapBuilder.createAppView().build());
 	}
 
@@ -51,9 +50,6 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if(App.SERVER_TARGET == App.SERVER_PRODUCTION) {
-			EasyTracker.getInstance(this).activityStop(this);
-		}
 	}
 
 	@Override

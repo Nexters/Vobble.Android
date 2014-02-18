@@ -24,6 +24,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.R;
 import com.nexters.vobble.network.HttpUtil;
@@ -58,6 +60,12 @@ public class ShowVobblesFragment extends BaseFragment {
 		if (type == VOBBLE_FRAMGMENT_TYPE.ALL || type == VOBBLE_FRAMGMENT_TYPE.MY)
             load();
     }
+    @Override
+	public void onStart() {
+		super.onStart();
+		App.getGaTracker().set(Fields.SCREEN_NAME, type.toString());
+		App.getGaTracker().send(MapBuilder.createAppView().build());
+	}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
@@ -208,7 +216,6 @@ public class ShowVobblesFragment extends BaseFragment {
 		
 		@Override
 		public boolean onLongClick(View v) {
-			
 			
 			return false;
 		}

@@ -27,12 +27,19 @@ public class BaseFragmentActivity extends FragmentActivity {
 		loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
 		loadingView.setVisibility(View.INVISIBLE);
 		
-		App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
 	@Override
 	protected void onStart() {
 		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+		App.log("BaseFragment getTitle() : " + getTitle());
+		App.getGaTracker().set(Fields.SCREEN_NAME, (String)getTitle());
 		App.getGaTracker().send(MapBuilder.createAppView().build());
+	}
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 	
 	@Override

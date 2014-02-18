@@ -37,9 +37,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
         initResources();
         initEvents();
-        
-        App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
-	}
+   }
 	
     private void initResources() {
         mEtUsername = (EditText) findViewById(R.id.et_sign_up_username);

@@ -44,7 +44,6 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
 		initEvents();
         initMapView();
         
-        App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
 
     private void initLocation() {
