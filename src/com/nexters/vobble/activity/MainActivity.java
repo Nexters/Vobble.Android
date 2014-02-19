@@ -37,6 +37,7 @@ public class MainActivity extends BaseFragmentActivity implements
 	private FrameLayout[] tabs = new FrameLayout[TAB_COUNT];
 
 	private ImageView mIvReloadBtn;
+    private ImageView mIvEventBtn;
     private ViewPager mViewPager;
 
     private CustomFragmentPagerAdapter mCustomFragmentPagerAdapter;
@@ -61,6 +62,7 @@ public class MainActivity extends BaseFragmentActivity implements
 		tabs[INDEX_MY_VOBBLES] = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
         tabs[INDEX_FRIENDS_VOBBLES] = (FrameLayout) findViewById(R.id.fl_friends_voice_tab_button);
 		mIvReloadBtn = (ImageView) findViewById(R.id.iv_reload_btn);
+        mIvEventBtn = (ImageView) findViewById(R.id.iv_event_btn);
 	}
 
     private void initEvents() {
@@ -70,6 +72,8 @@ public class MainActivity extends BaseFragmentActivity implements
         tabs[INDEX_FRIENDS_VOBBLES].setOnClickListener(this);
         mIvReloadBtn.setOnTouchListener(ivTouchListener);
         mIvReloadBtn.setOnClickListener(this);
+        mIvEventBtn.setOnTouchListener(ivTouchListener);
+        mIvEventBtn.setOnClickListener(this);
 	}
 
     private void initFragments() {
@@ -115,24 +119,28 @@ public class MainActivity extends BaseFragmentActivity implements
 
     public void onClick(View view) {
 		switch (view.getId()) {
-		case R.id.fl_all_voice_tab_button:
-			showTab(INDEX_ALL_VOBBLES);
-            if (hasNeedToLoad[INDEX_ALL_VOBBLES])
-                loadTab(INDEX_ALL_VOBBLES);
-			break;
-		case R.id.fl_my_voice_tab_button:
-            showTab(INDEX_MY_VOBBLES);
-            if (hasNeedToLoad[INDEX_MY_VOBBLES])
-                loadTab(INDEX_MY_VOBBLES);
-			break;
-        case R.id.fl_friends_voice_tab_button:
-            showTab(INDEX_FRIENDS_VOBBLES);
-            if (hasNeedToLoad[INDEX_FRIENDS_VOBBLES])
-                loadTab(INDEX_FRIENDS_VOBBLES);
-            break;
-		case R.id.iv_reload_btn:
-            loadTab(mViewPager.getCurrentItem());
-			break;
+            case R.id.fl_all_voice_tab_button:
+                showTab(INDEX_ALL_VOBBLES);
+                if (hasNeedToLoad[INDEX_ALL_VOBBLES])
+                    loadTab(INDEX_ALL_VOBBLES);
+                break;
+            case R.id.fl_my_voice_tab_button:
+                showTab(INDEX_MY_VOBBLES);
+                if (hasNeedToLoad[INDEX_MY_VOBBLES])
+                    loadTab(INDEX_MY_VOBBLES);
+                break;
+            case R.id.fl_friends_voice_tab_button:
+                showTab(INDEX_FRIENDS_VOBBLES);
+                if (hasNeedToLoad[INDEX_FRIENDS_VOBBLES])
+                    loadTab(INDEX_FRIENDS_VOBBLES);
+                break;
+            case R.id.iv_reload_btn:
+                loadTab(mViewPager.getCurrentItem());
+                break;
+            case R.id.iv_event_btn:
+                Intent intent = new Intent(this, EventActivity.class);
+                startActivity(intent);
+                break;
 		}
 	}
 
