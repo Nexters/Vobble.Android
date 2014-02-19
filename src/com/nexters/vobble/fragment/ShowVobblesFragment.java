@@ -75,6 +75,7 @@ public class ShowVobblesFragment extends BaseMainFragment{
 		super.onStart();
 		App.getGaTracker().set(Fields.SCREEN_NAME, type.toString());
 		App.getGaTracker().send(MapBuilder.createAppView().build());
+		removeVobbleCancel();
 	}
 
     @Override
