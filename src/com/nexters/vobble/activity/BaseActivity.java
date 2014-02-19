@@ -14,7 +14,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.nexters.vobble.R;
+import com.nexters.vobble.core.App;
+import com.nexters.vobble.entity.Vobble;
 
 public class BaseActivity extends Activity {
     private int loadingStackCount = 0;
@@ -29,6 +34,22 @@ public class BaseActivity extends Activity {
 		}
 		loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
 		loadingView.setVisibility(View.INVISIBLE);
+	}
+    @Override
+	protected void onStart() {
+		super.onStart();
+		App.getGaTracker().set(Fields.SCREEN_NAME, (String)getTitle());
+		App.getGaTracker().send(MapBuilder.createAppView().build());
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
 	}
 
 	@Override

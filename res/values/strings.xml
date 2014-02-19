@@ -63,7 +63,7 @@
     <string name="end">종료</string>
     <string name="confirm_finish_app">Vobble을 종료하시겠습니까?</string>
     <string name="log_out">Log Out</string>
-
+	<string name="service_ready">서비스 준비중입니다.</string>
     <string-array name="menu_choosing_photo_dialog_items">
         <item>Camera</item>
         <item>Gallery</item>

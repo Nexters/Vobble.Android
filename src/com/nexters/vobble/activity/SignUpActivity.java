@@ -1,6 +1,8 @@
 package com.nexters.vobble.activity;
 
 import android.app.Activity;
+
+import com.nexters.vobble.core.App;
 import com.nexters.vobble.entity.User;
 import com.nexters.vobble.network.APIResponseHandler;
 import org.json.JSONObject;
@@ -12,6 +14,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.R;
 import com.nexters.vobble.network.HttpUtil;
@@ -33,8 +37,8 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
         initResources();
         initEvents();
-	}
-
+   }
+	
     private void initResources() {
         mEtUsername = (EditText) findViewById(R.id.et_sign_up_username);
         mEtEmail = (EditText) findViewById(R.id.et_sign_up_email);

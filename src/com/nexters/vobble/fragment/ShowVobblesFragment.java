@@ -23,7 +23,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.R;
 import com.nexters.vobble.network.HttpUtil;
@@ -31,6 +34,7 @@ import com.nexters.vobble.network.URL;
 import com.nexters.vobble.entity.Vobble;
 
 @SuppressLint("ValidFragment")
+
 public class ShowVobblesFragment extends BaseMainFragment {
     public enum VOBBLE_FRAMGMENT_TYPE { ALL, MY };
     private static final int VOBBLE_COUNT = 12;
@@ -50,13 +54,27 @@ public class ShowVobblesFragment extends BaseMainFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (type == VOBBLE_FRAMGMENT_TYPE.ALL)
+            load();
+    }
+
+    @Override
+	public void onStart() {
+		super.onStart();
+		App.getGaTracker().set(Fields.SCREEN_NAME, type.toString());
+		App.getGaTracker().send(MapBuilder.createAppView().build());
+	}
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_show_vobbles, null);
         initResources(view);
         initEvents();
-        if (userId.equals(""))
-            load();
+        loadVobbleImages();
+
         return view;
 	}
 
@@ -89,6 +107,11 @@ public class ShowVobblesFragment extends BaseMainFragment {
         LocationHelper locationHelper = new LocationHelper(getActivity());
         if (locationHelper.isGPSEnabled()) {
             mLocation = locationHelper.getCurrentLocation();
+            if (mLocation == null) {
+            	mLocation = new Location("");
+                mLocation.setLatitude(37);
+                mLocation.setLongitude(127);
+            }
         } else {
             alert(R.string.error_cannot_use_gps);
             mLocation = new Location("");
@@ -187,7 +210,6 @@ public class ShowVobblesFragment extends BaseMainFragment {
     };
 
     private View.OnClickListener vobbleClickListener = new View.OnClickListener() {
-		
 		@Override
 		public void onClick(View v) {
 			int tag = (Integer) v.getTag();

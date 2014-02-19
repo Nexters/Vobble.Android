@@ -390,7 +390,4 @@
             android:layout_weight="5">
         </LinearLayout>
     </LinearLayout>
-
-
-
 </LinearLayout>

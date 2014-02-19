@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.Fields;
 import com.nexters.vobble.R;
+import com.nexters.vobble.core.App;
 import com.nhn.android.maps.NMapActivity;
 
 public class BaseNMapActivity extends NMapActivity {

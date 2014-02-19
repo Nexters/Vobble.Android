@@ -12,12 +12,15 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.google.analytics.tracking.android.Fields;
 import com.nexters.vobble.R;
 import com.nexters.vobble.adapter.CustomFragmentPagerAdapter;
 import com.nexters.vobble.core.AccountManager;
+import com.nexters.vobble.core.App;
 import com.nexters.vobble.fragment.BaseMainFragment;
 import com.nexters.vobble.fragment.FriendsFragment;
 import com.nexters.vobble.fragment.ShowVobblesFragment;
+import com.nexters.vobble.fragment.ShowVobblesFragment.VOBBLE_FRAMGMENT_TYPE;
 
 public class MainActivity extends BaseFragmentActivity implements
 		OnClickListener {
@@ -49,6 +52,7 @@ public class MainActivity extends BaseFragmentActivity implements
         initViewPager();
 
         showTab(INDEX_ALL_VOBBLES);
+        App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
 
     private void initResources() {
@@ -66,8 +70,8 @@ public class MainActivity extends BaseFragmentActivity implements
 	}
 
     private void initFragments() {
-        fragments[INDEX_ALL_VOBBLES] = new ShowVobblesFragment("", ShowVobblesFragment.VOBBLE_FRAMGMENT_TYPE.ALL);
-        fragments[INDEX_MY_VOBBLES] = new ShowVobblesFragment(AccountManager.getInstance().getUserId(this), ShowVobblesFragment.VOBBLE_FRAMGMENT_TYPE.MY);
+        fragments[INDEX_ALL_VOBBLES] = new ShowVobblesFragment("", VOBBLE_FRAMGMENT_TYPE.ALL);
+        fragments[INDEX_MY_VOBBLES] = new ShowVobblesFragment(AccountManager.getInstance().getUserId(this), VOBBLE_FRAMGMENT_TYPE.MY);
         fragments[INDEX_FRIENDS_VOBBLES] = new FriendsFragment();
     }
 
