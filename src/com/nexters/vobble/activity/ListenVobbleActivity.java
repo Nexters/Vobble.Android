@@ -21,6 +21,8 @@ import com.nexters.vobble.record.RecordManager;
 import com.nexters.vobble.util.*;
 import com.nexters.vobble.view.*;
 import com.nhn.android.maps.*;
+import com.nhn.android.maps.maplib.NGeoPoint;
+import com.nhn.android.maps.nmapmodel.NMapError;
 import com.nhn.android.maps.overlay.*;
 import com.nhn.android.mapviewer.overlay.*;
 import org.json.JSONException;
@@ -32,6 +34,7 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
 	private boolean loadImage = false;
 
     private NMapView mMapView;
+    private NMapController mMapController;
 	private Vobble vobble;
 	private ImageView vobbleImg;
     private TextView tvUsername;
@@ -40,8 +43,8 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
 	private HoloCircularProgressBar mProgressBar;
 	private ObjectAnimator mProgressBarAnimator;
     private RecordManager mRecordManager;
-	
-	@Override
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -92,6 +95,9 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
         mMapView.setApiKey(App.NMAP_API_KEY);
         mMapView.setClickable(true);
 
+        mMapView.setOnMapStateChangeListener(onMapStateChangeListener);
+        mMapController = mMapView.getMapController();
+
         NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
         mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
@@ -106,6 +112,36 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
         poiDataOverlay.showAllPOIdata(0);
         poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
     }
+
+    private NMapView.OnMapStateChangeListener onMapStateChangeListener = new NMapView.OnMapStateChangeListener() {
+        @Override
+        public void onMapInitHandler(NMapView nMapView, NMapError nMapError) {
+            if (nMapError == null) {
+                mMapController.setMapCenter(new NGeoPoint(vobble.getLongitude(),
+                        vobble.getLatitude()), 10);
+            }
+        }
+
+        @Override
+        public void onMapCenterChange(NMapView nMapView, NGeoPoint nGeoPoint) {
+
+        }
+
+        @Override
+        public void onMapCenterChangeFine(NMapView nMapView) {
+
+        }
+
+        @Override
+        public void onZoomLevelChange(NMapView nMapView, int i) {
+
+        }
+
+        @Override
+        public void onAnimationStateChange(NMapView nMapView, int i, int i2) {
+
+        }
+    };
 
     private NMapPOIdataOverlay.OnStateChangeListener onPOIdataStateChangeListener = new NMapPOIdataOverlay.OnStateChangeListener() {
         @Override

@@ -4,6 +4,8 @@ import java.io.*;
 
 import com.nexters.vobble.entity.User;
 import com.nexters.vobble.entity.Vobble;
+import com.nhn.android.maps.maplib.NGeoPoint;
+import com.nhn.android.maps.nmapmodel.NMapError;
 import org.json.*;
 
 import android.content.*;
@@ -29,6 +31,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
     private Location mLocation;
 
     private NMapView mMapView;
+    private NMapController mMapController;
     private ImageView mIvPhoto;
 	private Button mBtnSave;
 
@@ -43,6 +46,19 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
 		initEvents();
         initMapView();
 	}
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        // [주의] onCreate에서 보블 이미지를 이미지뷰에 붙이면 ImageView의 getWidth()가 0을 반환해서 제대로 붙지 않음
+        // onWindowFocusChanged부터 ImageView가 Window에 잘 붙어서 올바른 getWidth()를 반환하므로
+        // 여기에서 초기화시켜야 함 - by 수완
+        if (!loadImage) {
+            loadImage = true;
+            mIvPhotoWidth = mIvPhoto.getWidth();
+            initImage();
+        }
+    }
 
     private void initLocation() {
         LocationHelper locationHelper = new LocationHelper(this);
@@ -71,6 +87,9 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
         mMapView.setApiKey(App.NMAP_API_KEY);
         mMapView.setClickable(true);
 
+        mMapView.setOnMapStateChangeListener(onMapStateChangeListener);
+        mMapController = mMapView.getMapController();
+
         NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
         mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
@@ -86,23 +105,40 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
         poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        // [주의] onCreate에서 보블 이미지를 이미지뷰에 붙이면 ImageView의 getWidth()가 0을 반환해서 제대로 붙지 않음
-        // onWindowFocusChanged부터 ImageView가 Window에 잘 붙어서 올바른 getWidth()를 반환하므로
-        // 여기에서 초기화시켜야 함 - by 수완
-        if (!loadImage) {
-            loadImage = true;
-            mIvPhotoWidth = mIvPhoto.getWidth();
-            initImage();
-        }
-    }
-
     private void initImage() {
         Bitmap imageBitmap = BitmapFactory.decodeFile(TempFileManager.getImageFile().getAbsolutePath());
         mIvPhoto.setImageBitmap(ImageManagingHelper.getCroppedBitmap(imageBitmap, mIvPhotoWidth));
     }
+
+    private NMapView.OnMapStateChangeListener onMapStateChangeListener = new NMapView.OnMapStateChangeListener() {
+        @Override
+        public void onMapInitHandler(NMapView nMapView, NMapError nMapError) {
+            if (nMapError == null) {
+                mMapController.setMapCenter(new NGeoPoint(mLocation.getLongitude(),
+                        mLocation.getLatitude()), 10);
+            }
+        }
+
+        @Override
+        public void onMapCenterChange(NMapView nMapView, NGeoPoint nGeoPoint) {
+
+        }
+
+        @Override
+        public void onMapCenterChangeFine(NMapView nMapView) {
+
+        }
+
+        @Override
+        public void onZoomLevelChange(NMapView nMapView, int i) {
+
+        }
+
+        @Override
+        public void onAnimationStateChange(NMapView nMapView, int i, int i2) {
+
+        }
+    };
 
     private NMapPOIdataOverlay.OnStateChangeListener onPOIdataStateChangeListener = new NMapPOIdataOverlay.OnStateChangeListener() {
         @Override
