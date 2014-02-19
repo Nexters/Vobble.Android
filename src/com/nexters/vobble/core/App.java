@@ -8,6 +8,9 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -16,6 +19,10 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 public class App extends Application {
+	private static GoogleAnalytics mGa;
+	private static Tracker mTracker;
+  	private static final String GA_PROPERTY_ID = "UA-47309628-4";
+	  
 	public static final int SERVER_TEST = 0;
 	public static final int SERVER_PRODUCTION = 1;
 	public static final int SERVER_TARGET = SERVER_PRODUCTION;
@@ -39,7 +46,9 @@ public class App extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-
+		mGa = GoogleAnalytics.getInstance(this);
+	    mTracker = mGa.getTracker(GA_PROPERTY_ID);
+	    
         DisplayImageOptions options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)
             .cacheOnDisc(true)
@@ -51,5 +60,16 @@ public class App extends Application {
             .defaultDisplayImageOptions(options)
             .build();
         ImageLoader.getInstance().init(config);
+	}
+	public static Tracker getGaTracker() {
+		return mTracker;
+	}
+
+	public static GoogleAnalytics getGaInstance() {
+		return mGa;
+	}
+	
+	public static void SendTrackingEvent(String category,String action,String label,long value){
+		mTracker.send(MapBuilder.createEvent(category,action,label, null).build());
 	}
 }

@@ -14,8 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.nexters.vobble.R;
 import com.nexters.vobble.activity.BaseFragmentActivity;
+import com.nexters.vobble.core.App;
 
 
 public class BaseFragment extends Fragment {
@@ -32,7 +36,7 @@ public class BaseFragment extends Fragment {
 		inflater = LayoutInflater.from(activity);
 		this.activity = (BaseFragmentActivity) activity;
 	}
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
