@@ -4,6 +4,7 @@ import android.animation.*;
 import android.content.*;
 import android.graphics.Rect;
 import android.os.*;
+import android.text.Html;
 import android.view.*;
 import android.widget.*;
 
@@ -70,7 +71,8 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
     }
 
 	private void initView() {
-        tvCreatedAt.setText(vobble.getCreatedAt());
+        String createdAtText = "on <b>" + vobble.getCreatedAt() + "</b>";
+        tvCreatedAt.setText(Html.fromHtml(createdAtText), TextView.BufferType.SPANNABLE);
 	}
 
     @Override
@@ -147,7 +149,8 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
                 }
                 if (dataObj != null) {
                     User user = new User().build(dataObj);
-                    tvUsername.setText(user.getUsername());
+                    String usernameText = "<b>" + user.getUsername() + "</b> made vobble";
+                    tvUsername.setText(Html.fromHtml(usernameText), TextView.BufferType.SPANNABLE);
                 }
             }
         });
