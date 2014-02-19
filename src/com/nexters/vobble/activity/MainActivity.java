@@ -31,8 +31,7 @@ public class MainActivity extends BaseFragmentActivity implements
     private ShowVobblesFragment[] fragments = new ShowVobblesFragment[TAB_COUNT];
 	private FrameLayout[] tabs = new FrameLayout[TAB_COUNT];
 
-	private ImageView mIvCreateVobble;
-    private ImageView mIvReloadBtn;
+	private ImageView mIvReloadBtn;
     private ViewPager mViewPager;
 
     private CustomFragmentPagerAdapter mCustomFragmentPagerAdapter;
@@ -54,15 +53,13 @@ public class MainActivity extends BaseFragmentActivity implements
     private void initResources() {
         tabs[INDEX_ALL_VOBBLES] = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		tabs[INDEX_MY_VOBBLES] = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
-		mIvCreateVobble = (ImageView) findViewById(R.id.iv_voice_record_btn);
-        mIvReloadBtn = (ImageView) findViewById(R.id.iv_reload_btn);
+		mIvReloadBtn = (ImageView) findViewById(R.id.iv_reload_btn);
 	}
 
     private void initEvents() {
 		tabs[INDEX_ALL_VOBBLES].setOnClickListener(this);
         tabs[INDEX_MY_VOBBLES].setOnClickListener(this);
-		mIvCreateVobble.setOnClickListener(this);
-        mIvReloadBtn.setOnClickListener(this);
+		mIvReloadBtn.setOnClickListener(this);
 	}
 
     private void initFragments() {
@@ -112,10 +109,6 @@ public class MainActivity extends BaseFragmentActivity implements
             if (!isLoaded[INDEX_MY_VOBBLES])
                 loadTab(INDEX_MY_VOBBLES);
 			break;
-		case R.id.iv_voice_record_btn:
-			Intent intent = new Intent(MainActivity.this, CreateVobbleActivity.class);
-			startActivity(intent);
-            break;
 		case R.id.iv_reload_btn:
             loadTab(mViewPager.getCurrentItem());
 			break;

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.location.Location;
 import android.os.AsyncTask;
+import com.nexters.vobble.activity.CreateVobbleActivity;
 import com.nexters.vobble.activity.ListenVobbleActivity;
 import com.nexters.vobble.core.App;
 import com.nexters.vobble.network.APIResponseHandler;
@@ -34,6 +35,7 @@ public class ShowVobblesFragment extends BaseFragment {
     private static final int VOBBLE_COUNT = 12;
     private static final String VOBBLE_IMG_ID_PREFIX = "iv_vobble_";
 
+    private ImageView mIvCreateVobble;
     private ImageView[] vobbleImageViews = new ImageView[VOBBLE_COUNT];
     private ArrayList<Vobble> vobbleList = new ArrayList<Vobble>();
 
@@ -57,6 +59,7 @@ public class ShowVobblesFragment extends BaseFragment {
 	}
 
     private void initResources(View view) {
+        mIvCreateVobble = (ImageView) view.findViewById(R.id.iv_voice_record_btn);
         for (int i = 1; i <= VOBBLE_COUNT; i++) {
             int resId = getResources().getIdentifier(VOBBLE_IMG_ID_PREFIX + i, "id", this.getActivity().getPackageName());
             vobbleImageViews[i - 1] = (ImageView) view.findViewById(resId);
@@ -64,6 +67,7 @@ public class ShowVobblesFragment extends BaseFragment {
     }
 
     private void initEvents() {
+        mIvCreateVobble.setOnClickListener(btnClickListener);
         for (int i = 0; i < VOBBLE_COUNT; i++) {
             vobbleImageViews[i].setOnClickListener(vobbleClickListener);
             vobbleImageViews[i].setTag(i);
@@ -183,4 +187,14 @@ public class ShowVobblesFragment extends BaseFragment {
 			}
 		}
 	};
+
+    private View.OnClickListener btnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (view.getId() == R.id.iv_voice_record_btn) {
+                Intent intent = new Intent(activity.getApplicationContext(), CreateVobbleActivity.class);
+                startActivity(intent);
+            }
+        }
+    };
 }
