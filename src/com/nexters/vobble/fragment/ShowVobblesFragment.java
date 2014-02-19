@@ -31,7 +31,8 @@ import com.nexters.vobble.network.URL;
 import com.nexters.vobble.entity.Vobble;
 
 @SuppressLint("ValidFragment")
-public class ShowVobblesFragment extends BaseFragment {
+public class ShowVobblesFragment extends BaseMainFragment {
+    public enum VOBBLE_FRAMGMENT_TYPE { ALL, MY };
     private static final int VOBBLE_COUNT = 12;
     private static final String VOBBLE_IMG_ID_PREFIX = "iv_vobble_";
 
@@ -41,9 +42,11 @@ public class ShowVobblesFragment extends BaseFragment {
 
     private String userId;
     private Location mLocation;
+    private VOBBLE_FRAMGMENT_TYPE type;
 
-    public ShowVobblesFragment(String userId) {
+    public ShowVobblesFragment(String userId, VOBBLE_FRAMGMENT_TYPE type) {
         this.userId = userId;
+        this.type = type;
     }
 
     @Override
@@ -69,10 +72,14 @@ public class ShowVobblesFragment extends BaseFragment {
         mIvCreateVobble.setOnClickListener(btnClickListener);
         for (int i = 0; i < VOBBLE_COUNT; i++) {
             vobbleImageViews[i].setOnClickListener(vobbleClickListener);
+            if (type == VOBBLE_FRAMGMENT_TYPE.MY) {
+                vobbleImageViews[i].setOnLongClickListener(vobbleLongClickListener);
+            }
             vobbleImageViews[i].setTag(i);
         }
     }
 
+    @Override
     public void load() {
         initLocation();
         loadVobbles();
@@ -91,18 +98,17 @@ public class ShowVobblesFragment extends BaseFragment {
     }
 
     private void loadVobbles() {
-    	String url;
-
-        if (userId.equals("")) {
+    	String url = "";
+        if (type == VOBBLE_FRAMGMENT_TYPE.ALL) {
             url = URL.VOBBLES;
-        } else {
+        } else if (type == VOBBLE_FRAMGMENT_TYPE.MY) {
             url = String.format(URL.USER_VOBBLES, userId);
         }
 
         RequestParams params = new RequestParams();
         params.put(App.LIMIT, VOBBLE_COUNT + "");
-        params.put(Vobble.LATITUDE, mLocation.getLatitude() + "");
-        params.put(Vobble.LONGITUDE, mLocation.getLongitude() + "");
+        params.put(Vobble.LATITUDE, String.valueOf(mLocation.getLatitude()));
+        params.put(Vobble.LONGITUDE, String.valueOf(mLocation.getLongitude()));
 
 		HttpUtil.get(url, null, params, new APIResponseHandler(activity) {
 
@@ -172,6 +178,13 @@ public class ShowVobblesFragment extends BaseFragment {
             }
         }
     }
+
+    private View.OnLongClickListener vobbleLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            return false;
+        }
+    };
 
     private View.OnClickListener vobbleClickListener = new View.OnClickListener() {
 		

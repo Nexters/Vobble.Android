@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import com.nexters.vobble.R;
 import com.nexters.vobble.adapter.CustomFragmentPagerAdapter;
 import com.nexters.vobble.core.AccountManager;
+import com.nexters.vobble.fragment.BaseMainFragment;
+import com.nexters.vobble.fragment.FriendsFragment;
 import com.nexters.vobble.fragment.ShowVobblesFragment;
 
 public class MainActivity extends BaseFragmentActivity implements
@@ -27,7 +29,7 @@ public class MainActivity extends BaseFragmentActivity implements
 
     private Boolean[] isLoaded = new Boolean[]{ false, false, false };
 
-    private ShowVobblesFragment[] fragments = new ShowVobblesFragment[TAB_COUNT];
+    private BaseMainFragment[] fragments = new BaseMainFragment[TAB_COUNT];
 	private FrameLayout[] tabs = new FrameLayout[TAB_COUNT];
 
 	private ImageView mIvReloadBtn;
@@ -64,9 +66,9 @@ public class MainActivity extends BaseFragmentActivity implements
 	}
 
     private void initFragments() {
-        fragments[INDEX_ALL_VOBBLES] = new ShowVobblesFragment("");
-        fragments[INDEX_MY_VOBBLES] = new ShowVobblesFragment(AccountManager.getInstance().getUserId(this));
-        fragments[INDEX_FRIENDS_VOBBLES] = new ShowVobblesFragment(AccountManager.getInstance().getUserId(this));
+        fragments[INDEX_ALL_VOBBLES] = new ShowVobblesFragment("", ShowVobblesFragment.VOBBLE_FRAMGMENT_TYPE.ALL);
+        fragments[INDEX_MY_VOBBLES] = new ShowVobblesFragment(AccountManager.getInstance().getUserId(this), ShowVobblesFragment.VOBBLE_FRAMGMENT_TYPE.MY);
+        fragments[INDEX_FRIENDS_VOBBLES] = new FriendsFragment();
     }
 
 	private void initViewPager() {

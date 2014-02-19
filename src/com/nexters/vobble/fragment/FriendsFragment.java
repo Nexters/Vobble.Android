@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.nexters.vobble.R;
 
-public class FriendsFragment extends BaseFragment {
+public class FriendsFragment extends BaseMainFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -19,5 +19,10 @@ public class FriendsFragment extends BaseFragment {
         String notice = "페이스북과 연동된<br><b>내 친구들의 보블 듣기 서비스!</b><br>곧 찾아옵니다.";
         tvNotice.setText(Html.fromHtml(notice), TextView.BufferType.SPANNABLE);
         return view;
+    }
+
+    @Override
+    public void load() {
+        
     }
 }
