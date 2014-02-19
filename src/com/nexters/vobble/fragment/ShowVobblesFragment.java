@@ -3,11 +3,14 @@ package com.nexters.vobble.fragment;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.graphics.PorterDuff;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.view.MotionEvent;
 import com.nexters.vobble.activity.CreateVobbleActivity;
 import com.nexters.vobble.activity.ListenVobbleActivity;
 import com.nexters.vobble.core.App;
+import com.nexters.vobble.listener.ImageViewTouchListener;
 import com.nexters.vobble.network.APIResponseHandler;
 import com.nexters.vobble.util.ImageManagingHelper;
 import com.nexters.vobble.util.LocationHelper;
@@ -34,7 +37,6 @@ import com.nexters.vobble.network.URL;
 import com.nexters.vobble.entity.Vobble;
 
 @SuppressLint("ValidFragment")
-
 public class ShowVobblesFragment extends BaseMainFragment {
     public enum VOBBLE_FRAMGMENT_TYPE { ALL, MY };
     private static final int VOBBLE_COUNT = 12;
@@ -73,7 +75,6 @@ public class ShowVobblesFragment extends BaseMainFragment {
         View view = inflater.inflate(R.layout.fragment_show_vobbles, null);
         initResources(view);
         initEvents();
-        loadVobbleImages();
 
         return view;
 	}
@@ -87,13 +88,16 @@ public class ShowVobblesFragment extends BaseMainFragment {
     }
 
     private void initEvents() {
+        ImageViewTouchListener ivTouchListener = new ImageViewTouchListener();
         mIvCreateVobble.setOnClickListener(btnClickListener);
+        mIvCreateVobble.setOnTouchListener(ivTouchListener);
         for (int i = 0; i < VOBBLE_COUNT; i++) {
+            vobbleImageViews[i].setOnTouchListener(ivTouchListener);
             vobbleImageViews[i].setOnClickListener(vobbleClickListener);
+            vobbleImageViews[i].setTag(i);
             if (type == VOBBLE_FRAMGMENT_TYPE.MY) {
                 vobbleImageViews[i].setOnLongClickListener(vobbleLongClickListener);
             }
-            vobbleImageViews[i].setTag(i);
         }
     }
 

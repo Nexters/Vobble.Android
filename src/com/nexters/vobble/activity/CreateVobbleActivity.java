@@ -12,10 +12,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -24,12 +26,13 @@ import android.widget.ImageView;
 import com.google.analytics.tracking.android.Fields;
 import com.nexters.vobble.R;
 import com.nexters.vobble.core.App;
+import com.nexters.vobble.listener.ImageViewTouchListener;
 import com.nexters.vobble.record.RecordManager;
 import com.nexters.vobble.util.ImageManagingHelper;
 import com.nexters.vobble.util.TempFileManager;
 import com.nexters.vobble.view.HoloCircularProgressBar;
 
-public class CreateVobbleActivity extends BaseActivity implements View.OnClickListener {
+public class CreateVobbleActivity extends BaseActivity {
     public static final int RECORD_TIME_LIMIT = 10000; // ms 단위
 
     public static final int REQUEST_TAKE_PHOTO = 1;
@@ -72,30 +75,35 @@ public class CreateVobbleActivity extends BaseActivity implements View.OnClickLi
 	}
 	
 	private void initEvents() {
-		mIvPhotoBtn.setOnClickListener(this);
-        mIvRecordBtn.setOnClickListener(this);
-		mIvResetBtn.setOnClickListener(this);
-		mBtnConfirm.setOnClickListener(this);
+        ImageViewTouchListener ivTouchListener = new ImageViewTouchListener();
+        mIvPhotoBtn.setOnTouchListener(ivTouchListener);
+        mIvPhotoBtn.setOnClickListener(btnClickListener);
+        mIvRecordBtn.setOnTouchListener(ivTouchListener);
+        mIvRecordBtn.setOnClickListener(btnClickListener);
+		mIvResetBtn.setOnClickListener(btnClickListener);
+		mBtnConfirm.setOnClickListener(btnClickListener);
 	}
-	
-	@Override
-	public void onClick(View view) {
-        switch (view.getId()) {
-        case R.id.iv_record_photo_btn:
-            showDialogChoosingPhoto();
-            break;
-        case R.id.iv_record_record_btn:
-			decideRecordingOrPlayingActionByRecordingStatus();
-			break;
-		case R.id.iv_record_re_btn:
-			stopRecordingOrPlaying();
-            resetRecording();
-            break;
-		case R.id.btn_record_confirm:
-			executeConfirm();
-			break;
-		}
-	}
+
+	private View.OnClickListener btnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.iv_record_photo_btn:
+                    showDialogChoosingPhoto();
+                    break;
+                case R.id.iv_record_record_btn:
+                    decideRecordingOrPlayingActionByRecordingStatus();
+                    break;
+                case R.id.iv_record_re_btn:
+                    stopRecordingOrPlaying();
+                    resetRecording();
+                    break;
+                case R.id.btn_record_confirm:
+                    executeConfirm();
+                    break;
+            }
+        }
+    };
 
     private void showDialogChoosingPhoto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

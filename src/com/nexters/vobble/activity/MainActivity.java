@@ -21,6 +21,7 @@ import com.nexters.vobble.fragment.BaseMainFragment;
 import com.nexters.vobble.fragment.FriendsFragment;
 import com.nexters.vobble.fragment.ShowVobblesFragment;
 import com.nexters.vobble.fragment.ShowVobblesFragment.VOBBLE_FRAMGMENT_TYPE;
+import com.nexters.vobble.listener.ImageViewTouchListener;
 
 public class MainActivity extends BaseFragmentActivity implements
 		OnClickListener {
@@ -30,7 +31,7 @@ public class MainActivity extends BaseFragmentActivity implements
     private final int INDEX_MY_VOBBLES = 1;
     private final int INDEX_FRIENDS_VOBBLES = 2;
 
-    private Boolean[] isLoaded = new Boolean[]{ false, false, false };
+    private Boolean[] hasNeedToLoad = new Boolean[]{ false, true, false };
 
     private BaseMainFragment[] fragments = new BaseMainFragment[TAB_COUNT];
 	private FrameLayout[] tabs = new FrameLayout[TAB_COUNT];
@@ -63,10 +64,12 @@ public class MainActivity extends BaseFragmentActivity implements
 	}
 
     private void initEvents() {
-		tabs[INDEX_ALL_VOBBLES].setOnClickListener(this);
+        ImageViewTouchListener ivTouchListener = new ImageViewTouchListener();
+        tabs[INDEX_ALL_VOBBLES].setOnClickListener(this);
         tabs[INDEX_MY_VOBBLES].setOnClickListener(this);
         tabs[INDEX_FRIENDS_VOBBLES].setOnClickListener(this);
-		mIvReloadBtn.setOnClickListener(this);
+        mIvReloadBtn.setOnTouchListener(ivTouchListener);
+        mIvReloadBtn.setOnClickListener(this);
 	}
 
     private void initFragments() {
@@ -114,14 +117,18 @@ public class MainActivity extends BaseFragmentActivity implements
 		switch (view.getId()) {
 		case R.id.fl_all_voice_tab_button:
 			showTab(INDEX_ALL_VOBBLES);
+            if (hasNeedToLoad[INDEX_ALL_VOBBLES])
+                loadTab(INDEX_ALL_VOBBLES);
 			break;
 		case R.id.fl_my_voice_tab_button:
             showTab(INDEX_MY_VOBBLES);
-            if (!isLoaded[INDEX_MY_VOBBLES])
+            if (hasNeedToLoad[INDEX_MY_VOBBLES])
                 loadTab(INDEX_MY_VOBBLES);
 			break;
         case R.id.fl_friends_voice_tab_button:
             showTab(INDEX_FRIENDS_VOBBLES);
+            if (hasNeedToLoad[INDEX_FRIENDS_VOBBLES])
+                loadTab(INDEX_FRIENDS_VOBBLES);
             break;
 		case R.id.iv_reload_btn:
             loadTab(mViewPager.getCurrentItem());
@@ -141,7 +148,7 @@ public class MainActivity extends BaseFragmentActivity implements
     }
 
     private void loadTab(int index) {
-        isLoaded[index] = true;
+        hasNeedToLoad[index] = false;
         fragments[index].load();
     }
 

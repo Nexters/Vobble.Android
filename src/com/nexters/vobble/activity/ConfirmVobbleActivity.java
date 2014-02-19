@@ -4,6 +4,9 @@ import java.io.*;
 
 import com.nexters.vobble.entity.User;
 import com.nexters.vobble.entity.Vobble;
+import com.nexters.vobble.listener.CustomOnCalloutOverlayListener;
+import com.nexters.vobble.listener.CustomOnMapStateChangeListener;
+import com.nexters.vobble.listener.CustomOnStateChangeListener;
 import com.nhn.android.maps.maplib.NGeoPoint;
 import com.nhn.android.maps.nmapmodel.NMapError;
 import org.json.*;
@@ -26,7 +29,7 @@ import com.nhn.android.maps.*;
 import com.nhn.android.maps.overlay.*;
 import com.nhn.android.mapviewer.overlay.*;
 
-public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnClickListener {
+public class ConfirmVobbleActivity extends BaseNMapActivity {
     private int mIvPhotoWidth;
     private boolean loadImage = false;
     private Location mLocation;
@@ -46,7 +49,6 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
         initResources();
 		initEvents();
         initMapView();
-        
 	}
 
     @Override
@@ -67,7 +69,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
 
         if (locationHelper.isGPSEnabled()) {
             mLocation = locationHelper.getCurrentLocation();
-            if(mLocation == null){
+            if (mLocation == null) {
             	mLocation = new Location("");
                 mLocation.setLatitude(37);
                 mLocation.setLongitude(127);
@@ -87,15 +89,19 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
 	}
 	
 	private void initEvents() {
-		mBtnSave.setOnClickListener(this);
+		mBtnSave.setOnClickListener(btnClickListener);
 	}
 
     private void initMapView() {
         mMapView.setApiKey(App.NMAP_API_KEY);
         mMapView.setClickable(true);
+        mMapController = mMapView.getMapController();
+
+        CustomOnMapStateChangeListener onMapStateChangeListener = new CustomOnMapStateChangeListener(mMapController, mLocation);
+        CustomOnCalloutOverlayListener onCalloutOverlayListener = new CustomOnCalloutOverlayListener();
+        CustomOnStateChangeListener onPOIdataStateChangeListener = new CustomOnStateChangeListener();
 
         mMapView.setOnMapStateChangeListener(onMapStateChangeListener);
-        mMapController = mMapView.getMapController();
 
         NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
@@ -117,59 +123,16 @@ public class ConfirmVobbleActivity extends BaseNMapActivity implements View.OnCl
         mIvPhoto.setImageBitmap(ImageManagingHelper.getCroppedBitmap(imageBitmap, mIvPhotoWidth));
     }
 
-    private NMapView.OnMapStateChangeListener onMapStateChangeListener = new NMapView.OnMapStateChangeListener() {
+    private View.OnClickListener btnClickListener = new View.OnClickListener() {
         @Override
-        public void onMapInitHandler(NMapView nMapView, NMapError nMapError) {
-            if (nMapError == null) {
-                mMapController.setMapCenter(new NGeoPoint(mLocation.getLongitude(),
-                        mLocation.getLatitude()), 10);
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.btn_save:
+                    executeSaving();
+                    break;
             }
         }
-
-        @Override
-        public void onMapCenterChange(NMapView nMapView, NGeoPoint nGeoPoint) {
-
-        }
-
-        @Override
-        public void onMapCenterChangeFine(NMapView nMapView) {
-
-        }
-
-        @Override
-        public void onZoomLevelChange(NMapView nMapView, int i) {
-
-        }
-
-        @Override
-        public void onAnimationStateChange(NMapView nMapView, int i, int i2) {
-
-        }
     };
-
-    private NMapPOIdataOverlay.OnStateChangeListener onPOIdataStateChangeListener = new NMapPOIdataOverlay.OnStateChangeListener() {
-        @Override
-        public void onFocusChanged(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {}
-
-        @Override
-        public void onCalloutClick(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {}
-    };
-
-    private NMapOverlayManager.OnCalloutOverlayListener onCalloutOverlayListener = new NMapOverlayManager.OnCalloutOverlayListener() {
-        @Override
-        public NMapCalloutOverlay onCreateCalloutOverlay(NMapOverlay itemOverlay, NMapOverlayItem overlayItem, Rect itemBounds) {
-            return new NMapCalloutBasicOverlay(itemOverlay, overlayItem, itemBounds);
-        }
-    };
-
-    @Override
-	public void onClick(View view) {
-		switch (view.getId()) {
-		case R.id.btn_save:
-            executeSaving();
-            break;
-		}
-	}
 
     private void executeSaving() {
         try {

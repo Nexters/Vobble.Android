@@ -3,16 +3,20 @@ package com.nexters.vobble.activity;
 import android.animation.*;
 import android.content.*;
 import android.graphics.Rect;
+import android.location.Location;
 import android.os.*;
 import android.text.Html;
 import android.view.*;
 import android.widget.*;
 
-import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.*;
 import com.nexters.vobble.core.*;
 import com.nexters.vobble.entity.User;
 import com.nexters.vobble.entity.Vobble;
+import com.nexters.vobble.listener.CustomOnCalloutOverlayListener;
+import com.nexters.vobble.listener.CustomOnMapStateChangeListener;
+import com.nexters.vobble.listener.CustomOnStateChangeListener;
+import com.nexters.vobble.listener.ImageViewTouchListener;
 import com.nexters.vobble.network.APIResponseHandler;
 import com.nexters.vobble.network.HttpUtil;
 import com.nexters.vobble.network.URL;
@@ -21,16 +25,12 @@ import com.nexters.vobble.record.RecordManager;
 import com.nexters.vobble.util.*;
 import com.nexters.vobble.view.*;
 import com.nhn.android.maps.*;
-import com.nhn.android.maps.maplib.NGeoPoint;
-import com.nhn.android.maps.nmapmodel.NMapError;
 import com.nhn.android.maps.overlay.*;
 import com.nhn.android.mapviewer.overlay.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-
-public class ListenVobbleActivity extends BaseNMapActivity implements View.OnClickListener {
+public class ListenVobbleActivity extends BaseNMapActivity {
 	private boolean loadImage = false;
 
     private NMapView mMapView;
@@ -43,6 +43,8 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
 	private HoloCircularProgressBar mProgressBar;
 	private ObjectAnimator mProgressBarAnimator;
     private RecordManager mRecordManager;
+
+    private ImageViewTouchListener vobbleTouchListener = new ImageViewTouchListener();
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,8 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
 	}
 
     private void initEvents() {
-        vobbleImg.setOnClickListener(this);
+        vobbleImg.setOnTouchListener(vobbleTouchListener);
+        vobbleImg.setOnClickListener(vobbleClickListener);
     }
 
 	private void initView() {
@@ -94,9 +97,14 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
         mMapView = (NMapView) findViewById(R.id.vobble_map_view);
         mMapView.setApiKey(App.NMAP_API_KEY);
         mMapView.setClickable(true);
+        mMapController = mMapView.getMapController();
+
+        CustomOnMapStateChangeListener onMapStateChangeListener =
+                new CustomOnMapStateChangeListener(mMapController, vobble.getLatitude(), vobble.getLongitude());
+        CustomOnCalloutOverlayListener onCalloutOverlayListener = new CustomOnCalloutOverlayListener();
+        CustomOnStateChangeListener onPOIdataStateChangeListener = new CustomOnStateChangeListener();
 
         mMapView.setOnMapStateChangeListener(onMapStateChangeListener);
-        mMapController = mMapView.getMapController();
 
         NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
@@ -112,51 +120,6 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
         poiDataOverlay.showAllPOIdata(0);
         poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
     }
-
-    private NMapView.OnMapStateChangeListener onMapStateChangeListener = new NMapView.OnMapStateChangeListener() {
-        @Override
-        public void onMapInitHandler(NMapView nMapView, NMapError nMapError) {
-            if (nMapError == null) {
-                mMapController.setMapCenter(new NGeoPoint(vobble.getLongitude(),
-                        vobble.getLatitude()), 10);
-            }
-        }
-
-        @Override
-        public void onMapCenterChange(NMapView nMapView, NGeoPoint nGeoPoint) {
-
-        }
-
-        @Override
-        public void onMapCenterChangeFine(NMapView nMapView) {
-
-        }
-
-        @Override
-        public void onZoomLevelChange(NMapView nMapView, int i) {
-
-        }
-
-        @Override
-        public void onAnimationStateChange(NMapView nMapView, int i, int i2) {
-
-        }
-    };
-
-    private NMapPOIdataOverlay.OnStateChangeListener onPOIdataStateChangeListener = new NMapPOIdataOverlay.OnStateChangeListener() {
-        @Override
-        public void onFocusChanged(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {}
-
-        @Override
-        public void onCalloutClick(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {}
-    };
-
-    private NMapOverlayManager.OnCalloutOverlayListener onCalloutOverlayListener = new NMapOverlayManager.OnCalloutOverlayListener() {
-        @Override
-        public NMapCalloutOverlay onCreateCalloutOverlay(NMapOverlay itemOverlay, NMapOverlayItem overlayItem, Rect itemBounds) {
-            return new NMapCalloutBasicOverlay(itemOverlay, overlayItem, itemBounds);
-        }
-    };
 
     private void initUserInfo() {
         String url = String.format(URL.USER_INFO, vobble.getUserId());
@@ -253,18 +216,20 @@ public class ListenVobbleActivity extends BaseNMapActivity implements View.OnCli
         mProgressBarAnimator.start();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-        case R.id.voice_photo:
-            if (mRecordManager.isPlaying()) {
-                stopPlaying();
-            } else if (mRecordManager.isStopRecording()) {
-                startPlaying();
+    private View.OnClickListener vobbleClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.voice_photo:
+                    if (mRecordManager.isPlaying()) {
+                        stopPlaying();
+                    } else if (mRecordManager.isStopRecording()) {
+                        startPlaying();
+                    }
+                    break;
             }
-            break;
         }
-    }
+    };
 
     @Override
     protected void onPause() {
