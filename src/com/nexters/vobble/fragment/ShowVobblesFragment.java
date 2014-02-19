@@ -50,7 +50,6 @@ public class ShowVobblesFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_show_vobbles, null);
-
         initResources(view);
         initEvents();
         if (userId.equals(""))

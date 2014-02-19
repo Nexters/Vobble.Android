@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -17,16 +16,16 @@ import com.nexters.vobble.R;
 import com.nexters.vobble.adapter.CustomFragmentPagerAdapter;
 import com.nexters.vobble.core.AccountManager;
 import com.nexters.vobble.fragment.ShowVobblesFragment;
-import com.nexters.vobble.network.URL;
 
 public class MainActivity extends BaseFragmentActivity implements
 		OnClickListener {
 
-    private final int TAB_COUNT = 2;
+    private final int TAB_COUNT = 3;
     private final int INDEX_ALL_VOBBLES = 0;
     private final int INDEX_MY_VOBBLES = 1;
+    private final int INDEX_FRIENDS_VOBBLES = 2;
 
-    private Boolean[] isLoaded = new Boolean[]{ false, false };
+    private Boolean[] isLoaded = new Boolean[]{ false, false, false };
 
     private ShowVobblesFragment[] fragments = new ShowVobblesFragment[TAB_COUNT];
 	private FrameLayout[] tabs = new FrameLayout[TAB_COUNT];
@@ -53,18 +52,21 @@ public class MainActivity extends BaseFragmentActivity implements
     private void initResources() {
         tabs[INDEX_ALL_VOBBLES] = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		tabs[INDEX_MY_VOBBLES] = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
+        tabs[INDEX_FRIENDS_VOBBLES] = (FrameLayout) findViewById(R.id.fl_friends_voice_tab_button);
 		mIvReloadBtn = (ImageView) findViewById(R.id.iv_reload_btn);
 	}
 
     private void initEvents() {
 		tabs[INDEX_ALL_VOBBLES].setOnClickListener(this);
         tabs[INDEX_MY_VOBBLES].setOnClickListener(this);
+        tabs[INDEX_FRIENDS_VOBBLES].setOnClickListener(this);
 		mIvReloadBtn.setOnClickListener(this);
 	}
 
     private void initFragments() {
         fragments[INDEX_ALL_VOBBLES] = new ShowVobblesFragment("");
         fragments[INDEX_MY_VOBBLES] = new ShowVobblesFragment(AccountManager.getInstance().getUserId(this));
+        fragments[INDEX_FRIENDS_VOBBLES] = new ShowVobblesFragment(AccountManager.getInstance().getUserId(this));
     }
 
 	private void initViewPager() {
@@ -73,7 +75,8 @@ public class MainActivity extends BaseFragmentActivity implements
 
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
 		mViewPager.setAdapter(mCustomFragmentPagerAdapter);
-		mViewPager.setCurrentItem(INDEX_ALL_VOBBLES);
+        mViewPager.setOffscreenPageLimit(TAB_COUNT);
+        mViewPager.setCurrentItem(INDEX_ALL_VOBBLES);
 		mViewPager.setOnPageChangeListener(onPageChangeListener);
 	}
 
@@ -85,6 +88,8 @@ public class MainActivity extends BaseFragmentActivity implements
                 onClick(tabs[INDEX_ALL_VOBBLES]);
             } else if (position == INDEX_MY_VOBBLES) {
                 onClick(tabs[INDEX_MY_VOBBLES]);
+            } else if (position == INDEX_FRIENDS_VOBBLES) {
+                onClick(tabs[INDEX_FRIENDS_VOBBLES]);
             }
         }
 
@@ -109,6 +114,9 @@ public class MainActivity extends BaseFragmentActivity implements
             if (!isLoaded[INDEX_MY_VOBBLES])
                 loadTab(INDEX_MY_VOBBLES);
 			break;
+        case R.id.fl_friends_voice_tab_button:
+            showTab(INDEX_FRIENDS_VOBBLES);
+            break;
 		case R.id.iv_reload_btn:
             loadTab(mViewPager.getCurrentItem());
 			break;
