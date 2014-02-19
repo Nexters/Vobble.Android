@@ -32,7 +32,6 @@ public class BaseFragmentActivity extends FragmentActivity {
 	protected void onStart() {
 		super.onStart();
 		EasyTracker.getInstance(this).activityStart(this);
-		App.log("BaseFragment getTitle() : " + getTitle());
 		App.getGaTracker().set(Fields.SCREEN_NAME, (String)getTitle());
 		App.getGaTracker().send(MapBuilder.createAppView().build());
 	}

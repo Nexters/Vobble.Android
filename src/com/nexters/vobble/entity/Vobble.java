@@ -58,7 +58,9 @@ public class Vobble implements Serializable {
 			return URL.BASE_URL_PRODUCTION + "/files/" + imageUri;
 		}
 	}
-
+	public int getVobbleId() {
+        return vobbleId;
+    }
     public int getUserId() {
         return userId;
     }

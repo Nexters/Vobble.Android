@@ -2,6 +2,8 @@ package com.nexters.vobble.network;
 
 import java.util.Map;
 
+import android.content.Context;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -27,7 +29,7 @@ public class HttpUtil {
 
 	public static void post(String url, Map<String, String> headers, RequestParams params, AsyncHttpResponseHandler handler) {
 		setHeaders(headers);
-		App.log("POST : " + url + "&" + params);
+		App.log("POST : " + url + "?" + params);
 		getClient().post(url, params, handler);
 	}
 	
@@ -36,8 +38,9 @@ public class HttpUtil {
 		getClient().put(url, params, handler);
 	}
 	
-	public static void delete(String url, AsyncHttpResponseHandler handler) {
-		getClient().delete(url, handler);
+	public static void delete(String url, Map<String, String> headers, RequestParams params, AsyncHttpResponseHandler handler) {
+		setHeaders(headers);
+		getClient().delete(null, url, null, params, handler);
 	}
 	
 	public static void setHeaders(Map<String, String> headers) {

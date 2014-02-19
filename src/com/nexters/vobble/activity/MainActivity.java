@@ -169,6 +169,10 @@ public class MainActivity extends BaseFragmentActivity implements
                 startActivity(intent);
                 finish();
                 break;
+            case R.id.remove_vobble:
+            	ShowVobblesFragment fragment = (ShowVobblesFragment)fragments[INDEX_MY_VOBBLES];
+            	fragment.removeVobbleClick();
+            	break;
         }
 
         return false;
@@ -189,9 +193,15 @@ public class MainActivity extends BaseFragmentActivity implements
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu (Menu menu){
+    	menu.clear();
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
+        
+        if(mViewPager.getCurrentItem() == INDEX_MY_VOBBLES){
+        	inflater.inflate(R.menu.main_remove, menu);
+        }else{
+        	inflater.inflate(R.menu.main, menu);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 }

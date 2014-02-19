@@ -1,6 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <item
         android:id="@+id/log_out"
         android:orderInCategory="100"
         android:title="@string/log_out"/>
+	<item
+        android:id="@+id/remove_vobble"
+        android:orderInCategory="100"
+        android:title="@string/remove"/>
 </menu>
