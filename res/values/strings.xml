@@ -54,8 +54,9 @@
     <string name="error_not_exist_voice">녹음을 진행해주세요.</string>
     <string name="error_not_exist_image">사진을 선택해주세요.</string>
     <string name="error_cannot_create_vobble">보블 생성에 실패하였습니다.</string>
-    <string name="error_cannot_use_gps">위치 정보를 가져올 수 없습니다. GPS가 사용가능한 상태인지 확인해주세요.</string>
-	<string name="error_network">네트워크를 연결할 수 없습니다.</string>
+    <string name="error_cannot_get_location">위치 정보를 가져올 수 없습니다. 테스트 버전이기 때문에 임의로 위치를 설정하겠습니다. 그리고 이 경고창을 보신다면 꼭 개발자에게 말씀해주세요.</string>
+    <string name="error_network">네트워크를 연결할 수 없습니다.</string>
+
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
     <string name="yes">예</string>

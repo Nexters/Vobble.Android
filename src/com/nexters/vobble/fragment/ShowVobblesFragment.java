@@ -2,11 +2,6 @@ package com.nexters.vobble.fragment;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.gesture.GestureOverlayView;
-import android.gesture.GestureOverlayView.OnGestureListener;
-import android.gesture.GestureOverlayView.OnGesturingListener;
-import android.graphics.PorterDuff;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.view.MotionEvent;
@@ -32,7 +27,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
@@ -56,6 +50,7 @@ public class ShowVobblesFragment extends BaseMainFragment{
 
     private String userId;
     private Location mLocation;
+    private LocationHelper mLocationHelper;
     private VOBBLE_FRAMGMENT_TYPE type;
 
     public ShowVobblesFragment(String userId, VOBBLE_FRAMGMENT_TYPE type) {
@@ -125,23 +120,16 @@ public class ShowVobblesFragment extends BaseMainFragment{
     @Override
     public void load() {
         initLocation();
-        loadVobbles();
+        if (mLocation != null)
+            loadVobbles();
     }
 
     private void initLocation() {
-        LocationHelper locationHelper = new LocationHelper(getActivity());
-        if (locationHelper.isGPSEnabled()) {
-            mLocation = locationHelper.getCurrentLocation();
-            if (mLocation == null) {
-            	mLocation = new Location("");
-                mLocation.setLatitude(37);
-                mLocation.setLongitude(127);
-            }
-        } else {
-            alert(R.string.error_cannot_use_gps);
-            mLocation = new Location("");
-            mLocation.setLatitude(37);
-            mLocation.setLongitude(127);
+        mLocationHelper = new LocationHelper(getActivity());
+        mLocation = mLocationHelper.getCurrentLocation();
+        if (mLocation == null) {
+            alert(R.string.error_cannot_get_location);
+            mLocation = mLocationHelper.getDefaultLocation();
         }
     }
 
@@ -334,4 +322,10 @@ public class ShowVobblesFragment extends BaseMainFragment{
         }
     };
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mLocationHelper != null)
+            mLocationHelper.destroy();
+    }
 }

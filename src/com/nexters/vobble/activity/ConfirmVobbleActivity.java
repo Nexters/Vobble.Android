@@ -7,8 +7,6 @@ import com.nexters.vobble.entity.Vobble;
 import com.nexters.vobble.listener.CustomOnCalloutOverlayListener;
 import com.nexters.vobble.listener.CustomOnMapStateChangeListener;
 import com.nexters.vobble.listener.CustomOnStateChangeListener;
-import com.nhn.android.maps.maplib.NGeoPoint;
-import com.nhn.android.maps.nmapmodel.NMapError;
 import org.json.*;
 
 import android.content.*;
@@ -18,7 +16,6 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
-import com.google.analytics.tracking.android.Fields;
 import com.loopj.android.http.*;
 import com.nexters.vobble.*;
 import com.nexters.vobble.core.*;
@@ -32,6 +29,7 @@ import com.nhn.android.mapviewer.overlay.*;
 public class ConfirmVobbleActivity extends BaseNMapActivity {
     private int mIvPhotoWidth;
     private boolean loadImage = false;
+    private LocationHelper mLocationHelper;
     private Location mLocation;
 
     private NMapView mMapView;
@@ -65,20 +63,11 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
     }
 
     private void initLocation() {
-        LocationHelper locationHelper = new LocationHelper(this);
-
-        if (locationHelper.isGPSEnabled()) {
-            mLocation = locationHelper.getCurrentLocation();
-            if (mLocation == null) {
-            	mLocation = new Location("");
-                mLocation.setLatitude(37);
-                mLocation.setLongitude(127);
-            }
-        } else {
-            alert(R.string.error_cannot_use_gps);
-            mLocation = new Location("");
-            mLocation.setLatitude(37);
-            mLocation.setLongitude(127);
+        mLocationHelper = new LocationHelper(this);
+        mLocation = mLocationHelper.getCurrentLocation();
+        if (mLocation == null) {
+            alert(R.string.error_cannot_get_location);
+            mLocation = mLocationHelper.getDefaultLocation();
         }
     }
 
@@ -178,5 +167,12 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
     			startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mLocationHelper != null)
+            mLocationHelper.destroy();
     }
 }
