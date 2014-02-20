@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 
 public class TempFileManager {
@@ -28,6 +29,10 @@ public class TempFileManager {
             e.printStackTrace();
         }
         return file;
+    }
+
+    public static Uri getImageFileUri() {
+        return Uri.fromFile(getImageFile());
     }
 
     public static String getImageFilePath() {

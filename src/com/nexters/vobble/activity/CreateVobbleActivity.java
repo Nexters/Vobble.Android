@@ -12,20 +12,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.google.analytics.tracking.android.Fields;
 import com.nexters.vobble.R;
-import com.nexters.vobble.core.App;
 import com.nexters.vobble.listener.ImageViewTouchListener;
 import com.nexters.vobble.record.RecordManager;
 import com.nexters.vobble.util.ImageManagingHelper;
@@ -126,24 +122,29 @@ public class CreateVobbleActivity extends BaseActivity {
     private void dispatchPickFromGalleryIntent() {
         Intent pickFromGalleryIntent = new Intent(Intent.ACTION_PICK);
         pickFromGalleryIntent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        setCommonPutExtrasToIntent(pickFromGalleryIntent);
         startActivityForResult(pickFromGalleryIntent, REQUEST_PICK_FROM_GALLERY);
     }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        setCommonPutExtrasToIntent(takePictureIntent);
         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
     }
 
-    private void setPicFromCamera(Intent data) {
-        Bundle extras = data.getExtras();
-        if (extras != null) {
-            mImageBitmap = (Bitmap) extras.get("data");
-            mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
-        }
+    private void setCommonPutExtrasToIntent(Intent intent) {
+        intent.putExtra("crop", "true");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("outputX", 360);
+        intent.putExtra("outputY", 360);
+        intent.putExtra("aspectX", 360);
+        intent.putExtra("aspectY", 360);
+        intent.putExtra("scale", true);
     }
 
-    private void setPicFromGallery(Intent data) {
-        Uri uri = data.getData();
+    private void setPicFromUri() {
+        Uri uri = TempFileManager.getImageFileUri();
         InputStream imageStream = null;
         try {
             imageStream = getContentResolver().openInputStream(uri);
@@ -266,7 +267,6 @@ public class CreateVobbleActivity extends BaseActivity {
         } else if (mImageBitmap == null) {
             alert(R.string.error_not_exist_image);
         } else {
-            TempFileManager.saveBitmapToImageFile(mImageBitmap);
             Intent intent = new Intent(CreateVobbleActivity.this, ConfirmVobbleActivity.class);
             startActivity(intent);
         }
@@ -277,11 +277,11 @@ public class CreateVobbleActivity extends BaseActivity {
         switch (requestCode) {
             case REQUEST_TAKE_PHOTO:
                 if (resultCode == Activity.RESULT_OK)
-                    setPicFromCamera(data);
+                    setPicFromUri();
                 break;
             case REQUEST_PICK_FROM_GALLERY:
                 if (resultCode == Activity.RESULT_OK)
-                    setPicFromGallery(data);
+                    setPicFromUri();
                 break;
         }
     }
