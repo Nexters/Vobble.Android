@@ -1,12 +1,8 @@
 package com.nexters.vobble.util;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
+import android.content.Context;
+import android.graphics.*;
+import android.net.Uri;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -16,7 +12,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
+import java.io.InputStream;
+
 public class ImageManagingHelper {
+    private static final int SCALED_WIDTH = 640;
 
     public static void loadAndAttachCroppedImage(final ImageView iv, String url) {
         loadAndAttachCroppedImage(iv, url, null);
@@ -38,6 +37,31 @@ public class ImageManagingHelper {
                     iv.startAnimation(startAnim);
             }
         });
+    }
+
+    public static Bitmap getScaledBitmapFromUri(Context context, Uri uri) {
+        InputStream inputStream;
+        try {
+            inputStream = context.getContentResolver().openInputStream(uri);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(inputStream, null, options);
+            inputStream.close();
+
+            int width = options.outWidth;
+            int scaleFactor = width / SCALED_WIDTH;
+
+            Bitmap bitmap;
+            inputStream = context.getContentResolver().openInputStream(uri);
+            options = new BitmapFactory.Options();
+            options.inSampleSize = scaleFactor;
+            bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+            inputStream.close();
+            return bitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static Bitmap getCroppedBitmap(Bitmap bitmap, int radius) {

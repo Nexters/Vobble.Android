@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.nexters.vobble.R;
+import com.nexters.vobble.core.App;
 import com.nexters.vobble.listener.ImageViewTouchListener;
 import com.nexters.vobble.record.RecordManager;
 import com.nexters.vobble.util.ImageManagingHelper;
@@ -140,18 +141,12 @@ public class CreateVobbleActivity extends BaseActivity {
         intent.putExtra("outputY", 360);
         intent.putExtra("aspectX", 360);
         intent.putExtra("aspectY", 360);
-        intent.putExtra("scale", true);
+        intent.putExtra("scale", false);
     }
 
     private void setPicFromUri() {
         Uri uri = TempFileManager.getImageFileUri();
-        InputStream imageStream = null;
-        try {
-            imageStream = getContentResolver().openInputStream(uri);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        mImageBitmap = BitmapFactory.decodeStream(imageStream);
+        mImageBitmap = ImageManagingHelper.getScaledBitmapFromUri(this, uri);
         mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
     }
 
@@ -264,7 +259,7 @@ public class CreateVobbleActivity extends BaseActivity {
 
         if (!TempFileManager.isExistSoundFile()) {
             alert(R.string.error_not_exist_voice);
-        } else if (mImageBitmap == null) {
+        } else if (!TempFileManager.isExistImageFile()) {
             alert(R.string.error_not_exist_image);
         } else {
             Intent intent = new Intent(CreateVobbleActivity.this, ConfirmVobbleActivity.class);

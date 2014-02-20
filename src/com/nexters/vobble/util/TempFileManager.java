@@ -73,4 +73,9 @@ public class TempFileManager {
         File file = getVoiceFile();
         return file.exists();
     }
+
+    public static boolean isExistImageFile() {
+        File file = getImageFile();
+        return file.exists();
+    }
 }
