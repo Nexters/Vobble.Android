@@ -148,11 +148,28 @@ public class CreateVobbleActivity extends BaseActivity {
         InputStream imageStream = null;
         try {
             imageStream = getContentResolver().openInputStream(uri);
-        } catch (FileNotFoundException e) {
+            
+            BitmapFactory.Options o = new BitmapFactory.Options();
+    		o.inJustDecodeBounds = true;
+            mImageBitmap = BitmapFactory.decodeStream(imageStream, null, o);
+            imageStream.close();
+            
+            int width = o.outWidth;
+    		int height = o.outHeight;
+    		
+    		int scaleFactor = Math.max(width / 300, height / 300);
+
+    		Bitmap b = null;
+    		imageStream = getContentResolver().openInputStream(uri);
+    		o = new BitmapFactory.Options();
+    		o.inSampleSize = scaleFactor;
+    		b = BitmapFactory.decodeStream(imageStream, null, o);
+    		
+            mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(b, mIvPhotoWidth));
+            imageStream.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        mImageBitmap = BitmapFactory.decodeStream(imageStream);
-        mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
     }
 
     private void decideRecordingOrPlayingActionByRecordingStatus() {
