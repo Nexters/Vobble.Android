@@ -11,6 +11,7 @@ import android.util.Log;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.nexters.vobble.R;
 import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

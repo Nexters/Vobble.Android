@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import com.nexters.vobble.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -25,6 +26,11 @@ public class ImageManagingHelper {
         ImageSize targetSize = new ImageSize(iv.getWidth(), iv.getHeight());
         DisplayImageOptions options = new DisplayImageOptions.Builder().build();
         ImageLoader.getInstance().loadImage(url, targetSize, options, new SimpleImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+                iv.setImageResource(R.drawable.vobble_loading_icon);
+            }
+
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 iv.setImageBitmap(getCroppedBitmap(loadedImage, iv.getWidth()));
