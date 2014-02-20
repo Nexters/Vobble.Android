@@ -3,11 +3,11 @@ package com.nexters.vobble.network;
 import com.nexters.vobble.core.App;
 
 public class URL {
-	public static final String BASE_URL_DEVELOPMENT = "http://127.0.0.1:3000";
+	public static final String BASE_URL_DEVELOPMENT = "http://54.199.171.240:3000";
 	public static final String BASE_URL_PRODUCTION = "http://vobbletestapi.cafe24app.com";
 	public static final String getBaseUrl() {
 		if(App.SERVER_TARGET == App.SERVER_TEST) {
-			return BASE_URL_PRODUCTION;
+			return BASE_URL_DEVELOPMENT;
 		} else {
 			return BASE_URL_PRODUCTION;
 		}
