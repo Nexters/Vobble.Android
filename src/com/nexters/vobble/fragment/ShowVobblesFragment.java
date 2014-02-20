@@ -188,8 +188,8 @@ public class ShowVobblesFragment extends BaseMainFragment{
 		});
     }
     private void deleteVobble(int idx) {
-    	if(idx >= vobbleList.size()){
-    		return ;
+    	if (idx >= vobbleList.size()) {
+    		return;
     	}
     	final int tag = idx;
     	String vobbleId = String.valueOf(vobbleList.get(idx).getVobbleId());
@@ -225,9 +225,11 @@ public class ShowVobblesFragment extends BaseMainFragment{
 			}
 		});
     }
+
     private void loadVobbleImages() {
         new AttachImageHelper().execute();
     }
+
     private void removeVobbleImages(final int idx) {
     	Animation scaleDown = AnimationUtils.loadAnimation(activity, R.anim.vobble_scale_down);
 		vobbleImageViews[idx].startAnimation(scaleDown);
@@ -245,16 +247,19 @@ public class ShowVobblesFragment extends BaseMainFragment{
 			}
 		});
     }
-    public void removeVobbleClick(){
-    	for(int i=0; i < vobbleList.size(); i++){
+
+    public void removeVobbleClick() {
+    	for (int i=0; i < vobbleList.size(); i++) {
     		vobbleRemoveButtons[i].setVisibility(View.VISIBLE);
     	}
     }
-    public void removeVobbleCancel(){
-    	for(int i=0; i < vobbleList.size(); i++){
+
+    public void removeVobbleCancel() {
+    	for (int i=0; i < vobbleList.size(); i++) {
     		vobbleRemoveButtons[i].setVisibility(View.INVISIBLE);
     	}
     }
+
     private class AttachImageHelper extends AsyncTask<Void, Integer, Void> {
         private final int IMAGE_LOADING_INTERVAL = 200;
         private int vobbleListSize;
@@ -309,6 +314,7 @@ public class ShowVobblesFragment extends BaseMainFragment{
 			}
 		}
 	};
+
 	private View.OnClickListener vobbleRemoveClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -317,6 +323,7 @@ public class ShowVobblesFragment extends BaseMainFragment{
 			deleteVobble(tag);
 		}
 	};
+
     private View.OnClickListener btnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {

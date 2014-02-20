@@ -172,6 +172,8 @@ public class MainActivity extends BaseFragmentActivity implements
             case R.id.remove_vobble:
             	ShowVobblesFragment fragment = (ShowVobblesFragment)fragments[INDEX_MY_VOBBLES];
             	fragment.removeVobbleClick();
+                // All 탭을 리로드 시키기 위한 임시 처리
+                hasNeedToLoad[INDEX_ALL_VOBBLES] = true;
             	break;
         }
 
