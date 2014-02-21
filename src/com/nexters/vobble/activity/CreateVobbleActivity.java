@@ -1,17 +1,17 @@
 package com.nexters.vobble.activity;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.util.List;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.nexters.vobble.R;
 import com.nexters.vobble.core.App;
@@ -34,7 +35,8 @@ public class CreateVobbleActivity extends BaseActivity {
 
     public static final int REQUEST_TAKE_PHOTO = 1;
     public static final int REQUEST_PICK_FROM_GALLERY = 2;
-
+    public static final int REQUEST_CODE_CROP_IMAGE = 3;
+    
     private int mIvPhotoWidth;
     private ImageView mIvPhotoBtn;
     private ImageView mIvRecordBtn;
@@ -134,7 +136,7 @@ public class CreateVobbleActivity extends BaseActivity {
     }
 
     private void setCommonPutExtrasToIntent(Intent intent) {
-        intent.putExtra("crop", "true");
+        //intent.putExtra("crop", "true");
         intent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra("outputX", 360);
@@ -266,18 +268,56 @@ public class CreateVobbleActivity extends BaseActivity {
             startActivity(intent);
         }
     }
-
+    private void runCropImage() {
+    	Intent intent = new Intent("com.android.camera.action.CROP");
+    	intent.setType("image/jpg");
+    	List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent,0);
+    	int size = list.size();
+    	if (size == 0){
+    		setPicFromUri();
+    	   return;
+    	} else{
+    	   intent.setData(TempFileManager.getImageFileUri());
+    	   intent.putExtra("outputX", 300);
+    	   intent.putExtra("outputY", 300);
+    	   intent.putExtra("aspectX", 1);
+    	   intent.putExtra("aspectY", 1);
+    	   intent.putExtra("scale", false);
+    	   intent.putExtra("return-data", true);
+    	   if (size != 0) {
+    	       Intent i = new Intent(intent);
+    	       ResolveInfo res = list.get(size-1);
+    	       i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+    	       startActivityForResult(i, REQUEST_CODE_CROP_IMAGE);
+    	   }
+    	}
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_TAKE_PHOTO:
-                if (resultCode == Activity.RESULT_OK)
-                    setPicFromUri();
+            	if (resultCode == Activity.RESULT_OK)
+                {
+            		runCropImage();
+                }
                 break;
             case REQUEST_PICK_FROM_GALLERY:
                 if (resultCode == Activity.RESULT_OK)
-                    setPicFromUri();
+                {
+                	runCropImage();
+                }
                 break;
+            case REQUEST_CODE_CROP_IMAGE:
+            	{
+            		Bundle extras = data.getExtras();
+            		if (extras != null) {               
+            			Bitmap photo = extras.getParcelable("data");
+            			TempFileManager.saveBitmapToImageFile(photo);
+                    }
+                    if (resultCode == Activity.RESULT_OK)
+                        setPicFromUri();
+            	}
+            	break;
         }
     }
 
