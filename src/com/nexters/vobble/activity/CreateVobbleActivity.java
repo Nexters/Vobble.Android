@@ -131,13 +131,14 @@ public class CreateVobbleActivity extends BaseActivity {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
         setCommonPutExtrasToIntent(takePictureIntent);
         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
     }
 
     private void setCommonPutExtrasToIntent(Intent intent) {
         //intent.putExtra("crop", "true");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra("outputX", 360);
         intent.putExtra("outputY", 360);
@@ -268,29 +269,18 @@ public class CreateVobbleActivity extends BaseActivity {
             startActivity(intent);
         }
     }
-    private void runCropImage() {
+   
+    private Intent makeCropIntent(Uri uri){
     	Intent intent = new Intent("com.android.camera.action.CROP");
-    	intent.setType("image/jpg");
-    	List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent,0);
-    	int size = list.size();
-    	if (size == 0){
-    		setPicFromUri();
-    	   return;
-    	} else{
-    	   intent.setData(TempFileManager.getImageFileUri());
-    	   intent.putExtra("outputX", 300);
-    	   intent.putExtra("outputY", 300);
-    	   intent.putExtra("aspectX", 1);
-    	   intent.putExtra("aspectY", 1);
-    	   intent.putExtra("scale", false);
-    	   intent.putExtra("return-data", true);
-    	   if (size != 0) {
-    	       Intent i = new Intent(intent);
-    	       ResolveInfo res = list.get(size-1);
-    	       i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-    	       startActivityForResult(i, REQUEST_CODE_CROP_IMAGE);
-    	   }
-    	}
+    	intent.setDataAndType(uri, "image/*");
+		  
+    	intent.putExtra("outputX", 300);
+    	intent.putExtra("outputY", 300);
+    	intent.putExtra("aspectX", 1);
+    	intent.putExtra("aspectY", 1);
+    	intent.putExtra("scale", true);
+    	intent.putExtra("return-data", true);
+    	return intent;
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -298,22 +288,26 @@ public class CreateVobbleActivity extends BaseActivity {
             case REQUEST_TAKE_PHOTO:
             	if (resultCode == Activity.RESULT_OK)
                 {
-            		runCropImage();
+            		Intent intent = makeCropIntent(TempFileManager.getImageFileUri());
+                	startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
                 }
                 break;
             case REQUEST_PICK_FROM_GALLERY:
                 if (resultCode == Activity.RESULT_OK)
                 {
-                	runCropImage();
+                	Uri uri = data.getData();
+                	Intent intent = makeCropIntent(uri);
+                	startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
                 }
                 break;
             case REQUEST_CODE_CROP_IMAGE:
-            	{
+            	{           		
             		Bundle extras = data.getExtras();
             		if (extras != null) {               
             			Bitmap photo = extras.getParcelable("data");
             			TempFileManager.saveBitmapToImageFile(photo);
                     }
+                    
                     if (resultCode == Activity.RESULT_OK)
                         setPicFromUri();
             	}
