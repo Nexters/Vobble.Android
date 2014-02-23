@@ -3,7 +3,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/bg">
-	<LinearLayout 
+   <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="300"/>
+    <LinearLayout 
+        android:orientation="vertical"
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="500">
+    	<VideoView 
+		    android:id="@+id/vv_vobble_intro"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"/>
+    </LinearLayout>
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="200"/>
+<!--<LinearLayout 
 	    android:orientation="vertical"
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
@@ -14,7 +32,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_weight="410">
-	    <TextView
+	<TextView
 	        android:layout_width="0dp"
 	        android:layout_weight="155"
 	        android:layout_height="match_parent">
@@ -30,6 +48,8 @@
 	        android:layout_weight="155"
 	        android:layout_height="match_parent">
 	    </TextView>
+
+
 	</LinearLayout>
 	<LinearLayout
 	    android:orientation="horizontal"
@@ -37,6 +57,7 @@
 	    android:layout_height="0dp"
 	    android:layout_weight="290">
 	</LinearLayout>
+-->
 	<LinearLayout
 		android:orientation="horizontal"
 	    android:layout_width="match_parent"

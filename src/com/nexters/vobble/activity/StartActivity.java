@@ -1,13 +1,13 @@
 package com.nexters.vobble.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
+import android.app.*;
+import android.content.*;
+import android.net.*;
+import android.os.*;
+import android.view.*;
+import android.widget.*;
 
-import com.nexters.vobble.R;
+import com.nexters.vobble.*;
 
 public class StartActivity extends Activity implements View.OnClickListener {
 	public static final int REQUEST_SIGN_IN = 0;
@@ -15,6 +15,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
 
     private Button mBtnSignIn;
 	private Button mBtnSignUp;
+	private VideoView videoViewIntro;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +25,15 @@ public class StartActivity extends Activity implements View.OnClickListener {
 
         initResources();
         initEvents();
+        
+        playVideoIntro();
 	}
 
     private void initResources() {
         mBtnSignIn = (Button) findViewById(R.id.btn_sign_in);
         mBtnSignUp = (Button) findViewById(R.id.btn_sign_up);
+        videoViewIntro = (VideoView) findViewById(R.id.vv_vobble_intro);
+        
     }
 
     private void initEvents() {
@@ -46,6 +51,12 @@ public class StartActivity extends Activity implements View.OnClickListener {
             dispatchSignUp();
             break;
         }
+    }
+    
+    private void playVideoIntro(){
+    	Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/raw/vobble");
+    	videoViewIntro.setVideoURI(videoUri);
+    	videoViewIntro.start();
     }
 
     private void dispatchSignIn() {
