@@ -270,7 +270,7 @@ public class CreateVobbleActivity extends BaseActivity {
         }
     }
    
-    private Intent makeCropIntent(Uri uri){
+    private Intent makeCropIntent(Uri uri) {
     	Intent intent = new Intent("com.android.camera.action.CROP");
     	intent.setDataAndType(uri, "image/*");
 		  
@@ -282,35 +282,32 @@ public class CreateVobbleActivity extends BaseActivity {
     	intent.putExtra("return-data", true);
     	return intent;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_TAKE_PHOTO:
-            	if (resultCode == Activity.RESULT_OK)
-                {
+            	if (resultCode == Activity.RESULT_OK) {
             		Intent intent = makeCropIntent(TempFileManager.getImageFileUri());
                 	startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
                 }
                 break;
             case REQUEST_PICK_FROM_GALLERY:
-                if (resultCode == Activity.RESULT_OK)
-                {
+                if (resultCode == Activity.RESULT_OK) {
                 	Uri uri = data.getData();
                 	Intent intent = makeCropIntent(uri);
                 	startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
                 }
                 break;
             case REQUEST_CODE_CROP_IMAGE:
-            	{           		
-            		Bundle extras = data.getExtras();
-            		if (extras != null) {               
-            			Bitmap photo = extras.getParcelable("data");
-            			TempFileManager.saveBitmapToImageFile(photo);
-                    }
-                    
-                    if (resultCode == Activity.RESULT_OK)
-                        setPicFromUri();
-            	}
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    Bitmap photo = extras.getParcelable("data");
+                    TempFileManager.saveBitmapToImageFile(photo);
+                }
+
+                if (resultCode == Activity.RESULT_OK)
+                    setPicFromUri();
             	break;
         }
     }

@@ -43,7 +43,7 @@
     <string name="fragment_all_vobbles_vobbles">vobbles</string>
     <string name="fragment_my_vobbles_vobbles">vobbles</string>
 
-    <string name="activity_listen_vobble_title">Listen a vobble</string>
+    <string name="activity_listen_vobble_title">Listen to the vobble</string>
 
     <string name="error_signin">이메일과 비밀번호를 올바르게 입력해주세요.</string>
     <string name="error_signup_form">모든 항목을 입력해 주세요.</string>
