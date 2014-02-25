@@ -128,7 +128,6 @@ public class ShowVobblesFragment extends BaseMainFragment{
         mLocationHelper = new LocationHelper(getActivity());
         mLocation = mLocationHelper.getCurrentLocation();
         if (mLocation == null) {
-            alert(R.string.error_cannot_get_location);
             mLocation = mLocationHelper.getDefaultLocation();
         }
     }

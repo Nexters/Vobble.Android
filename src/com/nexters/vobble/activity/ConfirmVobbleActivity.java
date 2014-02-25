@@ -66,7 +66,6 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
         mLocationHelper = new LocationHelper(this);
         mLocation = mLocationHelper.getCurrentLocation();
         if (mLocation == null) {
-            alert(R.string.error_cannot_get_location);
             mLocation = mLocationHelper.getDefaultLocation();
         }
     }
