@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Vobble</string>
+    <string name="app_name">vobble</string>
 
     <string name="title_activity_intro">IntroActivity</string>
     <string name="title_activity_tutorial">TutorialActivity</string>
@@ -62,8 +62,8 @@
     <string name="yes">예</string>
     <string name="no">아니오</string>
     <string name="end">종료</string>
-    <string name="confirm_finish_app">Vobble을 종료하시겠습니까?</string>
-    <string name="log_out">Log Out</string>
+    <string name="confirm_finish_app">vobble을 종료하시겠습니까?</string>
+    <string name="log_out">로그아웃</string>
     <string name="remove">삭제</string>
 	<string name="service_ready">서비스 준비중입니다.</string>
     <string-array name="menu_choosing_photo_dialog_items">
