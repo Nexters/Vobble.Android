@@ -1,16 +1,12 @@
 package com.nexters.vobble.activity;
 
-import java.util.List;
-
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -20,10 +16,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.nexters.vobble.R;
-import com.nexters.vobble.core.App;
 import com.nexters.vobble.listener.ImageViewTouchListener;
 import com.nexters.vobble.record.RecordManager;
 import com.nexters.vobble.util.ImageManagingHelper;
