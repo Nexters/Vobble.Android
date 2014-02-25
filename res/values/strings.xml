@@ -43,7 +43,7 @@
     <string name="fragment_all_vobbles_vobbles">vobbles</string>
     <string name="fragment_my_vobbles_vobbles">vobbles</string>
 
-    <string name="activity_listen_vobble_title">Listen a vobble</string>
+    <string name="activity_listen_vobble_title">Listen to the vobble</string>
 
     <string name="error_signin">이메일과 비밀번호를 올바르게 입력해주세요.</string>
     <string name="error_signup_form">모든 항목을 입력해 주세요.</string>
@@ -54,7 +54,7 @@
     <string name="error_not_exist_voice">녹음을 진행해주세요.</string>
     <string name="error_not_exist_image">사진을 선택해주세요.</string>
     <string name="error_cannot_create_vobble">보블 생성에 실패하였습니다.</string>
-    <string name="error_cannot_get_location">위치 정보를 가져올 수 없습니다. 테스트 버전이기 때문에 임의로 위치를 설정하겠습니다. 그리고 이 경고창을 보신다면 꼭 개발자에게 말씀해주세요.</string>
+    <string name="error_cannot_get_location">위치 정보가 부정확할 수 있습니다.</string>
     <string name="error_network">네트워크를 연결할 수 없습니다.</string>
 
     <string name="ok">확인</string>

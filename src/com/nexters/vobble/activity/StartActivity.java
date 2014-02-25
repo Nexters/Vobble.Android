@@ -82,4 +82,17 @@ public class StartActivity extends Activity implements View.OnClickListener {
             }
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (videoViewIntro.isPlaying())
+            videoViewIntro.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        playVideoIntro();
+    }
 }

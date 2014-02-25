@@ -29,8 +29,8 @@ public class RecordManager {
 
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-		recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-		recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+		recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+		recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 		recorder.setOutputFile(path);
 
         try {

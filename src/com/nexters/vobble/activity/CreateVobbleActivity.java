@@ -1,16 +1,12 @@
 package com.nexters.vobble.activity;
 
-import java.util.List;
-
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -20,10 +16,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.nexters.vobble.R;
-import com.nexters.vobble.core.App;
 import com.nexters.vobble.listener.ImageViewTouchListener;
 import com.nexters.vobble.record.RecordManager;
 import com.nexters.vobble.util.ImageManagingHelper;
@@ -110,12 +104,12 @@ public class CreateVobbleActivity extends BaseActivity {
                .setItems(R.array.menu_choosing_photo_dialog_items, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int which) {
                        switch (which) {
-                       case 0:
-                           dispatchTakePictureIntent();
-                           break;
-                       case 1:
-                           dispatchPickFromGalleryIntent();
-                           break;
+                           case 0:
+                               dispatchTakePictureIntent();
+                               break;
+                           case 1:
+                               dispatchPickFromGalleryIntent();
+                               break;
                        }
                    }
                });
@@ -123,34 +117,15 @@ public class CreateVobbleActivity extends BaseActivity {
     }
 
     private void dispatchPickFromGalleryIntent() {
-        Intent pickFromGalleryIntent = new Intent(Intent.ACTION_PICK);
-        pickFromGalleryIntent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        setCommonPutExtrasToIntent(pickFromGalleryIntent);
-        startActivityForResult(pickFromGalleryIntent, REQUEST_PICK_FROM_GALLERY);
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, REQUEST_PICK_FROM_GALLERY);
     }
 
     private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
-        setCommonPutExtrasToIntent(takePictureIntent);
-        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-    }
-
-    private void setCommonPutExtrasToIntent(Intent intent) {
-        //intent.putExtra("crop", "true");
-        //intent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-        intent.putExtra("outputX", 360);
-        intent.putExtra("outputY", 360);
-        intent.putExtra("aspectX", 360);
-        intent.putExtra("aspectY", 360);
-        intent.putExtra("scale", false);
-    }
-
-    private void setPicFromUri() {
-        Uri uri = TempFileManager.getImageFileUri();
-        mImageBitmap = ImageManagingHelper.getScaledBitmapFromUri(this, uri);
-        mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, TempFileManager.getImageFileUri());
+        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
 
     private void decideRecordingOrPlayingActionByRecordingStatus() {
@@ -270,47 +245,51 @@ public class CreateVobbleActivity extends BaseActivity {
         }
     }
    
-    private Intent makeCropIntent(Uri uri){
+    private Intent makeCropIntent(Uri uri) {
     	Intent intent = new Intent("com.android.camera.action.CROP");
     	intent.setDataAndType(uri, "image/*");
-		  
-    	intent.putExtra("outputX", 300);
-    	intent.putExtra("outputY", 300);
+    	// [주의] outputX, outputY가 커지면 메모리 오류 때문에 프로세스가 중지됨.
+    	// 비트맵을 반환하지 말고 파일 형태로 저장하도록 변경해야할 듯.
+        intent.putExtra("outputX", 256);
+    	intent.putExtra("outputY", 256);
     	intent.putExtra("aspectX", 1);
     	intent.putExtra("aspectY", 1);
     	intent.putExtra("scale", true);
     	intent.putExtra("return-data", true);
     	return intent;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_TAKE_PHOTO:
-            	if (resultCode == Activity.RESULT_OK)
-                {
+            	if (resultCode == Activity.RESULT_OK) {
             		Intent intent = makeCropIntent(TempFileManager.getImageFileUri());
                 	startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
                 }
                 break;
             case REQUEST_PICK_FROM_GALLERY:
-                if (resultCode == Activity.RESULT_OK)
-                {
+                if (resultCode == Activity.RESULT_OK) {
                 	Uri uri = data.getData();
                 	Intent intent = makeCropIntent(uri);
                 	startActivityForResult(intent, REQUEST_CODE_CROP_IMAGE);
                 }
                 break;
             case REQUEST_CODE_CROP_IMAGE:
-            	{           		
-            		Bundle extras = data.getExtras();
-            		if (extras != null) {               
-            			Bitmap photo = extras.getParcelable("data");
-            			TempFileManager.saveBitmapToImageFile(photo);
+                if (resultCode == Activity.RESULT_OK) {
+                    Bundle extras = data.getExtras();
+                    if (extras != null) {
+                        mImageBitmap = extras.getParcelable("data");
+                        if (mImageBitmap != null) {
+                            mIvPhotoBtn.setImageBitmap(ImageManagingHelper.getCroppedBitmap(mImageBitmap, mIvPhotoWidth));
+                            TempFileManager.saveBitmapToImageFile(mImageBitmap);
+                        } else {
+                            showShortToast("잘린 이미지가 저장되지 않았습니다.");
+                        }
+                    } else {
+                        showShortToast("잘린 이미지가 저장되지 않았습니다.");
                     }
-                    
-                    if (resultCode == Activity.RESULT_OK)
-                        setPicFromUri();
-            	}
+                }
             	break;
         }
     }

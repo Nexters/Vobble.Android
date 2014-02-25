@@ -30,8 +30,6 @@ public class TutorialActivity extends BaseActivity {
 
         initResources();
 		initViewPager();
-		initAnimations();
-		
 	}
 
     private void initResources() {
@@ -70,10 +68,5 @@ public class TutorialActivity extends BaseActivity {
                 }
             }
         });
-	}
-
-	private void initAnimations() {
-        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-		mIntroPageViews[0].startAnimation(fadeIn);
 	}
 }

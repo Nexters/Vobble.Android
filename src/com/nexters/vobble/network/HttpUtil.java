@@ -1,9 +1,6 @@
 package com.nexters.vobble.network;
 
 import java.util.Map;
-
-import android.content.Context;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
