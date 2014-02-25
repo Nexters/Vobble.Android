@@ -2,6 +2,7 @@ package com.nexters.vobble.fragment;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.view.MotionEvent;
@@ -38,10 +39,12 @@ import com.nexters.vobble.entity.User;
 import com.nexters.vobble.entity.Vobble;
 
 @SuppressLint("ValidFragment")
-public class ShowVobblesFragment extends BaseMainFragment{
+public class ShowVobblesFragment extends BaseMainFragment {
     public enum VOBBLE_FRAMGMENT_TYPE { ALL, MY };
     private static final int VOBBLE_COUNT = 12;
     private static final String VOBBLE_IMG_ID_PREFIX = "iv_vobble_";
+
+    private OnFragmentListener mCallback;
 
     private ImageView mIvCreateVobble;
     private ImageView[] vobbleImageViews = new ImageView[VOBBLE_COUNT];
@@ -72,6 +75,17 @@ public class ShowVobblesFragment extends BaseMainFragment{
 		App.getGaTracker().send(MapBuilder.createAppView().build());
 		removeVobbleCancel();
 	}
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mCallback = (OnFragmentListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -202,11 +216,13 @@ public class ShowVobblesFragment extends BaseMainFragment{
 			public void onSuccess(JSONObject response) {
 				removeVobbleImages(tag);
 			}
+
 			@Override
 			public void onFailure(Throwable error, String response){
 				super.onFailure(error, response);
 			}
-			@Override
+
+            @Override
 			public void onFailure(Throwable error, JSONObject response){
 				super.onFailure(error, response);
 			}
@@ -223,14 +239,13 @@ public class ShowVobblesFragment extends BaseMainFragment{
 		scaleDown.setAnimationListener(new AnimationListener() {
 			@Override
 			public void onAnimationStart(Animation animation) {}
-			@Override
+
+            @Override
 			public void onAnimationRepeat(Animation animation) {}
 			
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				vobbleImageViews[idx].setVisibility(View.INVISIBLE);
-				vobbleList.remove(idx);
-				loadVobbleImages();
+                mCallback.onRemovedVobble();
 			}
 		});
     }
@@ -281,7 +296,7 @@ public class ShowVobblesFragment extends BaseMainFragment{
             }
         }
     }
-    
+
     private View.OnLongClickListener vobbleLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {

@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import android.widget.TextView;
 import com.google.analytics.tracking.android.Fields;
 import com.nexters.vobble.R;
 import com.nexters.vobble.adapter.CustomFragmentPagerAdapter;
@@ -22,21 +23,28 @@ import com.nexters.vobble.fragment.FriendsFragment;
 import com.nexters.vobble.fragment.ShowVobblesFragment;
 import com.nexters.vobble.fragment.ShowVobblesFragment.VOBBLE_FRAMGMENT_TYPE;
 import com.nexters.vobble.listener.ImageViewTouchListener;
+import com.nexters.vobble.network.APIResponseHandler;
+import com.nexters.vobble.network.HttpUtil;
+import com.nexters.vobble.network.URL;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends BaseFragmentActivity implements
-		OnClickListener {
+		OnClickListener, BaseMainFragment.OnFragmentListener {
 
     private final int TAB_COUNT = 3;
     private final int INDEX_ALL_VOBBLES = 0;
     private final int INDEX_MY_VOBBLES = 1;
     private final int INDEX_FRIENDS_VOBBLES = 2;
 
-    private Boolean[] hasNeedToLoad = new Boolean[]{ false, true, false };
-
+    private Boolean[] hasNeedToLoad = new Boolean[] { false, true, false };
     private BaseMainFragment[] fragments = new BaseMainFragment[TAB_COUNT];
 	private FrameLayout[] tabs = new FrameLayout[TAB_COUNT];
+    private String[] vobblesCnt = new String[TAB_COUNT];
 
-	private ImageView mIvReloadBtn;
+	private TextView mTvVobbleCnt;
+    private TextView mTvVobbleCntType;
+    private ImageView mIvReloadBtn;
     private ImageView mIvEventBtn;
     private ViewPager mViewPager;
 
@@ -53,6 +61,8 @@ public class MainActivity extends BaseFragmentActivity implements
         initFragments();
         initViewPager();
 
+        loadVobblesCount(INDEX_ALL_VOBBLES);
+
         showTab(INDEX_ALL_VOBBLES);
         App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
@@ -61,7 +71,9 @@ public class MainActivity extends BaseFragmentActivity implements
         tabs[INDEX_ALL_VOBBLES] = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		tabs[INDEX_MY_VOBBLES] = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
         tabs[INDEX_FRIENDS_VOBBLES] = (FrameLayout) findViewById(R.id.fl_friends_voice_tab_button);
-		mIvReloadBtn = (ImageView) findViewById(R.id.iv_reload_btn);
+		mTvVobbleCnt = (TextView) findViewById(R.id.tv_vobble_cnt);
+        mTvVobbleCntType = (TextView) findViewById(R.id.tv_vobble_cnt_type);
+        mIvReloadBtn = (ImageView) findViewById(R.id.iv_reload_btn);
         mIvEventBtn = (ImageView) findViewById(R.id.iv_event_btn);
 	}
 
@@ -93,6 +105,57 @@ public class MainActivity extends BaseFragmentActivity implements
 		mViewPager.setOnPageChangeListener(onPageChangeListener);
 	}
 
+    private void loadVobblesCount(int index) {
+        if (vobblesCnt[index] == null) {
+            executeGetVobblesCount(index);
+            return;
+        }
+        mTvVobbleCnt.setText(vobblesCnt[index]);
+        if (index == INDEX_ALL_VOBBLES)
+            mTvVobbleCntType.setText("All vobbles");
+        else if (index == INDEX_MY_VOBBLES)
+            mTvVobbleCntType.setText("My vobbles");
+    }
+
+    private void executeGetVobblesCount(final int index) {
+        String url = "";
+        if (index == INDEX_ALL_VOBBLES) {
+            url = URL.VOBBLES_COUNT;
+        } else if (index == INDEX_MY_VOBBLES) {
+            url = String.format(URL.USER_VOBBLES_COUNT, AccountManager.getInstance().getUserId(this));
+        }
+
+        HttpUtil.get(url, null, null, new APIResponseHandler(this) {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                showLoading();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                hideLoading();
+            }
+
+            @Override
+            public void onSuccess(JSONObject response) {
+                try {
+                    vobblesCnt[index] = response.getString("count");
+                    loadVobblesCount(index);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable error, String response) {
+                super.onFailure(error, response);
+            }
+        });
+    }
+
     private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -121,18 +184,18 @@ public class MainActivity extends BaseFragmentActivity implements
 		switch (view.getId()) {
             case R.id.fl_all_voice_tab_button:
                 showTab(INDEX_ALL_VOBBLES);
+                loadVobblesCount(INDEX_ALL_VOBBLES);
                 if (hasNeedToLoad[INDEX_ALL_VOBBLES])
                     loadTab(INDEX_ALL_VOBBLES);
                 break;
             case R.id.fl_my_voice_tab_button:
                 showTab(INDEX_MY_VOBBLES);
+                loadVobblesCount(INDEX_MY_VOBBLES);
                 if (hasNeedToLoad[INDEX_MY_VOBBLES])
                     loadTab(INDEX_MY_VOBBLES);
                 break;
             case R.id.fl_friends_voice_tab_button:
                 showTab(INDEX_FRIENDS_VOBBLES);
-                if (hasNeedToLoad[INDEX_FRIENDS_VOBBLES])
-                    loadTab(INDEX_FRIENDS_VOBBLES);
                 break;
             case R.id.iv_reload_btn:
                 loadTab(mViewPager.getCurrentItem());
@@ -156,6 +219,9 @@ public class MainActivity extends BaseFragmentActivity implements
     }
 
     private void loadTab(int index) {
+        vobblesCnt[index] = null;
+        loadVobblesCount(index);
+
         hasNeedToLoad[index] = false;
         fragments[index].load();
     }
@@ -172,12 +238,17 @@ public class MainActivity extends BaseFragmentActivity implements
             case R.id.remove_vobble:
             	ShowVobblesFragment fragment = (ShowVobblesFragment)fragments[INDEX_MY_VOBBLES];
             	fragment.removeVobbleClick();
-                // All 탭을 리로드 시키기 위한 임시 처리
-                hasNeedToLoad[INDEX_ALL_VOBBLES] = true;
-            	break;
+                break;
         }
 
         return false;
+    }
+
+    @Override
+    public void onRemovedVobble() {
+        hasNeedToLoad[INDEX_MY_VOBBLES] = true;
+        hasNeedToLoad[INDEX_ALL_VOBBLES] = true;
+        loadTab(INDEX_MY_VOBBLES);
     }
 
     @Override

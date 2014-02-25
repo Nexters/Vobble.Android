@@ -54,7 +54,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
     }
     
     private void playVideoIntro(){
-    	Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/raw/vobble_mobile_360x640");
+    	Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/raw/vobble");
     	videoViewIntro.setVideoURI(videoUri);
     	videoViewIntro.start();
     }
