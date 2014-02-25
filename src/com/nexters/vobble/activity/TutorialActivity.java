@@ -16,7 +16,7 @@ import com.nexters.vobble.core.App;
 
 public class TutorialActivity extends BaseActivity {
 	
-	private static final int INTRO_PAGE_CNT = 6;
+	private static final int INTRO_PAGE_CNT = 4;
 	
 	private ViewPager mViewPager;
     private View[] mIntroPageViews = new View[INTRO_PAGE_CNT];
