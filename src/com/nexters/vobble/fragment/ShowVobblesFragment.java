@@ -178,8 +178,10 @@ public class ShowVobblesFragment extends BaseMainFragment {
 
         RequestParams params = new RequestParams();
         params.put(App.LIMIT, VOBBLE_COUNT + "");
-        params.put(Vobble.LATITUDE, String.valueOf(mLocation.getLatitude()));
-        params.put(Vobble.LONGITUDE, String.valueOf(mLocation.getLongitude()));
+//        params.put(Vobble.LATITUDE, String.valueOf(mLocation.getLatitude()));
+//        params.put(Vobble.LONGITUDE, String.valueOf(mLocation.getLongitude()));
+        params.put(Vobble.LATITUDE, "37.4881");
+        params.put(Vobble.LONGITUDE, "127.051");
 
 		HttpUtil.get(url, null, params, new APIResponseHandler(activity) {
 

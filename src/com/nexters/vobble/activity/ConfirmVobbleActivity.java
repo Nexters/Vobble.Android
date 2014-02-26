@@ -154,7 +154,10 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btn_save:
-                    executeSaving();
+                    if (mLocation != null)
+                        executeSaving();
+                    else
+                        alert("위치 정보를 가져오지 못했습니다.");
                     break;
                 case R.id.iv_reload_location:
                     initLocation();
