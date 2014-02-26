@@ -18,7 +18,7 @@
     <string name="activity_main_my_vobbles_tab">My</string>
     <string name="activity_main_friends_vobbles_tab">Friends</string>
 
-    <string name="activity_confirm_vobble_title">Confirm a vobble</string>
+    <string name="activity_confirm_vobble_title">Check your place</string>
     <string name="activity_confirm_vobble_button_save">Save</string>
     <string name="activity_confirm_vobble_choosing_photo_dialog_title">Photo</string>
 

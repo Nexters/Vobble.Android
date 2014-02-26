@@ -7,6 +7,7 @@ import com.nexters.vobble.entity.Vobble;
 import com.nexters.vobble.listener.CustomOnCalloutOverlayListener;
 import com.nexters.vobble.listener.CustomOnMapStateChangeListener;
 import com.nexters.vobble.listener.CustomOnStateChangeListener;
+import com.nexters.vobble.listener.ImageViewTouchListener;
 import com.nhn.android.maps.maplib.NGeoPoint;
 import org.json.*;
 
@@ -40,6 +41,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
     private NMapPOIdataOverlay poiDataOverlay;
 
     private ImageView mIvPhoto;
+    private ImageView mIvReloadLocation;
 	private Button mBtnSave;
 
     @Override
@@ -68,13 +70,17 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
     }
 
 	private void initResources() {
+        mIvReloadLocation = (ImageView) findViewById(R.id.iv_reload_location);
         mIvPhoto = (ImageView) findViewById(R.id.iv_photo_view);
 		mBtnSave = (Button) findViewById(R.id.btn_save);
         mMapView = (NMapView) findViewById(R.id.map_view);
 	}
 	
 	private void initEvents() {
-		mBtnSave.setOnClickListener(btnClickListener);
+        ImageViewTouchListener ivTouchListener = new ImageViewTouchListener();
+        mIvReloadLocation.setOnTouchListener(ivTouchListener);
+        mIvReloadLocation.setOnClickListener(btnClickListener);
+        mBtnSave.setOnClickListener(btnClickListener);
 	}
 
     private void initMapView() {
@@ -149,6 +155,9 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
             switch (view.getId()) {
                 case R.id.btn_save:
                     executeSaving();
+                    break;
+                case R.id.iv_reload_location:
+                    initLocation();
                     break;
             }
         }
