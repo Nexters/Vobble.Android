@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
@@ -59,6 +60,10 @@ public class BaseFragmentActivity extends FragmentActivity {
 			loadingView.setVisibility(View.INVISIBLE);
 		}
 	}
+
+    public void showShortToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 
 	public void alert(int resId) {
 		alert(getString(resId));

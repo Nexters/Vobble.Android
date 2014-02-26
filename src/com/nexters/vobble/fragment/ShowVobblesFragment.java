@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.location.Location;
+import android.location.LocationListener;
 import android.os.AsyncTask;
 import android.view.MotionEvent;
 import com.nexters.vobble.activity.CreateVobbleActivity;
@@ -56,6 +57,11 @@ public class ShowVobblesFragment extends BaseMainFragment {
     private LocationHelper mLocationHelper;
     private VOBBLE_FRAMGMENT_TYPE type;
 
+    // [주의] 빈 생성자를 사용하지는 않지만 만들어놓아야 함
+    // 이유는 모르겠지만 빈 생성자가 없으면 프래그먼트에서 에러를 내뱉음
+    // 아마도 안드로이드 프래그먼트 내부 버그인 것으로 보임
+    public ShowVobblesFragment() {}
+
     public ShowVobblesFragment(String userId, VOBBLE_FRAMGMENT_TYPE type) {
         this.userId = userId;
         this.type = type;
@@ -106,12 +112,12 @@ public class ShowVobblesFragment extends BaseMainFragment {
             vobbleRemoveButtons[i-1] = (Button) view.findViewById(resId);
         }
         view.findViewById(R.id.show_vobble_ll).setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				removeVobbleCancel();
-				return false;
-			}
-		});
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                removeVobbleCancel();
+                return false;
+            }
+        });
     }
 
     private void initEvents() {
@@ -133,20 +139,36 @@ public class ShowVobblesFragment extends BaseMainFragment {
 
     @Override
     public void load() {
-        initLocation();
-        if (mLocation != null)
-            loadVobbles();
+        mLocation = null;
+        mLocationHelper = new LocationHelper(getActivity(), mLocationListener);
     }
 
-    private void initLocation() {
-        mLocationHelper = new LocationHelper(getActivity());
-        mLocation = mLocationHelper.getCurrentLocation();
-        if (mLocation == null) {
-            mLocation = mLocationHelper.getDefaultLocation();
+    private LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            if (mLocation == null) {
+                mLocation = location;
+                executeGetVobbles();
+            }
         }
-    }
 
-    private void loadVobbles() {
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
+
+    private void executeGetVobbles() {
     	String url = "";
         if (type == VOBBLE_FRAMGMENT_TYPE.ALL) {
             url = URL.VOBBLES;
@@ -188,7 +210,7 @@ public class ShowVobblesFragment extends BaseMainFragment {
 			}
 		});
     }
-    private void deleteVobble(int idx) {
+    private void executeDeleteVobble(int idx) {
     	if (idx >= vobbleList.size()) {
     		return;
     	}
@@ -322,7 +344,7 @@ public class ShowVobblesFragment extends BaseMainFragment {
 		public void onClick(View v) {
 			final int tag = (Integer) v.getTag();
 			removeVobbleCancel();
-			deleteVobble(tag);
+			executeDeleteVobble(tag);
 		}
 	};
 

@@ -7,6 +7,7 @@ import com.nexters.vobble.entity.Vobble;
 import com.nexters.vobble.listener.CustomOnCalloutOverlayListener;
 import com.nexters.vobble.listener.CustomOnMapStateChangeListener;
 import com.nexters.vobble.listener.CustomOnStateChangeListener;
+import com.nhn.android.maps.maplib.NGeoPoint;
 import org.json.*;
 
 import android.content.*;
@@ -34,6 +35,10 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
 
     private NMapView mMapView;
     private NMapController mMapController;
+    private NMapOverlayManager mOverlayManager;
+    private NMapViewerResourceProvider mMapViewerResourceProvider;
+    private NMapPOIdataOverlay poiDataOverlay;
+
     private ImageView mIvPhoto;
 	private Button mBtnSave;
 
@@ -43,10 +48,10 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_confirm_vobble);
 
-        initLocation();
         initResources();
 		initEvents();
         initMapView();
+        initLocation();
 	}
 
     @Override
@@ -59,14 +64,6 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
             loadImage = true;
             mIvPhotoWidth = mIvPhoto.getWidth();
             initImage();
-        }
-    }
-
-    private void initLocation() {
-        mLocationHelper = new LocationHelper(this);
-        mLocation = mLocationHelper.getCurrentLocation();
-        if (mLocation == null) {
-            mLocation = mLocationHelper.getDefaultLocation();
         }
     }
 
@@ -84,15 +81,45 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
         mMapView.setApiKey(App.NMAP_API_KEY);
         mMapView.setClickable(true);
         mMapController = mMapView.getMapController();
+    }
 
-        CustomOnMapStateChangeListener onMapStateChangeListener = new CustomOnMapStateChangeListener(mMapController, mLocation);
+    private void initLocation() {
+        mLocation = null;
+        mLocationHelper = new LocationHelper(this, mLocationListener);
+        showShortToast("위치 정보를 가져옵니다.");
+    }
+
+    private LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            if (mLocation == null) {
+                mLocation = location;
+                initOverlayInMapView();
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
+
+    private void initOverlayInMapView() {
         CustomOnCalloutOverlayListener onCalloutOverlayListener = new CustomOnCalloutOverlayListener();
         CustomOnStateChangeListener onPOIdataStateChangeListener = new CustomOnStateChangeListener();
 
-        mMapView.setOnMapStateChangeListener(onMapStateChangeListener);
-
-        NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
-        NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
+        mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
+        mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
         mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
 
         int markerId = NMapPOIflagType.PIN;
@@ -101,9 +128,14 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
         poiData.addPOIitem(mLocation.getLongitude(), mLocation.getLatitude(), "You're in here.", markerId, 0);
         poiData.endPOIdata();
 
-        NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
+        if (poiDataOverlay != null)
+            poiDataOverlay.removeAllPOIdata();
+
+        poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
         poiDataOverlay.showAllPOIdata(0);
         poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
+
+        mMapController.setMapCenter(new NGeoPoint(mLocation.getLongitude(), mLocation.getLatitude()), 10);
     }
 
     private void initImage() {

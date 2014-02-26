@@ -25,6 +25,7 @@ import com.nexters.vobble.record.RecordManager;
 import com.nexters.vobble.util.*;
 import com.nexters.vobble.view.*;
 import com.nhn.android.maps.*;
+import com.nhn.android.maps.maplib.NGeoPoint;
 import com.nhn.android.maps.overlay.*;
 import com.nhn.android.mapviewer.overlay.*;
 import org.json.JSONException;
@@ -99,12 +100,8 @@ public class ListenVobbleActivity extends BaseNMapActivity {
         mMapView.setClickable(true);
         mMapController = mMapView.getMapController();
 
-        CustomOnMapStateChangeListener onMapStateChangeListener =
-                new CustomOnMapStateChangeListener(mMapController, vobble.getLatitude(), vobble.getLongitude());
         CustomOnCalloutOverlayListener onCalloutOverlayListener = new CustomOnCalloutOverlayListener();
         CustomOnStateChangeListener onPOIdataStateChangeListener = new CustomOnStateChangeListener();
-
-        mMapView.setOnMapStateChangeListener(onMapStateChangeListener);
 
         NMapViewerResourceProvider mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         NMapOverlayManager mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
@@ -119,6 +116,8 @@ public class ListenVobbleActivity extends BaseNMapActivity {
         NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
         poiDataOverlay.showAllPOIdata(0);
         poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
+
+        mMapController.setMapCenter(new NGeoPoint(vobble.getLongitude(), vobble.getLatitude()), 10);
     }
 
     private void initUserInfo() {

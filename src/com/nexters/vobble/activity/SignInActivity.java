@@ -46,10 +46,12 @@ public class SignInActivity extends BaseFragmentActivity implements View.OnClick
     }
 
     public void onClick(View v) {
-        if (isAllFormsFilled()) {
-        	executeSignIn();
-        } else {
+        if (!isAllFormsFilled()) {
             alert(R.string.error_signin);
+        } else if (!isValidEmail()) {
+            alert(R.string.error_signup_email);
+        } else {
+            executeSignIn();
         }
     }
 
@@ -63,6 +65,10 @@ public class SignInActivity extends BaseFragmentActivity implements View.OnClick
 
     private boolean isAllFormsFilled() {
         return !getEmail().equals("") && !getPassword().equals("");
+    }
+
+    private boolean isValidEmail() {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(getEmail()).matches();
     }
 
     private void executeSignIn() {
