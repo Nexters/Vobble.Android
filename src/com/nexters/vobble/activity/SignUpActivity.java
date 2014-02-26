@@ -2,20 +2,16 @@ package com.nexters.vobble.activity;
 
 import android.app.Activity;
 
-import com.nexters.vobble.core.App;
 import com.nexters.vobble.entity.User;
 import com.nexters.vobble.network.APIResponseHandler;
 import org.json.JSONObject;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.analytics.tracking.android.Fields;
-import com.google.analytics.tracking.android.MapBuilder;
 import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.R;
 import com.nexters.vobble.network.HttpUtil;
@@ -93,15 +89,15 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         switch (view.getId()) {
         case R.id.btn_sign_up:
             if (!isAllFormFilled()) {
-                alert(R.string.error_signup_form);
+                showAlert(R.string.error_signup_form);
             } else if (!isPasswordCheckCorrected()) {
-                alert(R.string.error_signup_password);
+                showAlert(R.string.error_signup_password);
             } else if (!isValidUsername()) {
-                alert(R.string.error_signup_username);
+                showAlert(R.string.error_signup_username);
             } else if (!isValidEmail()) {
-                alert(R.string.error_signup_email);
+                showAlert(R.string.error_signup_email);
             } else if (!isValidPassword()) {
-                alert(R.string.error_signup_passwrd_length);
+                showAlert(R.string.error_signup_passwrd_length);
             } else {
                 executeSignUp();
             }

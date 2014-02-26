@@ -237,7 +237,7 @@ public class MainActivity extends BaseFragmentActivity implements
                 break;
             case R.id.remove_vobble:
             	ShowVobblesFragment fragment = (ShowVobblesFragment)fragments[INDEX_MY_VOBBLES];
-            	fragment.removeVobbleClick();
+            	fragment.showRemoveVobbleButtons();
                 break;
         }
 

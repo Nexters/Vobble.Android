@@ -1,7 +1,6 @@
 package com.nexters.vobble.activity;
 
 import com.nexters.vobble.core.AccountManager;
-import com.nexters.vobble.core.App;
 import com.nexters.vobble.entity.User;
 import com.nexters.vobble.network.APIResponseHandler;
 import org.json.JSONObject;
@@ -13,8 +12,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.analytics.tracking.android.Fields;
-import com.google.analytics.tracking.android.MapBuilder;
 import com.loopj.android.http.RequestParams;
 import com.nexters.vobble.R;
 import com.nexters.vobble.network.HttpUtil;
@@ -47,9 +44,9 @@ public class SignInActivity extends BaseFragmentActivity implements View.OnClick
 
     public void onClick(View v) {
         if (!isAllFormsFilled()) {
-            alert(R.string.error_signin);
+            showAlert(R.string.error_signin);
         } else if (!isValidEmail()) {
-            alert(R.string.error_signup_email);
+            showAlert(R.string.error_signup_email);
         } else {
             executeSignIn();
         }

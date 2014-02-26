@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import android.widget.Toast;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
@@ -18,64 +17,66 @@ import com.nexters.vobble.R;
 import com.nexters.vobble.core.App;
 
 public class BaseFragmentActivity extends FragmentActivity {
-    private int loadingStackCount = 0;
-    private View loadingView;
+    private int mLoadingStackCount = 0;
+    private View mLoadingView;
+    private AlertDialog mAlertDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		loadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
-		loadingView.setVisibility(View.INVISIBLE);
-		
+		mLoadingView = LayoutInflater.from(this).inflate(R.layout.view_loading, null);
+		mLoadingView.setVisibility(View.INVISIBLE);
 	}
-	@Override
+
+    @Override
 	protected void onStart() {
 		super.onStart();
 		EasyTracker.getInstance(this).activityStart(this);
-		App.getGaTracker().set(Fields.SCREEN_NAME, (String)getTitle());
+		App.getGaTracker().set(Fields.SCREEN_NAME, (String) getTitle());
 		App.getGaTracker().send(MapBuilder.createAppView().build());
 	}
-	@Override
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        ((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).addView(mLoadingView);
+    }
+
+    @Override
 	protected void onStop() {
 		super.onStop();
 		EasyTracker.getInstance(this).activityStop(this);
 	}
-	
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content)).addView(loadingView);
-	}
 
 	public synchronized void showLoading() {
-		loadingStackCount++;
-		loadingView.setVisibility(View.VISIBLE);
+		mLoadingStackCount++;
+		mLoadingView.setVisibility(View.VISIBLE);
 	}
 
 	public synchronized void hideLoading() {
-		loadingStackCount--;
-		if(loadingStackCount <= 0) {
-			loadingStackCount = 0;
-			loadingView.setVisibility(View.INVISIBLE);
+		mLoadingStackCount--;
+		if(mLoadingStackCount <= 0) {
+			mLoadingStackCount = 0;
+			mLoadingView.setVisibility(View.INVISIBLE);
 		}
 	}
 
-    public void showShortToast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-	public void alert(int resId) {
-		alert(getString(resId));
+	public void showAlert(int resId) {
+		showAlert(getString(resId));
 	}
 
-	public void alert(String message) {
-		Dialog d = new AlertDialog.Builder(this)
-            .setMessage(message)
-            .setPositiveButton(R.string.ok, null)
-            .create();
-		d.show();
-		TextView messageText = (TextView) d.findViewById(android.R.id.message);
-		messageText.setGravity(Gravity.CENTER);
+	public void showAlert(String message) {
+        if (mAlertDialog != null && mAlertDialog.isShowing())
+            return;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.ok, null);
+
+        mAlertDialog = builder.create();
+        mAlertDialog.show();
+
+        TextView messageText = (TextView) mAlertDialog.findViewById(android.R.id.message);
+        messageText.setGravity(Gravity.CENTER);
 	}
 }

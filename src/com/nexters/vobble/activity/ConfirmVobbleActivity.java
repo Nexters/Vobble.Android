@@ -5,7 +5,6 @@ import java.io.*;
 import com.nexters.vobble.entity.User;
 import com.nexters.vobble.entity.Vobble;
 import com.nexters.vobble.listener.CustomOnCalloutOverlayListener;
-import com.nexters.vobble.listener.CustomOnMapStateChangeListener;
 import com.nexters.vobble.listener.CustomOnStateChangeListener;
 import com.nexters.vobble.listener.ImageViewTouchListener;
 import com.nhn.android.maps.maplib.NGeoPoint;
@@ -13,7 +12,6 @@ import org.json.*;
 
 import android.content.*;
 import android.graphics.*;
-import android.location.*;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -30,15 +28,16 @@ import com.nhn.android.mapviewer.overlay.*;
 
 public class ConfirmVobbleActivity extends BaseNMapActivity {
     private int mIvPhotoWidth;
-    private boolean loadImage = false;
-    private LocationHelper mLocationHelper;
-    private Location mLocation;
+    private boolean isVobbleImageLoaded = false;
 
     private NMapView mMapView;
     private NMapController mMapController;
     private NMapOverlayManager mOverlayManager;
     private NMapViewerResourceProvider mMapViewerResourceProvider;
     private NMapPOIdataOverlay poiDataOverlay;
+    private NMapLocationManager mLocationManager;
+    private CustomOnCalloutOverlayListener mCalloutOverlayListener;
+    private CustomOnStateChangeListener mPOIdataStateChangeListener;
 
     private ImageView mIvPhoto;
     private ImageView mIvReloadLocation;
@@ -56,24 +55,10 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
         initLocation();
 	}
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        // [주의] onCreate에서 보블 이미지를 이미지뷰에 붙이면 ImageView의 getWidth()가 0을 반환해서 제대로 붙지 않음
-        // onWindowFocusChanged부터 ImageView가 Window에 잘 붙어서 올바른 getWidth()를 반환하므로
-        // 여기에서 초기화시켜야 함 - by 수완
-        if (!loadImage) {
-            loadImage = true;
-            mIvPhotoWidth = mIvPhoto.getWidth();
-            initImage();
-        }
-    }
-
-	private void initResources() {
+    private void initResources() {
         mIvReloadLocation = (ImageView) findViewById(R.id.iv_reload_location);
         mIvPhoto = (ImageView) findViewById(R.id.iv_photo_view);
 		mBtnSave = (Button) findViewById(R.id.btn_save);
-        mMapView = (NMapView) findViewById(R.id.map_view);
 	}
 	
 	private void initEvents() {
@@ -84,54 +69,51 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
 	}
 
     private void initMapView() {
+        mMapView = (NMapView) findViewById(R.id.map_view);
         mMapView.setApiKey(App.NMAP_API_KEY);
         mMapView.setClickable(true);
         mMapController = mMapView.getMapController();
+
+        mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
+        mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
+        mCalloutOverlayListener = new CustomOnCalloutOverlayListener();
+        mPOIdataStateChangeListener = new CustomOnStateChangeListener();
+
+        mOverlayManager.setOnCalloutOverlayListener(mCalloutOverlayListener);
     }
 
     private void initLocation() {
-        mLocation = null;
-        mLocationHelper = new LocationHelper(this, mLocationListener);
-        showShortToast("위치 정보를 가져옵니다.");
+        mLocationManager = new NMapLocationManager(this);
+        mLocationManager.setOnLocationChangeListener(mLocationListener);
+        if (mLocationManager.enableMyLocation(false)) {
+            showShortToast("위치 정보를 가져옵니다.");
+        } else {
+            showDialogForLocationAccessSetting();
+        }
     }
 
-    private LocationListener mLocationListener = new LocationListener() {
+    private NMapLocationManager.OnLocationChangeListener mLocationListener = new NMapLocationManager.OnLocationChangeListener() {
         @Override
-        public void onLocationChanged(Location location) {
-            if (mLocation == null) {
-                mLocation = location;
-                initOverlayInMapView();
-            }
+        public boolean onLocationChanged(NMapLocationManager nMapLocationManager, NGeoPoint location) {
+            initOverlayInMapView(location);
+            return false;
         }
 
         @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
+        public void onLocationUpdateTimeout(NMapLocationManager nMapLocationManager) {
 
         }
 
         @Override
-        public void onProviderDisabled(String s) {
+        public void onLocationUnavailableArea(NMapLocationManager nMapLocationManager, NGeoPoint nGeoPoint) {
 
         }
     };
 
-    private void initOverlayInMapView() {
-        CustomOnCalloutOverlayListener onCalloutOverlayListener = new CustomOnCalloutOverlayListener();
-        CustomOnStateChangeListener onPOIdataStateChangeListener = new CustomOnStateChangeListener();
-
-        mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
-        mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
-        mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
-
-        int markerId = NMapPOIflagType.PIN;
+    private void initOverlayInMapView(NGeoPoint location) {
         NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
         poiData.beginPOIdata(1);
-        poiData.addPOIitem(mLocation.getLongitude(), mLocation.getLatitude(), "You're in here.", markerId, 0);
+        poiData.addPOIitem(location.getLongitude(), location.getLatitude(), "You're in here.", NMapPOIflagType.PIN, 0);
         poiData.endPOIdata();
 
         if (poiDataOverlay != null)
@@ -139,12 +121,30 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
 
         poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
         poiDataOverlay.showAllPOIdata(0);
-        poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
+        poiDataOverlay.setOnStateChangeListener(mPOIdataStateChangeListener);
 
-        mMapController.setMapCenter(new NGeoPoint(mLocation.getLongitude(), mLocation.getLatitude()), 10);
+        mMapController.animateTo(location);
+        mMapController.setZoomLevel(10);
     }
 
-    private void initImage() {
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        initVobbleImage();
+    }
+
+    private void initVobbleImage() {
+        // [주의] onCreate에서 보블 이미지를 이미지뷰에 붙이면 ImageView의 getWidth()가 0을 반환해서 제대로 붙지 않음
+        // onWindowFocusChanged부터 ImageView가 Window에 잘 붙어서 올바른 getWidth()를 반환하므로
+        // 여기에서 초기화시켜야 함 - by 수완
+        if (!isVobbleImageLoaded) {
+            mIvPhotoWidth = mIvPhoto.getWidth();
+            loadVobbleImage();
+        }
+    }
+
+    private void loadVobbleImage() {
+        isVobbleImageLoaded = true;
         Bitmap imageBitmap = BitmapFactory.decodeFile(TempFileManager.getImageFile().getAbsolutePath());
         mIvPhoto.setImageBitmap(ImageManagingHelper.getCroppedBitmap(imageBitmap, mIvPhotoWidth));
     }
@@ -154,10 +154,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btn_save:
-                    if (mLocation != null)
-                        executeSaving();
-                    else
-                        alert("위치 정보를 가져오지 못했습니다.");
+                    executeCreatingVobbleIfLocationEnabled();
                     break;
                 case R.id.iv_reload_location:
                     initLocation();
@@ -166,16 +163,15 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
         }
     };
 
-    private void executeSaving() {
-        try {
-            executeCreatingVobble();
-        } catch (FileNotFoundException e) {
-            App.log("FileNotFoundException");
-            alert(R.string.error_cannot_create_vobble);
+    private void executeCreatingVobbleIfLocationEnabled() {
+        if (!mLocationManager.isMyLocationEnabled()) {
+            showShortToast("위치 정보를 가져오지 못했습니다.");
+        } else {
+            executeCreatingVobble(mLocationManager.getMyLocation());
         }
     }
 
-    private void executeCreatingVobble() throws FileNotFoundException {
+    private void executeCreatingVobble(NGeoPoint location) {
         String url = String.format(URL.VOBBLES_CREATE, AccountManager.getInstance().getUserId(this));
 
         File voiceFile = TempFileManager.getVoiceFile();
@@ -183,11 +179,18 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
 
         RequestParams params = new RequestParams();
         params.put(User.TOKEN, AccountManager.getInstance().getToken(this));
-        params.put(Vobble.LATITUDE, String.valueOf(mLocation.getLatitude()));
-        params.put(Vobble.LONGITUDE, String.valueOf(mLocation.getLongitude()));
-        
-        params.put(App.VOICE, voiceFile);
-        params.put(App.IMAGE, imageFile);
+        params.put(Vobble.LATITUDE, String.valueOf(location.getLatitude()));
+        params.put(Vobble.LONGITUDE, String.valueOf(location.getLongitude()));
+
+        try {
+            params.put(App.VOICE, voiceFile);
+            params.put(App.IMAGE, imageFile);
+        } catch (FileNotFoundException e) {
+            showShortToast("음성, 사진 파일이 유실되었습니다. 다시 시도해 주세요.");
+            App.log("FileNotFoundException");
+            e.printStackTrace();
+            return;
+        }
 
         HttpUtil.post(url, null, params, new APIResponseHandler(ConfirmVobbleActivity.this) {
 
@@ -215,7 +218,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mLocationHelper != null)
-            mLocationHelper.destroy();
+        if (mLocationManager.isMyLocationEnabled())
+            mLocationManager.disableMyLocation();
     }
 }

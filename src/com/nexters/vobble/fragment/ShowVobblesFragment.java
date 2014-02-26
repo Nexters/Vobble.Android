@@ -3,10 +3,9 @@ package com.nexters.vobble.fragment;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.AsyncTask;
 import android.view.MotionEvent;
+import android.widget.LinearLayout;
 import com.nexters.vobble.activity.CreateVobbleActivity;
 import com.nexters.vobble.activity.ListenVobbleActivity;
 import com.nexters.vobble.core.AccountManager;
@@ -14,7 +13,8 @@ import com.nexters.vobble.core.App;
 import com.nexters.vobble.listener.ImageViewTouchListener;
 import com.nexters.vobble.network.APIResponseHandler;
 import com.nexters.vobble.util.ImageManagingHelper;
-import com.nexters.vobble.util.LocationHelper;
+import com.nhn.android.maps.NMapLocationManager;
+import com.nhn.android.maps.maplib.NGeoPoint;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -41,20 +41,21 @@ import com.nexters.vobble.entity.Vobble;
 
 @SuppressLint("ValidFragment")
 public class ShowVobblesFragment extends BaseMainFragment {
-    public enum VOBBLE_FRAMGMENT_TYPE { ALL, MY };
+    public static enum VOBBLE_FRAMGMENT_TYPE { ALL, MY };
     private static final int VOBBLE_COUNT = 12;
     private static final String VOBBLE_IMG_ID_PREFIX = "iv_vobble_";
+    private static final String VOBBLE_REMOVE_IMG_ID_PREFIX = "iv_vobble_remove_";
 
     private OnFragmentListener mCallback;
 
+    private LinearLayout mLlShowVobble;
     private ImageView mIvCreateVobble;
-    private ImageView[] vobbleImageViews = new ImageView[VOBBLE_COUNT];
-    private Button[] vobbleRemoveButtons = new Button[VOBBLE_COUNT];
-    private ArrayList<Vobble> vobbleList = new ArrayList<Vobble>();
+    private ImageView[] mIvVobbleImages = new ImageView[VOBBLE_COUNT];
+    private Button[] mBtnRemoveVobbles = new Button[VOBBLE_COUNT];
+    private ArrayList<Vobble> mVobbles = new ArrayList<Vobble>();
 
     private String userId;
-    private Location mLocation;
-    private LocationHelper mLocationHelper;
+    private NMapLocationManager mLocationManager;
     private VOBBLE_FRAMGMENT_TYPE type;
 
     // [주의] 빈 생성자를 사용하지는 않지만 만들어놓아야 함
@@ -68,123 +69,104 @@ public class ShowVobblesFragment extends BaseMainFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (type == VOBBLE_FRAMGMENT_TYPE.ALL)
-            load();
-    }
-
-    @Override
-	public void onStart() {
-		super.onStart();
-		App.getGaTracker().set(Fields.SCREEN_NAME, type.toString());
-		App.getGaTracker().send(MapBuilder.createAppView().build());
-		removeVobbleCancel();
-	}
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
             mCallback = (OnFragmentListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentListener");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_show_vobbles, null);
         initResources(view);
         initEvents();
-        
+        initVobbles();
         return view;
-	}
-    
+    }
+
     private void initResources(View view) {
+        mLlShowVobble = (LinearLayout) view.findViewById(R.id.show_vobble_ll);
         mIvCreateVobble = (ImageView) view.findViewById(R.id.iv_voice_record_btn);
-        for (int i = 1; i <= VOBBLE_COUNT; i++) {
-            int resId = getResources().getIdentifier(VOBBLE_IMG_ID_PREFIX + i, "id", this.getActivity().getPackageName());
-            vobbleImageViews[i - 1] = (ImageView) view.findViewById(resId);
-            resId = getResources().getIdentifier(VOBBLE_IMG_ID_PREFIX + "remove_" + i, "id", this.getActivity().getPackageName());
-            vobbleRemoveButtons[i-1] = (Button) view.findViewById(resId);
+        for (int i = 0; i < VOBBLE_COUNT; i++) {
+            mIvVobbleImages[i] = (ImageView) view.findViewById(getResourceId(VOBBLE_IMG_ID_PREFIX + i));
+            mBtnRemoveVobbles[i] = (Button) view.findViewById(getResourceId(VOBBLE_REMOVE_IMG_ID_PREFIX + i));
         }
-        view.findViewById(R.id.show_vobble_ll).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                removeVobbleCancel();
-                return false;
-            }
-        });
+    }
+
+    private int getResourceId(String id) {
+        return getResources().getIdentifier(id, "id", this.getActivity().getPackageName());
     }
 
     private void initEvents() {
         ImageViewTouchListener ivTouchListener = new ImageViewTouchListener();
-        mIvCreateVobble.setOnClickListener(btnClickListener);
+
         mIvCreateVobble.setOnTouchListener(ivTouchListener);
+        mIvCreateVobble.setOnClickListener(btnClickListener);
+        mLlShowVobble.setOnTouchListener(wholeViewTouchListener);
         for (int i = 0; i < VOBBLE_COUNT; i++) {
-            vobbleImageViews[i].setOnTouchListener(ivTouchListener);
-            vobbleImageViews[i].setOnClickListener(vobbleClickListener);
-            vobbleImageViews[i].setTag(i);
+            mIvVobbleImages[i].setOnTouchListener(ivTouchListener);
+            mIvVobbleImages[i].setOnClickListener(vobbleClickListener);
+            mIvVobbleImages[i].setTag(i);
             if (type == VOBBLE_FRAMGMENT_TYPE.MY) {
-                vobbleImageViews[i].setOnLongClickListener(vobbleLongClickListener);
-                vobbleRemoveButtons[i].setOnClickListener(vobbleRemoveClickListener);
-                vobbleRemoveButtons[i].setTag(i);
+                mBtnRemoveVobbles[i].setOnClickListener(removeVobbleClickListener);
+                mBtnRemoveVobbles[i].setTag(i);
             }
         }
-        
+    }
+
+    private void initVobbles() {
+        // 타입이 ALL인 경우에만 생성과 동시에 보블을 초기화한다.
+        if (type == VOBBLE_FRAMGMENT_TYPE.ALL)
+            load();
     }
 
     @Override
     public void load() {
-        mLocation = null;
-        mLocationHelper = new LocationHelper(getActivity(), mLocationListener);
+        mLocationManager = new NMapLocationManager(getActivity());
+        mLocationManager.setOnLocationChangeListener(mLocationListener);
+        if (!mLocationManager.enableMyLocation(false)) {
+            showDialogForLocationAccessSetting();
+        }
     }
 
-    private LocationListener mLocationListener = new LocationListener() {
+    private NMapLocationManager.OnLocationChangeListener mLocationListener = new NMapLocationManager.OnLocationChangeListener() {
         @Override
-        public void onLocationChanged(Location location) {
-            if (mLocation == null) {
-                mLocation = location;
-                executeGetVobbles();
-            }
+        public boolean onLocationChanged(NMapLocationManager nMapLocationManager, NGeoPoint location) {
+            executeGetVobbles(location);
+            return false;
         }
 
         @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
+        public void onLocationUpdateTimeout(NMapLocationManager nMapLocationManager) {
 
         }
 
         @Override
-        public void onProviderDisabled(String s) {
+        public void onLocationUnavailableArea(NMapLocationManager nMapLocationManager, NGeoPoint nGeoPoint) {
 
         }
     };
 
-    private void executeGetVobbles() {
-    	String url = "";
-        if (type == VOBBLE_FRAMGMENT_TYPE.ALL) {
-            url = URL.VOBBLES;
-        } else if (type == VOBBLE_FRAMGMENT_TYPE.MY) {
-            url = String.format(URL.USER_VOBBLES, userId);
-        }
+    @Override
+    public void onStart() {
+        super.onStart();
+        App.getGaTracker().set(Fields.SCREEN_NAME, type.toString());
+        App.getGaTracker().send(MapBuilder.createAppView().build());
+    }
+
+    private void executeGetVobbles(NGeoPoint location) {
+    	String url = getUrlForGetVobbles();
 
         RequestParams params = new RequestParams();
-        params.put(App.LIMIT, VOBBLE_COUNT + "");
-//        params.put(Vobble.LATITUDE, String.valueOf(mLocation.getLatitude()));
-//        params.put(Vobble.LONGITUDE, String.valueOf(mLocation.getLongitude()));
-        params.put(Vobble.LATITUDE, "37.4881");
-        params.put(Vobble.LONGITUDE, "127.051");
+        params.put(App.LIMIT, String.valueOf(VOBBLE_COUNT));
+        params.put(Vobble.LATITUDE, String.valueOf(location.getLatitude()));
+        params.put(Vobble.LONGITUDE, String.valueOf(location.getLongitude()));
 
 		HttpUtil.get(url, null, params, new APIResponseHandler(activity) {
-
 			@Override
 			public void onStart() {
 				super.onStart();
@@ -199,25 +181,83 @@ public class ShowVobblesFragment extends BaseMainFragment {
 			
 			@Override
 			public void onSuccess(JSONObject response) {
-				vobbleList.clear();
-				JSONArray dataArr = response.optJSONArray("vobbles");
-				for (int i = 0; i < dataArr.length(); i++)
-                    vobbleList.add(Vobble.build(dataArr.optJSONObject(i)));
+                super.onSuccess(response);
+                clearAndAddVobbles(response.optJSONArray("vobbles"));
 				loadVobbleImages();
 			}
-			@Override
+
+            @Override
 			public void onFailure(Throwable error, String response){
 				super.onFailure(error, response);
 				loadVobbleImages();
 			}
+
+            private void clearAndAddVobbles(JSONArray vobbles) {
+                mVobbles.clear();
+                int count = vobbles.length();
+                for (int i = 0; i < count; i++) {
+                    mVobbles.add(Vobble.build(vobbles.optJSONObject(i)));
+                }
+            }
 		});
     }
+
+    private String getUrlForGetVobbles() {
+        if (type == VOBBLE_FRAMGMENT_TYPE.ALL) {
+            return URL.VOBBLES;
+        } else if (type == VOBBLE_FRAMGMENT_TYPE.MY) {
+            return String.format(URL.USER_VOBBLES, userId);
+        } else {
+            // not supported
+            return "";
+        }
+    }
+
+    private void loadVobbleImages() {
+        new AttachImageTask().execute();
+    }
+
+    private class AttachImageTask extends AsyncTask<Void, Integer, Void> {
+        private final int IMAGE_LOADING_INTERVAL = 200;
+        private int numVobbles;
+
+        @Override
+        protected void onPreExecute() {
+            numVobbles = mVobbles.size();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            for (int i = 0; i < VOBBLE_COUNT; i++) {
+                publishProgress(i);
+                try {
+                    Thread.sleep(IMAGE_LOADING_INTERVAL);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            int i = values[0];
+            if (i < numVobbles) {
+                Animation scaleUp = AnimationUtils.loadAnimation(activity, R.anim.vobble_scale_up);
+                ImageManagingHelper.loadAndAttachCroppedImage(mIvVobbleImages[i], mVobbles.get(i).getImageUrl(), scaleUp);
+                mIvVobbleImages[i].setVisibility(View.VISIBLE);
+            } else {
+                mIvVobbleImages[i].setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
     private void executeDeleteVobble(int idx) {
-    	if (idx >= vobbleList.size()) {
+    	if (idx >= mVobbles.size()) {
     		return;
     	}
     	final int tag = idx;
-    	String vobbleId = String.valueOf(vobbleList.get(idx).getVobbleId());
+    	String vobbleId = String.valueOf(mVobbles.get(idx).getVobbleId());
     	String url = String.format(URL.USER_VOBBLES_DELETE, userId, vobbleId);
     	RequestParams params = new RequestParams();
         params.put(User.TOKEN, AccountManager.getInstance().getToken(activity));
@@ -242,24 +282,15 @@ public class ShowVobblesFragment extends BaseMainFragment {
 			}
 
 			@Override
-			public void onFailure(Throwable error, String response){
-				super.onFailure(error, response);
-			}
-
-            @Override
-			public void onFailure(Throwable error, JSONObject response){
+			public void onFailure(Throwable error, String response) {
 				super.onFailure(error, response);
 			}
 		});
     }
 
-    private void loadVobbleImages() {
-        new AttachImageHelper().execute();
-    }
-
     private void removeVobbleImages(final int idx) {
     	Animation scaleDown = AnimationUtils.loadAnimation(activity, R.anim.vobble_scale_down);
-		vobbleImageViews[idx].startAnimation(scaleDown);
+		mIvVobbleImages[idx].startAnimation(scaleDown);
 		scaleDown.setAnimationListener(new AnimationListener() {
 			@Override
 			public void onAnimationStart(Animation animation) {}
@@ -274,56 +305,22 @@ public class ShowVobblesFragment extends BaseMainFragment {
 		});
     }
 
-    public void removeVobbleClick() {
-    	for (int i=0; i < vobbleList.size(); i++) {
-    		vobbleRemoveButtons[i].setVisibility(View.VISIBLE);
+    public void showRemoveVobbleButtons() {
+    	for (int i=0; i < mVobbles.size(); i++) {
+    		mBtnRemoveVobbles[i].setVisibility(View.VISIBLE);
     	}
     }
 
-    public void removeVobbleCancel() {
-    	for (int i=0; i < vobbleList.size(); i++) {
-    		vobbleRemoveButtons[i].setVisibility(View.INVISIBLE);
+    public void hideRemoveVobbleButtons() {
+    	for (int i=0; i < mVobbles.size(); i++) {
+    		mBtnRemoveVobbles[i].setVisibility(View.INVISIBLE);
     	}
     }
 
-    private class AttachImageHelper extends AsyncTask<Void, Integer, Void> {
-        private final int IMAGE_LOADING_INTERVAL = 200;
-        private int vobbleListSize;
-
+    private View.OnTouchListener wholeViewTouchListener = new View.OnTouchListener() {
         @Override
-        protected void onPreExecute() {
-            vobbleListSize = vobbleList.size();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            for (int i = 0; i < VOBBLE_COUNT; i++) {
-                publishProgress(i);
-                try {
-                    Thread.sleep(IMAGE_LOADING_INTERVAL);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            int i = values[0];
-            if (i < vobbleListSize) {
-                Animation scaleUp = AnimationUtils.loadAnimation(activity, R.anim.vobble_scale_up);
-                ImageManagingHelper.loadAndAttachCroppedImage(vobbleImageViews[i], vobbleList.get(i).getImageUrl(), scaleUp);
-                vobbleImageViews[i].setVisibility(View.VISIBLE);
-            } else {
-                vobbleImageViews[i].setVisibility(View.INVISIBLE);
-            }
-        }
-    }
-
-    private View.OnLongClickListener vobbleLongClickListener = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View view) {
+        public boolean onTouch(View v, MotionEvent event) {
+            hideRemoveVobbleButtons();
             return false;
         }
     };
@@ -332,20 +329,20 @@ public class ShowVobblesFragment extends BaseMainFragment {
 		@Override
 		public void onClick(View v) {
 			int tag = (Integer) v.getTag();
-			if (tag < vobbleList.size()) {
+			if (tag < mVobbles.size()) {
 				Intent intent = new Intent(activity.getApplicationContext(), ListenVobbleActivity.class);
-				Vobble vobble = vobbleList.get(tag);
+				Vobble vobble = mVobbles.get(tag);
 				intent.putExtra("vobble", vobble);
 				startActivity(intent);
 			}
 		}
 	};
 
-	private View.OnClickListener vobbleRemoveClickListener = new View.OnClickListener() {
+	private View.OnClickListener removeVobbleClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			final int tag = (Integer) v.getTag();
-			removeVobbleCancel();
+			hideRemoveVobbleButtons();
 			executeDeleteVobble(tag);
 		}
 	};
@@ -363,7 +360,7 @@ public class ShowVobblesFragment extends BaseMainFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mLocationHelper != null)
-            mLocationHelper.destroy();
+        if (mLocationManager != null && mLocationManager.isMyLocationEnabled())
+            mLocationManager.disableMyLocation();
     }
 }

@@ -236,9 +236,9 @@ public class CreateVobbleActivity extends BaseActivity {
             stopRecording();
 
         if (!TempFileManager.isExistSoundFile()) {
-            alert(R.string.error_not_exist_voice);
+            showAlert(R.string.error_not_exist_voice);
         } else if (!TempFileManager.isExistImageFile()) {
-            alert(R.string.error_not_exist_image);
+            showAlert(R.string.error_not_exist_image);
         } else {
             Intent intent = new Intent(CreateVobbleActivity.this, ConfirmVobbleActivity.class);
             startActivity(intent);
