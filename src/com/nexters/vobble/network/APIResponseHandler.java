@@ -63,7 +63,7 @@ public class APIResponseHandler extends JsonHttpResponseHandler {
 		if( alertDialog != null && alertDialog.isShowing() ) return;
     	
     	AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(R.string.error_network);
+        builder.setMessage(R.string.error_cannot_connect_network);
         builder.setPositiveButton(R.string.ok, null);
         
         alertDialog = builder.create();
@@ -78,7 +78,7 @@ public class APIResponseHandler extends JsonHttpResponseHandler {
 		if( alertDialog != null && alertDialog.isShowing() ) return;
     	
     	AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(R.string.error_network);
+        builder.setMessage(R.string.error_cannot_connect_network);
         builder.setPositiveButton(R.string.ok, null);
         
         alertDialog = builder.create();

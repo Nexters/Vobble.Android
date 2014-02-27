@@ -100,7 +100,7 @@ public class CreateVobbleActivity extends BaseActivity {
 
     private void showDialogChoosingPhoto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.activity_confirm_vobble_choosing_photo_dialog_title)
+        builder.setTitle(R.string.dialog_title_vobble_long_click)
                .setItems(R.array.menu_choosing_photo_dialog_items, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int which) {
                        switch (which) {

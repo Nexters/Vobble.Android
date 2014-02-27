@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/vobble_bg"
@@ -107,7 +108,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="4"
-                        android:text="Reload"
+                        android:text="@string/reload"
                         android:textColor="@color/white"
                         android:gravity="center_horizontal|center_vertical"
                         android:textSize="16sp" />
@@ -149,7 +150,7 @@
 		                android:layout_width="match_parent"
 		                android:layout_height="0dp"
 		                android:layout_weight="4"
-		                android:text="All vobbles"
+		                android:text="@string/all_vobbles"
 		                android:textColor="@color/white"
 		                android:gravity="center_horizontal|center_vertical"
 		                android:textSize="16sp" />
@@ -178,7 +179,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="6"
-                        android:src="@drawable/event_icn" />
+                        android:src="@drawable/event_icn"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -187,7 +188,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="4"
-                        android:text="Events"
+                        android:text="@string/events"
                         android:textColor="@color/white"
                         android:gravity="center_horizontal|center_vertical"
                         android:textSize="16sp" />

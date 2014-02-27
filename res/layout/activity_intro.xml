@@ -1,43 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/bg">
-	<LinearLayout 
-	    android:orientation="vertical"
+	<View
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_weight="3">
-	</LinearLayout>
+	    android:layout_weight="3"/>
 	<LinearLayout
 	    android:orientation="horizontal"
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_weight="3">
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_weight="155"
-	        android:layout_height="match_parent">
-	    </TextView>
+	        android:layout_height="match_parent"/>
 	    <ImageView
 	        android:id="@+id/logo"
 	        android:layout_width="0dp"
 	        android:layout_weight="410"
 	        android:layout_height="match_parent"
 	        android:src="@drawable/start_logo"/>
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_weight="155"
-	        android:layout_height="match_parent">
-	    </TextView>
+	        android:layout_height="match_parent"/>
 	</LinearLayout>
-	<LinearLayout
-	    android:orientation="horizontal"
+	<View
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_weight="4">
-	</LinearLayout>
+	    android:layout_weight="4"/>
 </LinearLayout>
 
   

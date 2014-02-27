@@ -3,72 +3,66 @@
 
     <string name="app_name">vobble</string>
 
-    <string name="title_activity_intro">IntroActivity</string>
-    <string name="title_activity_tutorial">TutorialActivity</string>
-    <string name="title_activity_start">StartActivity</string>
-    <string name="title_activity_sign_up">SignUpActivity</string>
-    <string name="title_activity_sign_in">SignInActivity</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_create_vobble">CreateVobbleActivity</string>
-    <string name="title_activity_confirm_vobble">ConfirmVobbleActivity</string>
-    <string name="title_activity_listen_vobble">ListenVobbleActivity</string>
-    <string name="title_activity_event">EventActivity</string>
+    <string name="activity_intro_name">IntroActivity</string>
+    <string name="activity_tutorial_name">TutorialActivity</string>
+    <string name="activity_start_name">StartActivity</string>
+    <string name="activity_sign_up_name">SignUpActivity</string>
+    <string name="activity_sign_in_name">SignInActivity</string>
+    <string name="activity_main_name">MainActivity</string>
+    <string name="activity_create_vobble_name">CreateVobbleActivity</string>
+    <string name="activity_confirm_vobble_name">ConfirmVobbleActivity</string>
+    <string name="activity_listen_vobble_name">ListenVobbleActivity</string>
+    <string name="activity_event_name">EventActivity</string>
 
     <string name="activity_main_all_vobbles_tab">All</string>
     <string name="activity_main_my_vobbles_tab">My</string>
     <string name="activity_main_friends_vobbles_tab">Friends</string>
 
-    <string name="activity_confirm_vobble_title">Check your place</string>
-    <string name="activity_confirm_vobble_button_save">Save</string>
-    <string name="activity_confirm_vobble_choosing_photo_dialog_title">Photo</string>
-
     <string name="activity_create_vobble_title">Create a vobble</string>
-    <string name="activity_create_vobble_button_confirm">Confirm</string>
-
-    <string name="activity_sign_in_title">Sign In</string>
-    <string name="activity_sign_in_edit_text_email_hint">Email</string>
-    <string name="activity_sign_in_edit_text_password_hint">Password</string>
-    <string name="activity_sign_in_button_sign_in">Sign In</string>
-
-    <string name="activity_sign_up_title">Sign Up</string>
-    <string name="activity_sign_up_edit_text_username_hint">User name</string>
-    <string name="activity_sign_up_edit_text_email_hint">Email</string>
-    <string name="activity_sign_up_edit_text_password_hint">Password</string>
-    <string name="activity_sign_up_edit_text_password_check_hint">Password Check</string>
-    <string name="activity_sign_up_button_sign_up">Sign Up</string>
-
-    <string name="activity_start_button_sign_up">Sign Up</string>
-    <string name="activity_start_button_sign_in">Sign In</string>
-
-    <string name="fragment_all_vobbles_vobbles">vobbles</string>
-    <string name="fragment_my_vobbles_vobbles">vobbles</string>
-
+    <string name="activity_confirm_vobble_title">Check your place</string>
     <string name="activity_listen_vobble_title">Listen to the vobble</string>
 
-    <string name="error_signin">이메일과 비밀번호를 올바르게 입력해주세요.</string>
-    <string name="error_signup_form">모든 항목을 입력해 주세요.</string>
-    <string name="error_signup_password">비밀번호가 다릅니다. 다시 확인해 주세요.</string>
-    <string name="error_signup_username">Username 형식이 잘못되었습니다. 4글자 이상의 영어, 숫자, 하이픈(-), 언더바(_) 조합이어야 합니다.</string>
-    <string name="error_signup_email">Email 형식이 잘못되었습니다. 다시 확인해주세요.</string>
-    <string name="error_signup_passwrd_length">비밀번호는 6자리 이상이어야 합니다.</string>
+    <string name="dialog_title_vobble_long_click">Photo</string>
+    <string name="activity_create_vobble_button_confirm">Confirm</string>
+    <string name="fragment_my_vobble_long_click_dialog_title">Actions</string>
+    <string name="confirm_finish_app">vobble을 종료하시겠습니까?</string>
+
+    <string name="error_fill_in_all_forms">모든 항목을 입력해 주세요.</string>
+    <string name="error_invalid_username">Username 형식이 잘못되었습니다. 4글자 이상의 영어, 숫자, 하이픈(-), 언더바(_) 조합이어야 합니다.</string>
+    <string name="error_invalid_email">Email 형식이 잘못되었습니다. 다시 확인해주세요.</string>
+    <string name="error_invalid_password">비밀번호는 6자리 이상이어야 합니다.</string>
+    <string name="error_not_match_password_check">비밀번호가 다릅니다. 다시 확인해 주세요.</string>
     <string name="error_not_exist_voice">녹음을 진행해주세요.</string>
     <string name="error_not_exist_image">사진을 선택해주세요.</string>
     <string name="error_cannot_create_vobble">보블 생성에 실패하였습니다.</string>
-    <string name="error_cannot_get_location">위치 정보가 부정확할 수 있습니다.</string>
-    <string name="error_network">네트워크를 연결할 수 없습니다.</string>
+    <string name="error_cannot_connect_network">네트워크를 연결할 수 없습니다.</string>
 
-    <string name="ok">확인</string>
-    <string name="cancel">취소</string>
-    <string name="yes">예</string>
-    <string name="no">아니오</string>
-    <string name="end">종료</string>
-    <string name="confirm_finish_app">vobble을 종료하시겠습니까?</string>
-    <string name="log_out">로그아웃</string>
-    <string name="remove">삭제</string>
-	<string name="service_ready">서비스 준비중입니다.</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="finish">Finish</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="reload">Reload</string>
+    <string name="events">Events</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="password_check">Password Check</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+
+    <string name="all_vobbles">All vobbles</string>
+    <string name="my_vobbles">My vobbles</string>
+
     <string-array name="menu_choosing_photo_dialog_items">
         <item>Camera</item>
         <item>Gallery</item>
+    </string-array>
+    <string-array name="menu_vobble_long_click_dialog">
+        <item>Delete</item>
     </string-array>
 
 </resources>

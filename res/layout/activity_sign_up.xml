@@ -1,10 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffffff"
-    tools:context=".SignUpActivity" >
+    android:background="@color/white">
 	<LinearLayout
 	    android:orientation="horizontal"
 	    android:layout_width="match_parent"
@@ -14,25 +13,23 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:gravity="center_horizontal|center_vertical"
-	        android:text="@string/activity_sign_up_title"
-	        android:textColor="#40ddc2"
+	        android:text="@string/sign_up"
+	        android:textColor="@color/mint"
 	        android:textSize="18sp"/>
 	</LinearLayout>
-	<TextView
+	<View
 	    android:layout_width="match_parent"  
 	    android:layout_height="0dp"
-	    android:layout_weight="60">
-	</TextView>
+	    android:layout_weight="60"/>
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_weight="110"
 	    android:orientation="horizontal">
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="60">
-	    </TextView>
+	        android:layout_weight="60"/>
 	    <LinearLayout
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
@@ -43,36 +40,34 @@
 			    android:layout_width="match_parent"
 			    android:layout_height="0dp"
 			    android:layout_weight="108"
-			    android:hint="@string/activity_sign_up_edit_text_username_hint"
+			    android:hint="@string/username"
 			    android:textSize="15sp"
-                android:textColor="#000000"
-			    android:textColorHint="#6d6e71"/>
-			<TextView
+                android:textColor="@color/black"
+			    android:textColorHint="@color/dark_grey"/>
+			<View
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="1"
-		        android:background="#6d6e71"/>
-	   		<TextView
+		        android:background="@color/dark_grey"/>
+	   		<View
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="1"/> 
 	    </LinearLayout>
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="60">
-	    </TextView>
+	        android:layout_weight="60"/>
 	</LinearLayout>
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_weight="110"
 	    android:orientation="horizontal">
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="60">
-	    </TextView>
+	        android:layout_weight="60"/>
 	    <LinearLayout
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
@@ -83,36 +78,35 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="108"
-		        android:hint="@string/activity_sign_up_edit_text_email_hint"
+		        android:hint="@string/email"
 		        android:textSize="15sp"
-                android:textColor="#000000"
-		        android:textColorHint="#6d6e71"/>
-	   		<TextView
+                android:textColor="@color/black"
+		        android:textColorHint="@color/dark_grey"
+                android:inputType="textEmailAddress"/>
+	   		<View
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="1"
-		        android:background="#6d6e71"/>
-	   		<TextView
+		        android:background="@color/dark_grey"/>
+	   		<View
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="1"/> 
 	    </LinearLayout>
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="60">
-	    </TextView>
+	        android:layout_weight="60"/>
 	</LinearLayout>	
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_weight="110"
 	    android:orientation="horizontal">
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="60">
-	    </TextView>
+	        android:layout_weight="60"/>
 	    <LinearLayout
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
@@ -123,33 +117,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="108"
-                android:hint="@string/activity_sign_up_edit_text_password_hint"
+                android:hint="@string/password"
                 android:textSize="15sp"
-                android:textColor="#000000"
-                android:textColorHint="#6d6e71"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
                 android:password="true"/>
-	    	<TextView
+	    	<View
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="1"
-		        android:background="#6d6e71"/>
-	   		<TextView
+		        android:background="@color/dark_grey"/>
+	   		<View
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="1"/> 
 	    </LinearLayout>
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="60">
-	    </TextView>
+	        android:layout_weight="60"/>
 	</LinearLayout>	
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_weight="110"
 	    android:orientation="horizontal">
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="60"/>
@@ -163,27 +156,27 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="108"
-		        android:hint="@string/activity_sign_up_edit_text_password_check_hint"
+		        android:hint="@string/password_check"
 		        android:textSize="15sp"
-                android:textColor="#000000"
-                android:textColorHint="#6d6e71"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_grey"
                 android:password="true"/>
-	    	<TextView
+	    	<View
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="1"
-		        android:background="#6d6e71"/>
-	   		<TextView
+		        android:background="@color/dark_grey"/>
+	   		<View
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="1"/> 
 	    </LinearLayout>
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="60"/>
 	</LinearLayout>		
-	<TextView
+	<View
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_weight="80"/>
@@ -192,7 +185,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_weight="120">
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="60"/>
@@ -202,16 +195,16 @@
 	        android:layout_height="match_parent"
 	        android:layout_weight="600"
 	        android:background="@drawable/btn_effect_bg_color_mint"
-	        android:text="@string/activity_sign_up_button_sign_up"
+	        android:text="@string/sign_up"
 	        android:gravity="center_horizontal|center_vertical"
 	        android:textSize="20sp"
 	        android:textColor="@color/white"/>
-	    <TextView
+	    <View
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
 	        android:layout_weight="60"/>
 	</LinearLayout>
-	<TextView
+	<View
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_weight="490"/>

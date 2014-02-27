@@ -89,15 +89,15 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         switch (view.getId()) {
         case R.id.btn_sign_up:
             if (!isAllFormFilled()) {
-                showAlert(R.string.error_signup_form);
+                showAlert(R.string.error_fill_in_all_forms);
             } else if (!isPasswordCheckCorrected()) {
-                showAlert(R.string.error_signup_password);
+                showAlert(R.string.error_not_match_password_check);
             } else if (!isValidUsername()) {
-                showAlert(R.string.error_signup_username);
+                showAlert(R.string.error_invalid_username);
             } else if (!isValidEmail()) {
-                showAlert(R.string.error_signup_email);
+                showAlert(R.string.error_invalid_email);
             } else if (!isValidPassword()) {
-                showAlert(R.string.error_signup_passwrd_length);
+                showAlert(R.string.error_invalid_password);
             } else {
                 executeSignUp();
             }

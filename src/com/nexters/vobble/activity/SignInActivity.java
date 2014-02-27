@@ -44,9 +44,9 @@ public class SignInActivity extends BaseFragmentActivity implements View.OnClick
 
     public void onClick(View v) {
         if (!isAllFormsFilled()) {
-            showAlert(R.string.error_signin);
+            showAlert(R.string.error_fill_in_all_forms);
         } else if (!isValidEmail()) {
-            showAlert(R.string.error_signup_email);
+            showAlert(R.string.error_invalid_email);
         } else {
             executeSignIn();
         }

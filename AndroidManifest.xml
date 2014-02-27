@@ -33,27 +33,27 @@
         </activity>
         <activity
             android:name="com.nexters.vobble.activity.StartActivity"
-            android:label="@string/title_activity_start"
+            android:label="@string/activity_start_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.nexters.vobble.activity.SignUpActivity"
-            android:label="@string/title_activity_sign_up"
+            android:label="@string/activity_sign_up_name"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.nexters.vobble.activity.SignInActivity"
-            android:label="@string/title_activity_sign_in"
+            android:label="@string/activity_sign_in_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.nexters.vobble.activity.MainActivity"
-            android:label="@string/title_activity_main"
+            android:label="@string/activity_main_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.CreateVobbleActivity"
-            android:label="@string/title_activity_create_vobble"
+            android:label="@string/activity_create_vobble_name"
             android:screenOrientation="portrait">
             <intent-filter>
 		        <action android:name="android.intent.action.PICK" />
@@ -62,22 +62,22 @@
         </activity>
         <activity
             android:name=".activity.ConfirmVobbleActivity"
-            android:label="@string/title_activity_confirm_vobble"
+            android:label="@string/activity_confirm_vobble_name"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.nexters.vobble.activity.TutorialActivity"
-            android:label="@string/title_activity_tutorial"
+            android:label="@string/activity_tutorial_name"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.ListenVobbleActivity"
-            android:label="@string/title_activity_listen_vobble"
+            android:label="@string/activity_listen_vobble_name"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.EventActivity"
-            android:label="@string/title_activity_event"
+            android:label="@string/activity_event_name"
             android:screenOrientation="portrait">
         </activity>
     </application>

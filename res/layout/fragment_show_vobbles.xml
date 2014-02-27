@@ -1,6 +1,6 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/show_vobble_ll"
-	android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
     <LinearLayout
@@ -8,46 +8,31 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical" >
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4">
-        </LinearLayout>
-        <LinearLayout
+            android:layout_weight="4"/>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2">
-            <FrameLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="-60dp"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_10"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-            	    android:layout_marginLeft="-60dp"
-                    android:padding="2dp"
-                    android:alpha="0.5"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_10"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="right"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_marginLeft="-60dp"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="-60dp"
+                android:padding="2dp"
+                android:alpha="0.5"/>
+        </FrameLayout>
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5.5">
-        </LinearLayout>
+            android:layout_weight="5.5"/>
     </LinearLayout>
 
 	<LinearLayout
@@ -55,186 +40,113 @@
 	    android:layout_height="match_parent"
 	    android:layout_weight="2"
 	    android:orientation="vertical" >
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
-
-        </LinearLayout>
-        <LinearLayout
+            android:layout_weight="1"/>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4">
-            <FrameLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_11"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:alpha="0.5"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_11"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="right"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4">
-            <FrameLayout
+                android:layout_height="match_parent"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_11"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_5"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-                    android:padding="2dp"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_5"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="right"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:alpha="0.5"/>
+        </FrameLayout>>
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
-
-        </LinearLayout>
-        <LinearLayout
+            android:layout_weight="1"/>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4">
-            <FrameLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_4"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-                    android:padding="2dp"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_4"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="right"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4">
-            <FrameLayout
+                android:layout_height="match_parent"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_5"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_9"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:alpha="0.5"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_9"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="right"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="match_parent"
+                android:padding="2dp"/>
+        </FrameLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4">
-
-        </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"/>
+        </FrameLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_9"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:alpha="0.5"/>
+        </FrameLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"/>
 	</LinearLayout>
 	<LinearLayout
 		android:layout_width="0dp"
 		android:layout_height="match_parent"
 		android:layout_weight="2"
 		android:orientation="vertical" >
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3">
-
-        </LinearLayout>
-        <LinearLayout
+            android:layout_weight="3"/>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4">
-            <FrameLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_0"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-                    android:padding="2dp"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_0"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="right"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="match_parent"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"/>
+        </FrameLayout>
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.3">
-
-        </LinearLayout>
-        <LinearLayout
+            android:layout_weight="1.3"/>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4">
@@ -243,45 +155,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/record_vobble_btn"/>
-        </LinearLayout>
-        <LinearLayout
+        </FrameLayout>
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.3">
-
-        </LinearLayout>
-        <LinearLayout
+            android:layout_weight="1.3"/>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4">
-            <FrameLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_3"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-                    android:padding="2dp"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_3"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="right"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="match_parent"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"/>
+        </FrameLayout>
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="6"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:orientation="vertical"/>
 	</LinearLayout>
 
 	<LinearLayout
@@ -289,144 +186,84 @@
 	    android:layout_height="match_parent"
 	    android:layout_weight="2"
 	    android:orientation="vertical" >
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
-
-        </LinearLayout>
-        <LinearLayout
+            android:layout_weight="1"/>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4">
-            <FrameLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_6"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:alpha="0.5"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_6"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="right"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4">
-            <FrameLayout
+                android:layout_height="match_parent"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_6"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_1"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-                    android:padding="2dp"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_1"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="right"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:alpha="0.5"/>
+        </FrameLayout>
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
-
-        </LinearLayout>
-        <LinearLayout
+            android:layout_weight="1"/>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4">
-            <FrameLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_2"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-                    android:padding="2dp"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_2"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="right"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4">
-            <FrameLayout
+                android:layout_height="match_parent"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_8"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-                    android:padding="2dp"
-                    android:alpha="0.5"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_8"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="right"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="match_parent"
+                android:padding="2dp"/>
+        </FrameLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4">
-
-        </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"/>
+        </FrameLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:alpha="0.5"/>
+        </FrameLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"/>
 	</LinearLayout>
 
     <LinearLayout
@@ -434,44 +271,30 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical" >
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4">
-        </LinearLayout>
-         <LinearLayout
+            android:layout_weight="4"/>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2">
-             <FrameLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="-60dp"
-                    android:src="@drawable/voice_vobble" />
-            	<ImageView
-                    android:id="@+id/iv_vobble_7"
-                    android:layout_width="match_parent"
-            	    android:layout_height="match_parent"
-            	    android:layout_marginRight="-60dp"
-                    android:padding="2dp"
-                    android:alpha="0.5"/>
-            	<Button            
-		           android:id="@+id/iv_vobble_remove_7"
-		           android:layout_width="25dp"            
-		           android:layout_height="25dp"
-		           android:layout_gravity="left"
-		           android:visibility="invisible"         
-		           android:background="@drawable/btn_effect_remove_vobble"/>
-            </FrameLayout>
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_marginRight="-60dp"
+                android:src="@drawable/voice_vobble" />
+            <ImageView
+                android:id="@+id/iv_vobble_7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="-60dp"
+                android:padding="2dp"
+                android:alpha="0.5"/>
+        </FrameLayout>
+        <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5.5">
-        </LinearLayout>
+            android:layout_weight="5.5"/>
     </LinearLayout>
 </LinearLayout>

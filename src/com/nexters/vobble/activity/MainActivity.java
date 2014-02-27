@@ -235,10 +235,6 @@ public class MainActivity extends BaseFragmentActivity implements
                 startActivity(intent);
                 finish();
                 break;
-            case R.id.remove_vobble:
-            	ShowVobblesFragment fragment = (ShowVobblesFragment)fragments[INDEX_MY_VOBBLES];
-            	fragment.showRemoveVobbleButtons();
-                break;
         }
 
         return false;
@@ -254,7 +250,7 @@ public class MainActivity extends BaseFragmentActivity implements
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.end);
+        builder.setTitle(R.string.finish);
         builder.setMessage(R.string.confirm_finish_app);
         builder.setNegativeButton(R.string.no, null);
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -269,12 +265,7 @@ public class MainActivity extends BaseFragmentActivity implements
     public boolean onPrepareOptionsMenu (Menu menu){
     	menu.clear();
         MenuInflater inflater = getMenuInflater();
-        
-        if(mViewPager.getCurrentItem() == INDEX_MY_VOBBLES){
-        	inflater.inflate(R.menu.main_remove, menu);
-        }else{
-        	inflater.inflate(R.menu.main, menu);
-        }
+        inflater.inflate(R.menu.main, menu);
         return super.onPrepareOptionsMenu(menu);
     }
 }
