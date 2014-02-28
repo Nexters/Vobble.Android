@@ -30,6 +30,8 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
     private int mIvPhotoWidth;
     private boolean isVobbleImageLoaded = false;
 
+    private NGeoPoint mLocation;
+
     private NMapView mMapView;
     private NMapController mMapController;
     private NMapOverlayManager mOverlayManager;
@@ -95,7 +97,12 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
     private NMapLocationManager.OnLocationChangeListener mLocationListener = new NMapLocationManager.OnLocationChangeListener() {
         @Override
         public boolean onLocationChanged(NMapLocationManager nMapLocationManager, NGeoPoint location) {
-            initOverlayInMapView(location);
+            if (location != null) {
+                mLocation = location;
+                initOverlayInMapView();
+            } else {
+                showShortToast("위치 탐색에 실패했습니다. 다시 시도해 주세요.");
+            }
             return false;
         }
 
@@ -110,10 +117,13 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
         }
     };
 
-    private void initOverlayInMapView(NGeoPoint location) {
+    private void initOverlayInMapView() {
+        if (mLocation == null)
+            return;
+
         NMapPOIdata poiData = new NMapPOIdata(1, mMapViewerResourceProvider);
         poiData.beginPOIdata(1);
-        poiData.addPOIitem(location.getLongitude(), location.getLatitude(), "You're in here.", NMapPOIflagType.PIN, 0);
+        poiData.addPOIitem(mLocation.getLongitude(), mLocation.getLatitude(), "You're in here.", NMapPOIflagType.PIN, 0);
         poiData.endPOIdata();
 
         if (poiDataOverlay != null)
@@ -123,7 +133,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
         poiDataOverlay.showAllPOIdata(0);
         poiDataOverlay.setOnStateChangeListener(mPOIdataStateChangeListener);
 
-        mMapController.animateTo(location);
+        mMapController.animateTo(mLocation);
         mMapController.setZoomLevel(10);
     }
 
@@ -164,14 +174,17 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
     };
 
     private void executeCreatingVobbleIfLocationEnabled() {
-        if (!mLocationManager.isMyLocationEnabled()) {
-            showShortToast("위치 정보를 가져오지 못했습니다.");
+        if (mLocation == null) {
+            showShortToast("위치 정보가 없어서 보블을 저장할 수 없습니다.");
         } else {
-            executeCreatingVobble(mLocationManager.getMyLocation());
+            executeCreatingVobble();
         }
     }
 
-    private void executeCreatingVobble(NGeoPoint location) {
+    private void executeCreatingVobble() {
+        if (mLocation == null)
+            return;
+
         String url = String.format(URL.VOBBLES_CREATE, AccountManager.getInstance().getUserId(this));
 
         File voiceFile = TempFileManager.getVoiceFile();
@@ -179,8 +192,8 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
 
         RequestParams params = new RequestParams();
         params.put(User.TOKEN, AccountManager.getInstance().getToken(this));
-        params.put(Vobble.LATITUDE, String.valueOf(location.getLatitude()));
-        params.put(Vobble.LONGITUDE, String.valueOf(location.getLongitude()));
+        params.put(Vobble.LATITUDE, String.valueOf(mLocation.getLatitude()));
+        params.put(Vobble.LONGITUDE, String.valueOf(mLocation.getLongitude()));
 
         try {
             params.put(App.VOICE, voiceFile);

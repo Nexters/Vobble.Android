@@ -128,7 +128,11 @@ public class ShowVobblesFragment extends BaseMainFragment {
     private NMapLocationManager.OnLocationChangeListener mLocationListener = new NMapLocationManager.OnLocationChangeListener() {
         @Override
         public boolean onLocationChanged(NMapLocationManager nMapLocationManager, NGeoPoint location) {
-            executeGetVobbles(location);
+            if (location != null) {
+                executeGetVobbles(location);
+            } else {
+                activity.showShortToast("위치 탐색에 실패했습니다. 다시 시도해주세요.");
+            }
             return false;
         }
 
@@ -151,7 +155,10 @@ public class ShowVobblesFragment extends BaseMainFragment {
     }
 
     private void executeGetVobbles(NGeoPoint location) {
-    	String url = getUrlForGetVobbles();
+    	if (location == null)
+            return;
+
+        String url = getUrlForGetVobbles();
 
         RequestParams params = new RequestParams();
         params.put(App.LIMIT, String.valueOf(VOBBLE_COUNT));
