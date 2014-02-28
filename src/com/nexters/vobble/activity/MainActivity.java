@@ -245,7 +245,7 @@ public class MainActivity extends BaseFragmentActivity implements
     private void sendToEmail() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("plain/text");
-        String[] tos = { "nexters_vobble@gmail.com" };
+        String[] tos = { "nexters.vobble@gmail.com" };
         intent.putExtra(Intent.EXTRA_EMAIL, tos);
         startActivity(intent);
     }
