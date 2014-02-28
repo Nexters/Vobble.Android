@@ -1,6 +1,7 @@
 package com.nexters.vobble.activity;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -247,7 +248,11 @@ public class MainActivity extends BaseFragmentActivity implements
         intent.setType("plain/text");
         String[] tos = { "nexters.vobble@gmail.com" };
         intent.putExtra(Intent.EXTRA_EMAIL, tos);
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            showShortToast("설치된 메일 클라이언트가 없습니다.");
+        }
     }
 
     @Override
