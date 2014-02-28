@@ -229,15 +229,25 @@ public class MainActivity extends BaseFragmentActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.log_out:
+            case R.id.action_feedback:
+                sendToEmail();
+                break;
+            case R.id.action_sign_out:
                 AccountManager.getInstance().signOut(this);
                 Intent intent = new Intent(getApplicationContext(), StartActivity.class);
                 startActivity(intent);
                 finish();
                 break;
         }
-
         return false;
+    }
+
+    private void sendToEmail() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("plain/text");
+        String[] tos = { "nexters_vobble@gmail.com" };
+        intent.putExtra(Intent.EXTRA_EMAIL, tos);
+        startActivity(intent);
     }
 
     @Override
