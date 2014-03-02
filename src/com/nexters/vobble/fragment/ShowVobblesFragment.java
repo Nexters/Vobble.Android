@@ -120,7 +120,7 @@ public class ShowVobblesFragment extends BaseMainFragment {
     public void load() {
         mLocationManager = new NMapLocationManager(getActivity());
         mLocationManager.setOnLocationChangeListener(mLocationListener);
-        if (!mLocationManager.enableMyLocation(false)) {
+        if (!mLocationManager.enableMyLocation(true)) {
             showDialogForLocationAccessSetting();
         }
     }
@@ -133,6 +133,7 @@ public class ShowVobblesFragment extends BaseMainFragment {
             } else {
                 activity.showShortToast("위치 탐색에 실패했습니다. 다시 시도해주세요.");
             }
+            disableLocationManager();
             return false;
         }
 
@@ -146,6 +147,12 @@ public class ShowVobblesFragment extends BaseMainFragment {
 
         }
     };
+
+    private void disableLocationManager() {
+        if (mLocationManager != null && mLocationManager.isMyLocationEnabled()) {
+            mLocationManager.disableMyLocation();
+        }
+    }
 
     @Override
     public void onStart() {
@@ -352,9 +359,13 @@ public class ShowVobblesFragment extends BaseMainFragment {
     };
 
     @Override
+    public void onPause() {
+        super.onPause();
+        disableLocationManager();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mLocationManager != null && mLocationManager.isMyLocationEnabled())
-            mLocationManager.disableMyLocation();
     }
 }

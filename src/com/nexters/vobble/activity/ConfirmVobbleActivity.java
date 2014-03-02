@@ -87,7 +87,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
     private void initLocation() {
         mLocationManager = new NMapLocationManager(this);
         mLocationManager.setOnLocationChangeListener(mLocationListener);
-        if (mLocationManager.enableMyLocation(false)) {
+        if (mLocationManager.enableMyLocation(true)) {
             showShortToast("위치 정보를 가져옵니다.");
         } else {
             showDialogForLocationAccessSetting();
@@ -103,6 +103,7 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
             } else {
                 showShortToast("위치 탐색에 실패했습니다. 다시 시도해 주세요.");
             }
+            disableLocationManager();
             return false;
         }
 
@@ -116,6 +117,12 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
 
         }
     };
+
+    private void disableLocationManager() {
+        if (mLocationManager != null && mLocationManager.isMyLocationEnabled()) {
+            mLocationManager.disableMyLocation();
+        }
+    }
 
     private void initOverlayInMapView() {
         if (mLocation == null)
@@ -229,9 +236,13 @@ public class ConfirmVobbleActivity extends BaseNMapActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        disableLocationManager();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mLocationManager.isMyLocationEnabled())
-            mLocationManager.disableMyLocation();
     }
 }
