@@ -229,13 +229,18 @@ public class MainActivity extends BaseFragmentActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.action_feedback:
                 sendToEmail();
                 break;
+            case R.id.action_tutorial:
+                intent = new Intent(getApplicationContext(), TutorialActivity.class);
+                startActivity(intent);
+                break;
             case R.id.action_sign_out:
                 AccountManager.getInstance().signOut(this);
-                Intent intent = new Intent(getApplicationContext(), StartActivity.class);
+                intent = new Intent(getApplicationContext(), StartActivity.class);
                 startActivity(intent);
                 finish();
                 break;

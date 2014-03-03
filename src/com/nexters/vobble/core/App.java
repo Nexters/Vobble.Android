@@ -12,6 +12,7 @@ import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
 import com.nexters.vobble.R;
+import com.nexters.vobble.entity.User;
 import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -31,6 +32,7 @@ public class App extends Application {
     public static final String VOICE = "voice";
 	public static final String IMAGE = "image";
     public static final String LIMIT = "limit";
+    public static final String TUTORIAL = "tutorial";
 
     public static final String TAG = "VOBBLE";
     public static final String NMAP_API_KEY = "9d613b3fed909e86f46be79aae114235";
@@ -73,4 +75,12 @@ public class App extends Application {
 	public static void SendTrackingEvent(String category,String action,String label,long value){
 		mTracker.send(MapBuilder.createEvent(category,action,label, null).build());
 	}
+
+    public static boolean isTutorialRead(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(TUTORIAL, false);
+    }
+
+    public static void readTutorial(Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(TUTORIAL, true).commit();
+    }
 }

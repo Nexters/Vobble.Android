@@ -61,8 +61,6 @@ public class TutorialActivity extends BaseActivity {
             public void onPageScrollStateChanged(int index) {
                 if (index == ViewPager.SCROLL_STATE_DRAGGING) {
                     if (currentPage == INTRO_PAGE_CNT - 1) {
-                        Intent intent = new Intent(getApplicationContext(), StartActivity.class);
-                        startActivity(intent);
                         finish();
                     }
                 }

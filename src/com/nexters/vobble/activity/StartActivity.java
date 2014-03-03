@@ -8,6 +8,7 @@ import android.view.*;
 import android.widget.*;
 
 import com.nexters.vobble.*;
+import com.nexters.vobble.core.App;
 
 public class StartActivity extends Activity implements View.OnClickListener {
 	public static final int REQUEST_SIGN_IN = 0;
@@ -23,17 +24,26 @@ public class StartActivity extends Activity implements View.OnClickListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_start);
 
+        checkTutorialRead();
         initResources();
         initEvents();
         
         playVideoIntro();
 	}
 
+    private void checkTutorialRead() {
+        if (!App.isTutorialRead(this)) {
+            App.readTutorial(this);
+
+            Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
+            startActivity(intent);
+        }
+    }
+
     private void initResources() {
         mBtnSignIn = (Button) findViewById(R.id.btn_sign_in);
         mBtnSignUp = (Button) findViewById(R.id.btn_sign_up);
         videoViewIntro = (VideoView) findViewById(R.id.vv_vobble_intro);
-        
     }
 
     private void initEvents() {
