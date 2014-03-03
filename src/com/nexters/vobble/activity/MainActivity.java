@@ -202,7 +202,8 @@ public class MainActivity extends BaseFragmentActivity implements
                 loadTab(mViewPager.getCurrentItem());
                 break;
             case R.id.iv_event_btn:
-                Intent intent = new Intent(this, EventActivity.class);
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra("url", URL.EVENTS);
                 startActivity(intent);
                 break;
 		}
@@ -235,12 +236,17 @@ public class MainActivity extends BaseFragmentActivity implements
                 sendToEmail();
                 break;
             case R.id.action_tutorial:
-                intent = new Intent(getApplicationContext(), TutorialActivity.class);
+                intent = new Intent(this, TutorialActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_more_apps:
+                intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra("url", URL.MORE_APPS);
                 startActivity(intent);
                 break;
             case R.id.action_sign_out:
                 AccountManager.getInstance().signOut(this);
-                intent = new Intent(getApplicationContext(), StartActivity.class);
+                intent = new Intent(this, StartActivity.class);
                 startActivity(intent);
                 finish();
                 break;

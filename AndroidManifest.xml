@@ -76,7 +76,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.EventActivity"
+            android:name=".activity.WebViewActivity"
             android:label="@string/activity_event_name"
             android:screenOrientation="portrait">
         </activity>
