@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.widget.TextView;
 import com.nexters.vobble.activity.CreateVobbleActivity;
 import com.nexters.vobble.activity.ListenVobbleActivity;
 import com.nexters.vobble.core.AccountManager;
@@ -16,6 +17,7 @@ import com.nexters.vobble.util.ImageManagingHelper;
 import com.nhn.android.maps.NMapLocationManager;
 import com.nhn.android.maps.maplib.NGeoPoint;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
@@ -47,6 +49,8 @@ public class ShowVobblesFragment extends BaseMainFragment {
     private String userId;
     private VOBBLE_FRAMGMENT_TYPE type;
 
+    private TextView mTvNumVobbles;
+    private TextView mTvNumVobblesText;
     private ImageView mIvCreateVobble;
     private ImageView[] mIvVobbleImages = new ImageView[VOBBLE_COUNT];
     private ArrayList<Vobble> mVobbles = new ArrayList<Vobble>();
@@ -80,14 +84,20 @@ public class ShowVobblesFragment extends BaseMainFragment {
         View view = inflater.inflate(R.layout.fragment_show_vobbles, null);
         initResources(view);
         initEvents();
-        initVobbles();
+        initVobblesAndVobblesCount();
         return view;
     }
 
     private void initResources(View view) {
+        mTvNumVobbles = (TextView) view.findViewById(R.id.tv_num_vobbles);
+        mTvNumVobblesText = (TextView) view.findViewById(R.id.tv_num_vobbles_text);
         mIvCreateVobble = (ImageView) view.findViewById(R.id.iv_voice_record_btn);
         for (int i = 0; i < VOBBLE_COUNT; i++) {
             mIvVobbleImages[i] = (ImageView) view.findViewById(getResourceId(VOBBLE_IMG_ID_PREFIX + i));
+        }
+
+        if (type == VOBBLE_FRAMGMENT_TYPE.MY) {
+            mTvNumVobblesText.setText(R.string.my_vobbles);
         }
     }
 
@@ -110,7 +120,7 @@ public class ShowVobblesFragment extends BaseMainFragment {
         }
     }
 
-    private void initVobbles() {
+    private void initVobblesAndVobblesCount() {
         // 타입이 ALL인 경우에만 생성과 동시에 보블을 초기화한다.
         if (type == VOBBLE_FRAMGMENT_TYPE.ALL)
             load();
@@ -118,11 +128,52 @@ public class ShowVobblesFragment extends BaseMainFragment {
 
     @Override
     public void load() {
+        executeGetVobblesCount();
+
         mLocationManager = new NMapLocationManager(getActivity());
         mLocationManager.setOnLocationChangeListener(mLocationListener);
         if (!mLocationManager.enableMyLocation(true)) {
             showDialogForLocationAccessSetting();
         }
+    }
+
+    private void executeGetVobblesCount() {
+        String url;
+        if (type == VOBBLE_FRAMGMENT_TYPE.ALL) {
+            url = URL.VOBBLES_COUNT;
+        } else {
+            url = String.format(URL.USER_VOBBLES_COUNT, userId);
+        }
+
+        HttpUtil.get(url, null, null, new APIResponseHandler(activity) {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                showLoading();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                hideLoading();
+            }
+
+            @Override
+            public void onSuccess(JSONObject response) {
+                try {
+                    String count = response.getString("count");
+                    mTvNumVobbles.setText(count);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable error, String response) {
+                super.onFailure(error, response);
+            }
+        });
     }
 
     private NMapLocationManager.OnLocationChangeListener mLocationListener = new NMapLocationManager.OnLocationChangeListener() {
