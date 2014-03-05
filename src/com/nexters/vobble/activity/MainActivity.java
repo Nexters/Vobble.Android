@@ -43,10 +43,9 @@ public class MainActivity extends BaseFragmentActivity implements
 	private FrameLayout[] tabs = new FrameLayout[TAB_COUNT];
     private String[] vobblesCnt = new String[TAB_COUNT];
 
-	private TextView mTvVobbleCnt;
-    private TextView mTvVobbleCntType;
     private ImageView mIvReloadBtn;
     private ImageView mIvEventBtn;
+    private ImageView mIvSettingBtn;
     private ViewPager mViewPager;
 
     private CustomFragmentPagerAdapter mCustomFragmentPagerAdapter;
@@ -62,8 +61,6 @@ public class MainActivity extends BaseFragmentActivity implements
         initFragments();
         initViewPager();
 
-        loadVobblesCount(INDEX_ALL_VOBBLES);
-
         showTab(INDEX_ALL_VOBBLES);
         App.getGaTracker().set(Fields.SCREEN_NAME, this.getClass().getSimpleName());
 	}
@@ -72,10 +69,9 @@ public class MainActivity extends BaseFragmentActivity implements
         tabs[INDEX_ALL_VOBBLES] = (FrameLayout) findViewById(R.id.fl_all_voice_tab_button);
 		tabs[INDEX_MY_VOBBLES] = (FrameLayout) findViewById(R.id.fl_my_voice_tab_button);
         tabs[INDEX_FRIENDS_VOBBLES] = (FrameLayout) findViewById(R.id.fl_friends_voice_tab_button);
-		mTvVobbleCnt = (TextView) findViewById(R.id.tv_vobble_cnt);
-        mTvVobbleCntType = (TextView) findViewById(R.id.tv_vobble_cnt_type);
         mIvReloadBtn = (ImageView) findViewById(R.id.iv_reload_btn);
         mIvEventBtn = (ImageView) findViewById(R.id.iv_event_btn);
+        mIvSettingBtn = (ImageView) findViewById(R.id.iv_setting_btn);
 	}
 
     private void initEvents() {
@@ -87,6 +83,8 @@ public class MainActivity extends BaseFragmentActivity implements
         mIvReloadBtn.setOnClickListener(this);
         mIvEventBtn.setOnTouchListener(ivTouchListener);
         mIvEventBtn.setOnClickListener(this);
+        mIvSettingBtn.setOnTouchListener(ivTouchListener);
+        mIvSettingBtn.setOnClickListener(this);
 	}
 
     private void initFragments() {
@@ -105,57 +103,6 @@ public class MainActivity extends BaseFragmentActivity implements
         mViewPager.setCurrentItem(INDEX_ALL_VOBBLES);
 		mViewPager.setOnPageChangeListener(onPageChangeListener);
 	}
-
-    private void loadVobblesCount(int index) {
-        if (vobblesCnt[index] == null) {
-            executeGetVobblesCount(index);
-            return;
-        }
-        mTvVobbleCnt.setText(vobblesCnt[index]);
-        if (index == INDEX_ALL_VOBBLES)
-            mTvVobbleCntType.setText("All vobbles");
-        else if (index == INDEX_MY_VOBBLES)
-            mTvVobbleCntType.setText("My vobbles");
-    }
-
-    private void executeGetVobblesCount(final int index) {
-        String url = "";
-        if (index == INDEX_ALL_VOBBLES) {
-            url = URL.VOBBLES_COUNT;
-        } else if (index == INDEX_MY_VOBBLES) {
-            url = String.format(URL.USER_VOBBLES_COUNT, AccountManager.getInstance().getUserId(this));
-        }
-
-        HttpUtil.get(url, null, null, new APIResponseHandler(this) {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                showLoading();
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                hideLoading();
-            }
-
-            @Override
-            public void onSuccess(JSONObject response) {
-                try {
-                    vobblesCnt[index] = response.getString("count");
-                    loadVobblesCount(index);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable error, String response) {
-                super.onFailure(error, response);
-            }
-        });
-    }
 
     private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -185,13 +132,11 @@ public class MainActivity extends BaseFragmentActivity implements
 		switch (view.getId()) {
             case R.id.fl_all_voice_tab_button:
                 showTab(INDEX_ALL_VOBBLES);
-                loadVobblesCount(INDEX_ALL_VOBBLES);
                 if (hasNeedToLoad[INDEX_ALL_VOBBLES])
                     loadTab(INDEX_ALL_VOBBLES);
                 break;
             case R.id.fl_my_voice_tab_button:
                 showTab(INDEX_MY_VOBBLES);
-                loadVobblesCount(INDEX_MY_VOBBLES);
                 if (hasNeedToLoad[INDEX_MY_VOBBLES])
                     loadTab(INDEX_MY_VOBBLES);
                 break;
@@ -205,6 +150,9 @@ public class MainActivity extends BaseFragmentActivity implements
                 Intent intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra("url", URL.EVENTS);
                 startActivity(intent);
+                break;
+            case R.id.iv_setting_btn:
+                openOptionsMenu();
                 break;
 		}
 	}
@@ -222,8 +170,6 @@ public class MainActivity extends BaseFragmentActivity implements
 
     private void loadTab(int index) {
         vobblesCnt[index] = null;
-        loadVobblesCount(index);
-
         hasNeedToLoad[index] = false;
         fragments[index].load();
     }
